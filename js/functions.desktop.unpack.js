@@ -48,9 +48,12 @@ $(window).load(function () {
     easterEgg();
 });
 
-$.post('./wp-content/themes/odyssey/tplFuncs/image.php', function(data) {
+$.post('./wp-admin/admin-ajax.php', {
+    action:'odyssey_get_image',
+    c:'True'
+}, function(data) {
     $.Mustache.load('./wp-content/themes/odyssey/templates/image.html').done(function () {
-        $('#photo_frame').mustache('image', jQuery.parseJSON(data), { method: 'html' });
+        $('#photo_frame').mustache('image', $.parseJSON(data), { method: 'html' });
     });
 });
 
