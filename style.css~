@@ -1,0 +1,654 @@
+/*
+Theme Name: monolit
+Theme URI: http://blog.jasen.dk/monolit
+Description: <p>A photoblog theme based on <a href="http://www.wordpress.org/">Wordpress</a> and <a href="http://johannes.jarolim.com/yapb/">YAPB</a></p><p>This theme depends on the <a href="http://johannes.jarolim.com/yapb/">Yet Another Photoblog</a> plugin.</p><p>It is based on the default wordpress theme but has also borrowed stuff from the <a href="http://mac.defx.de/grain-theme">grain</a> theme, and the <a href="http://www.226-design.com/monochrome/">monochrome</a> blog with permission from the authors.</p><p><b>DON'T ENABLE EXIF IN THIS VERSION</b></p>
+Version: 0.7
+Author: Kim N&oslash;rgaard
+Author URI: http://www.jasen.dk/
+.
+**IMPORTANT**
+Configuring the theme:
+
+If you wan to enable archives:
+  - Create an 'archives' page through Manage/Pages. Remember the title and be
+    sure to select the 'Arcives' template under "Page Template".
+  - in the config/config.php file
+    => change the value of MONOLIT_SET_ARCHIVE_WP_TITLE to the title of the page
+       you just created
+    => change the value of MONOLIT_SET_SHOW_ABOUT to 1
+
+If you want to enable an about page:
+  - Create an 'about' page through Manage/Pages. Remember the title.
+  - in the config/config.php file:
+    => change the value of MONOLIT_SET_ABOUT_WP_TITLE to the title of the page
+       you just created
+    => change the value of MONOLIT_SET_SHOW_ARCHIVES to 1
+
+Changing the copyright notice and other settings
+  - Copyright: Change the MONOLIT_SET_COPYRIGHT to whatever you want the
+    copyright notice to say.
+  - Change other configuration values in the file if needed. They are pretty
+    much self-explanatory.
+
+About sizes:
+  The theme automatically resizes images to a max width of 900 pixels and a
+  max height that is customizable through the MONOLIT_SET_MAX_HEIGHT value
+  (default is 600 pixels). If you want wider images the layout will break 
+  unless you change the stylesheet (look for the 'inside' class).
+
+About language and messages:
+  Language and messages can be configured through the lang/lang.php file. It
+  might take some skill to figure out which message goes where :-)
+
+Todo:
+  - a smarter way to control the configuration, ie. via admin page
+.
+*/
+
+
+@font-face {
+    font-family: 'BebasNeueRegular';
+    src: url('./font/bebasneue-webfont.eot');
+    src: url('./font/bebasneue-webfont.eot?#iefix') format('embedded-opentype'),
+         url('./font/bebasneue-webfont.woff') format('woff'),
+         url('./font/bebasneue-webfont.ttf') format('truetype'),
+         url('./font/bebasneue-webfont.svg#BebasNeueRegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+h1,h2,h3,h4,h5,form,input,p,a {
+    margin:0;
+    padding:0;
+}
+h1,h2,h3,h4,h5 {
+    font-family:BebasNeueRegular;
+    letter-spacing:.2px;
+    font-weight:normal;
+    font-style:normal;
+    color:rgb(161,161,161);
+}
+ul,li {
+    margin:0;
+    padding:0;
+    list-style:none;
+    display:inline;
+}
+img {
+/*     display:block; */
+    margin:0;
+    padding:0;
+    border:none;
+    outline:none;
+}
+input,textarea{font-family:Tahoma,Arial,Helvetica,sans-serif;margin:0;padding:0;-webkit-border-radius:0;}
+textarea{overflow:auto;resize:none;}
+.clr{clear:both;font-size:0;line-height:0;}
+a,a:focus,a:active,div{outline:none;}
+
+
+/* ******************************* image: header ******************************* */
+#header {
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:30px;
+    line-height:30px;
+
+    background-color: rgb(68,68,68);
+
+    -moz-box-shadow: 5px 5px 5px rgba(0,0,0,0.5);
+    -webkit-box-shadow: 5px 5px 5px rgba(0,0,0,0.5);
+    box-shadow: 5px 5px 5px rgba(0,0,0,0.5);
+}
+body.white #header {
+    background-color:rgb(230,230,230);
+}
+#logo {
+    display:block;
+    height:28px;
+    float:left;
+    font-size:22px;
+    padding-left:16px;
+}
+#header a {
+    text-decoration:none;
+    color:rgb(161,161,161);
+}
+#header a:hover {
+    color:rgb(255,255,255);
+}
+body.white #header a {
+    color:rgb(99,99,99);
+}
+body.white #header a:hover {
+    color:rgb(0,0,0);
+}
+.menu {
+    float:right;
+}
+.menu.but {
+    margin-right:11px;
+}
+.menu.but a {
+    width:20px;
+    height:20px;
+    float:left;
+    margin: 5px 1px 0px 2px;
+
+    opacity:0.7;
+    filter:alpha(opacity=70);
+
+    border-radius: 2px;
+}
+.menu.but a:hover {
+    opacity:1;
+    filter:alpha(opacity=100);
+}
+.menu.but.nav a {
+    background-color: rgb(68,68,68);
+}
+.menu.but.nav a span {
+    height: 0;
+    width: 0;
+    border: 8px solid;
+    margin-top: 2px;
+    border-color: transparent;
+}
+.menu.but.nav a.next span {
+    float: right;
+    margin-right: -2px;
+    border-left-color: rgb(255,255,255);
+}
+body.white .menu.but.nav a.next span {
+    border-left-color:rgb(0,0,0);
+}
+.menu.but.nav a.prev span {
+    float: left;
+    margin-left: -2px;
+    border-right-color: rgb(255,255,255);
+}
+body.white .menu.but.nav a.prev span {
+    border-right-color:rgb(0,0,0);
+}
+.menu.but.color a {
+    width: 14px;
+    height: 14px;
+    border: 3px solid rgb(68,68,68);
+}
+.menu.but.color .white {
+    background: rgb(255,255,255);
+}
+.menu.but.color .light_grey {
+    background-color: rgb(230,230,230);
+}
+.menu.but.color .dark_grey {
+    background-color: rgb(85,85,85);
+}
+.menu.but.color .black {
+    background-color: rgb(0,0,0);
+}
+.menu.but.social a {
+    background: url(./images/odyssey_menu_butt_20x20.png) no-repeat rgb(200,200,200);
+}
+.menu.but.social a:hover {
+    background-color: rgb(255,255,255);
+}
+.menu.but.social a.menu_but_fb {
+    background-position: 0 0;
+}
+.menu.but.social a.menu_but_tw {
+    background-position: 0 -20px;
+}
+.menu.but.social a.menu_but_fr {
+    background-position: 0 -40px;
+}
+.menu.but.social a.menu_but_go {
+    background-position: 0 -60px;
+}
+.menu.but.social a.menu_but_rss {
+    background-position: 0 -80px;
+}
+.menu.txt ul li a {
+    font-family:Helvetica,Arial,sans-serif;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0;
+    padding: 0px 15px;
+    height: 100%;
+}
+.menu.txt ul li:before {
+    content:'\2022';
+}
+
+.menu.but.tooltip a {
+    text-align: center;
+    line-height: 20px;
+    color: rgb(255,255,255);
+    cursor: help;
+    position: relative;
+}
+.menu.but.tooltip .help {
+    display: none;
+    width: 400px;
+    text-align: left;
+    color: rgb(255,255,255);
+    background-color: rgb(68,68,68);
+    border: 1px solid rgb(34,34,34);
+    position: absolute;
+    top: 35px;
+
+    opacity: 0.5;
+    filter:alpha(opacity=50);
+}
+
+.menu.but.tooltip:hover .help {
+    display: block;
+}
+.help ul li {
+    padding-left: 15px;
+    display: list-item;
+}
+
+/* ******************************* image: panel handle ******************************* */
+#panel {
+    position: absolute;
+    top: 30px;
+    left: -400px;
+    width: 432px;
+    z-index: 999;
+    background-color: rgb(68,68,68);
+
+    -webkit-box-shadow: 0px 10px 5px 5px rgba(0,0,0,0.5);
+    -moz-box-shadow: 0px 10px 5px 5px rgba(0,0,0,0.5);
+    box-shadow: 0px 10px 5px 5px rgba(0,0,0,0.5);
+
+    -moz-transition: all 0.5s;
+    -webkit-transition: all 0.5s;
+    -o-transition: all 0.5s;
+    transition: all 0.5s;
+}
+
+#panel:hover, #panel.out {
+    left: 0px;
+}
+
+#panel_handle {
+    position:absolute;
+    top:0;
+    right:0;
+    width:32px;
+    height:100%;
+    cursor:pointer;
+
+    background-color: rgb(34,34,34);
+}
+#panel_handle_arrowbox {
+    height: 32px;
+    width: 24px;
+    margin: 10px 0px 0px 8px;
+    padding: 11px 0px 0px 0px;
+
+    background-color: rgb(84,84,84);
+    -webkit-box-shadow: inset 8px 0px 5px 0px rgb(68,68,68);
+    -moz-box-shadow: inset 8px 0px 5px 0px rgb(68,68,68);
+    box-shadow: inset 8px 0px 5px 0px rgb(68,68,68);
+
+    -moz-border-radius: 10px 0px 0px 10px;
+    border-radius: 10px 0px 0px 10px;
+}
+#panel_handle:hover #panel_handle_arrowbox {
+    background-color: rgb(141,141,141);
+    -webkit-box-shadow: inset 8px 0px 15px 0px rgb(100,100,100);
+    -moz-box-shadow: inset 8px 0px 15px 0px rgb(100,100,100);
+    box-shadow: inset 8px 0px 15px 0px rgb(100,100,100);
+}
+#panel_handle_arrow {
+    margin: 0px 5px 0px 10px;
+    border: 10px solid;
+    border-color:transparent transparent transparent black;
+}
+.out #panel_handle_arrow {
+    border-color:transparent black transparent transparent;
+    margin-left:0px;
+}
+#panel_handle h2 {
+    height: 20px;
+    width: auto;
+    margin-top: 180px;
+
+    color: rgb(141,141,141);
+    font-size:18px;
+    letter-spacing:2px;
+
+    -webkit-transform: rotate(-90deg);
+    -moz-transform: rotate(-90deg);
+    -o-transform: rotate(-90deg);
+    -ms-transform: rotate(-90deg);
+/*    writing-mode: tb-rl;
+    filter: flipv fliph;*/
+}
+
+/* ******************************* image: panel scroll bar ******************************* */
+#panel_scroll {
+/*     height: 100%; */
+    width: 398px;
+}
+.jspContainer {
+    overflow: hidden;
+    position: relative;
+}
+.jspPane {
+    position: absolute;
+}
+.jspVerticalBar {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 8px;
+    background: transparent;
+}
+.jspHorizontalBar * {
+    margin: 0;
+    padding: 0;
+}
+.jspTrack {
+    position: relative;
+    background: none;
+}
+.jspDrag {
+    top: 0;
+    left: 0;
+    width:8px;
+    position: relative;
+    background-color:rgb(34,34,34);
+    cursor:row-resize;
+    border-radius: 4px;
+}
+/* Yuk! CSS Hack for IE6 3 pixel bug :( */
+* html .jspCorner
+{
+    margin: 0 -3px 0 0;
+}
+
+/* ******************************* image: panel content ******************************* */
+#panel_content {
+    position:relative;
+    top:0;
+    width:383px;
+    margin:5px 0px 5px 5px;
+
+    color:rgb(201,201,201);
+    font-size:11.5px;
+}
+#panel_content h4, h5 {
+    letter-spacing:2px;
+    background-color:rgb(34,34,34);
+}
+
+#panel_content h4 {
+    padding:5px;
+    font-size:20px;
+    text-align:center;
+}
+#panel_content h5 {
+    padding: 2px 0px 2px 3px;
+    font-size: 14px;
+    margin-top: 20px;
+}
+#panel_content a {
+    text-decoration: none;
+    color: rgb(151,151,151);
+}
+#panel_content a:hover {
+    color: rgb(230,230,230);
+}
+#panel_content .image_notes, .panel_blocks {
+    padding: 5px;
+    line-height: 160%;
+    background-color:rgb(34,34,34);
+}
+#panel_content .image_notes {
+    font-size: 12.5px;
+    text-indent: 20px;
+}
+#panel_content .panel_blocks {
+    font-size: 10.5px;
+}
+#panel_content .panel_blocks.extras {
+    text-align: center;
+}
+#panel_content .panel_blocks>ul>li:before {
+    content:'\2022';
+    margin: 0px 5px;
+}
+#panel_content .panel_blocks>ul>li:first-child:before {
+    content:none;
+}
+#panel_content .image_notes p {
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+/* ** hack for ajax rating ** */
+#panel_content .panel_blocks .ratingblock {
+    margin-bottom: 0px;
+    padding: 0px;
+}
+.unit-rating {
+    display: block;
+}
+
+
+/* ** Comment form ** */
+#commentform {
+    margin-top: 5px;
+    position: relative;
+}
+#commentform #name_block {
+    width: 26%;
+}
+#commentform #email_block {
+    margin-left: 2%;
+    width: 26%;
+}
+#commentform #url_block {
+    margin-left: 2%;
+    width: 44%;
+}
+#commentform #name_block,#email_block,#url_block{
+    float: left;
+}
+#commentform input.input_vinfos {
+    width: 99%;
+    height: 14px;
+    margin-top: 2px;
+    line-height: 14px;
+    text-indent: 3px;
+}
+#commentform textarea.input_vinfos {
+    height: 100px;
+    width: 381px; /* that's 383 -2px for the borders */
+    margin-top: 5px;
+}
+#commentform .input_vinfos {
+    font-size: 11px;
+    color: rgb(201,201,201);
+    border: 1px solid rgb(34,34,34);
+    background-color:rgb(58,58,58);
+}
+#commentform .input_vinfos.error {
+    border-color: rgb(151,44,44);
+}
+#commentform #vinfos_save_block {
+    float: left;
+    margin-top: 5px;
+}
+#commentform #vinfos_save_block span {
+    margin-left: 5px;
+}
+#commentform input.input_submit {
+    float:right;
+    width:100px;
+    height:17px;
+    font-size:10px;
+    border:none;
+    margin-top:4px;
+    color:rgb(201,201,201);
+    background-color:rgb(58,58,58);
+}
+#thank_for_comment {
+    display:none;
+    margin-top:5px;
+    padding:5px 0px;
+    text-align:center;
+    color:rgb(201,135,80);
+}
+#thank_for_comment.show {
+    display:block;
+}
+#image_comments {
+    margin-bottom:25px;
+}
+#image_comments li {
+    display:block;
+    margin-top:5px;
+    padding:7px;
+    background-color:rgb(58,58,58);
+}
+#image_comments li span {
+    font-size: 10px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ARCHIVES */
+.archives {
+	display: block;
+	margin-left: 10px;
+}
+
+.archive-post {
+	display: inline;
+	line-height: 30px;
+	}
+
+.archive-photo {
+	margin: 10px;
+	margin-left: 0px;
+	display: inline;
+	}
+
+.archive-photo a {
+	border: 0;
+	text-decoration: none;
+}
+
+.archive-photo a:hover {
+	background-color: #f5f5f5;
+	}
+
+.archive-thumb {
+	border: 1px solid black;
+	}
+
+.archive-thumb:hover {
+	border: 1px solid red;
+	}
+
+.archive-navigate-container {
+	position: relative;
+	font-family: Trebuchet MS, Arial, Verdana, sans-serif;
+	text-transform:uppercase;
+	font-size:10px;
+	letter-spacing:2px;
+	padding-bottom: 12px;
+	}
+
+/* FOOTER */
+#footer {
+	border-top: 1px dashed #ccc;
+	color: #888;
+	background-color: #f5f5f5;
+	text-align: center;
+	padding-top: .5em;
+	padding-bottom: .5em;
+	}
+
+
+/* IMAGE NAVIGATION */
+#image-navigate-container {
+	position: relative;
+	height: 30px;
+	font-family: Trebuchet MS, Arial, Verdana, sans-serif;
+	text-transform:uppercase;
+	font-size:10px;
+	letter-spacing:2px;
+	margin-top: 12px;
+	}
+
+#image-navigate-container a {
+	border-bottom: none;
+}
+
+.image-navigate-left {
+	position: absolute;
+	left: 0;
+	width: 33%;
+	z-index: 2;
+	}
+
+.image-navigate-center {
+	position: absolute;
+	width: 100%;
+	left: 0;
+	right: 0;
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
+	z-index: 1;
+	}
+
+.image-navigate-right {
+	position: absolute;
+	right: 0;
+	width: 33%;
+	text-align: right;
+	z-index: 2;
+	}
+
+/* IMAGES */
+#image {
+	text-align: center;
+	}
+
+img.photo {
+	border: 0;
+}
+
+/* BULLETS */
+.bullet ul {
+	margin-top: 0;
+}
+.bullet li {
+	list-style-type: square;	
+}	
+
+/* --- Float Hack --- */
+.cf:after { content: "."; display: block;   height: 0;  clear: both; visibility: hidden; }
+/* Hides from IE-mac \*/
+html .cf {height: 1%;}
+/* End hide from IE-mac */
