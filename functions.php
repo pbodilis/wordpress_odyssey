@@ -31,26 +31,35 @@ function odyssey_get_image() {
 
     $postId = 4;
 
-    // $post = get_post($my_id);
-    /*
+    $post = get_post(4);
+
+    query_posts(array(
+        'order' => 'ASC',
+        'limit' => 1
+    ));
+
     if (have_posts()) the_post();
+var_dump($post);
+$img = Yapb::getInstanceFromDb($post['ID']);
+var_dump($img);
+
 
     $ret = array(
         'have_posts()' => have_posts(),
         'imageName'  => $post->image->uri,
         'imageTitle' => $post->post_title,
-    );*/
-
-    $ret = array(
-        'imageName'  => 'wp-content/uploads/2013/01/20121024-20120822-ParDeLaVilette-001177.jpg',
-        'imageTitle' => 'coin title',
     );
+
+//     $ret = array(
+//         'imageName'  => 'wp-content/uploads/2013/01/20121024-20120822-ParDeLaVilette-001177.jpg',
+//         'imageTitle' => 'coin title',
+//     );
 
     echo json_encode($ret);
     die();
 }
-add_action('wp_ajax_my_action', 'odyssey_get_image');
-add_action('wp_ajax_nopriv_my_action', 'odyssey_get_image');
+add_action('wp_ajax_odyssey_get_image', 'odyssey_get_image');
+add_action('wp_ajax_nopriv_odyssey_get_image', 'odyssey_get_image');
 
 
 // load_config ()
