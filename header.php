@@ -33,7 +33,8 @@ session_start();
 <?php
 
 $data = array(
-    'blogname' => get_bloginfo('name'),
+    'blogName'    => get_bloginfo('name'),
+    'blogHomeUri' => get_bloginfo('url'),
 );
 
 $mustache = new Mustache_Engine(array(
