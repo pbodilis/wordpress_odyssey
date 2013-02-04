@@ -29,18 +29,18 @@ session_start();
     <?php wp_head(); ?>
 </head>
 <body>
-<pre>
+
 <?php
 
 $data = array(
-    'blogname' => bloginfo('name'),
+    'blogname' => get_bloginfo('name'),
 );
 
 $mustache = new Mustache_Engine(array(
     'template_class_prefix' => '__MyTemplates_',
 //     'cache' => dirname(__FILE__).'/tmp/cache/mustache',
 //     'cache_file_mode' => 0666, // Please, configure your umask instead of doing this :)
-    'loader' => new Mustache_Loader_FilesystemLoader(dirname(__FILE__) . '/templates', $options = array('extension' => '.mustache.php',)),
+    'loader' => new Mustache_Loader_FilesystemLoader(dirname(__FILE__) . '/templates', $options = array('extension' => '.mustache.html',)),
 //     'partials_loader' => new Mustache_Loader_FilesystemLoader(dirname(__FILE__).'/views/partials'),
 //     'helpers' => array('i18n' => function($text) {
 //         // do something translatey here...
@@ -54,5 +54,4 @@ $mustache = new Mustache_Engine(array(
 
 $tpl = $mustache->loadTemplate('photoblog_header');
 echo $tpl->render($data);
-
 ?>
