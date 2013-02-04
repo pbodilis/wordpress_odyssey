@@ -1,26 +1,16 @@
 <?php
-/*
-Template Name: Header
-*/
-
-/* If the index page is called, redirect to the newest entry */
-if (is_home()) {
-    $myposts = get_posts('numberposts=1&orderby=ID&order=DESC');
-    foreach ($myposts as $posts) {
-        header("HTTP/1.0 302 Moved Temporary");
-        header("Location: " . get_permalink($post->ID));
-        die();
-    }
-}
+/**
+ * Template Name: Header
+ */
 
 session_start();
-if (isset($_REQUEST['info']) && !empty($_REQUEST['info']))
-    $_SESSION['odyssey:info'] = $_REQUEST['info'];
+// if (isset($_REQUEST['info']) && !empty($_REQUEST['info']))
+//     $_SESSION['odyssey:info'] = $_REQUEST['info'];
 ?>
 
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr" dir="ltr">
 <head>
     <meta http-equiv="Content-Type" content="<?php bloginfo('html_type'); ?>; charset=<?php bloginfo('charset'); ?>" />
     <meta name="generator" content="WordPress <?php bloginfo('version'); ?>" /> <!-- leave this for stats -->
@@ -38,4 +28,31 @@ if (isset($_REQUEST['info']) && !empty($_REQUEST['info']))
 
     <?php wp_head(); ?>
 </head>
+<body>
+<pre>
+<?php
 
+$data = array(
+    'blogname' => bloginfo('name'),
+);
+
+$mustache = new Mustache_Engine(array(
+    'template_class_prefix' => '__MyTemplates_',
+//     'cache' => dirname(__FILE__).'/tmp/cache/mustache',
+//     'cache_file_mode' => 0666, // Please, configure your umask instead of doing this :)
+    'loader' => new Mustache_Loader_FilesystemLoader(dirname(__FILE__) . '/templates', $options = array('extension' => '.mustache.php',)),
+//     'partials_loader' => new Mustache_Loader_FilesystemLoader(dirname(__FILE__).'/views/partials'),
+//     'helpers' => array('i18n' => function($text) {
+//         // do something translatey here...
+//     }),
+    'escape' => function($value) {
+        return htmlspecialchars($value, ENT_COMPAT, 'UTF-8');
+    },
+    'charset' => 'ISO-8859-1',
+    'logger' => new Mustache_Logger_StreamLogger('php://stderr'),
+));
+
+$tpl = $mustache->loadTemplate('photoblog_header');
+echo $tpl->render($data);
+
+?>

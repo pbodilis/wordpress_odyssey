@@ -10,58 +10,48 @@
  * pierre.bodilis@rataki.eu
  * 
  */
-var panelOut;
-$(window).load(function () {
-    // let's chose current color - same for all pages
-    // Note that the body class is set by the php layer: it reads the cookie and then set the right class.
-    $('.menu.but.color a').click(function() {
-        setTheme(this.className, true);
-        createCookie('odyssey_theme_color', this.className, 30);
-    });
 
-//     var isAnImage = document.location.href.indexOf('x=') == -1;
-
-//     if (isAnImage) { // that's an image, let's load the image stuff and the panel
-//         // set the body to display image (remove overflow, ...)
-//         document.body.className += ' forImageDisplay';
+// var panelOut;
+// $(window).load(function () {
+//     // let's chose current color - same for all pages
+//     // Note that the body class is set by the php layer: it reads the cookie and then set the right class.
+//     $('.menu.but.color a').click(function() {
+//         setTheme(this.className, true);
+//         createCookie('odyssey_theme_color', this.className, 30);
+//     });
 // 
-//         var fromComments = document.location.href.indexOf('comments') > -1;
-//         $('#thank_for_comment').toggleClass('show', fromComments);
+// //     var isAnImage = document.location.href.indexOf('x=') == -1;
 // 
-//         panelOut = fromComments || readCookie('odyssey_theme_panelVisibility') == '1';
-//         $('#panel').toggleClass('out', panelOut);
-//         $('#panel_handle').click(function (event) {
-//             togglePanel();
-//         });
+// //     if (isAnImage) { // that's an image, let's load the image stuff and the panel
+// //         // set the body to display image (remove overflow, ...)
+// //         document.body.className += ' forImageDisplay';
+// // 
+// //         var fromComments = document.location.href.indexOf('comments') > -1;
+// //         $('#thank_for_comment').toggleClass('show', fromComments);
+// // 
+// //         panelOut = fromComments || readCookie('odyssey_theme_panelVisibility') == '1';
+// //         $('#panel').toggleClass('out', panelOut);
+// //         $('#panel_handle').click(function (event) {
+// //             togglePanel();
+// //         });
+// // 
+// //         checkCommentForm();
+// // 
+// //         refreshElements();
+// //         $('#photo_frame').fadeIn(400);
+// // 
+// //         if (imgPrevId == imgId) { $('.navLink.prev').css('display', 'none'); }
+// //         if (imgNextId == imgId) { $('.navLink.next').css('display', 'none'); }
+// // 
+// //         keyboardNavigation();
+// //     }
 // 
-//         checkCommentForm();
-// 
-//         refreshElements();
-//         $('#photo_frame').fadeIn(400);
-// 
-//         if (imgPrevId == imgId) { $('.navLink.prev').css('display', 'none'); }
-//         if (imgNextId == imgId) { $('.navLink.next').css('display', 'none'); }
-// 
-//         keyboardNavigation();
-//     }
+//     easterEgg();
+// });
 
-    easterEgg();
-});
-
-$.post('./wp-admin/admin-ajax.php', {
-    action:'odyssey_get_image',
-    
-}, function(data) {
-    $.Mustache.load('./wp-content/themes/odyssey/templates/image.html').done(function () {
-        $('#photo_frame').mustache('image', $.parseJSON(data), { method: 'html' });
-    });
-});
-
-
-
-$(window).resize(function () {
+// $(window).resize(function () {
 //     refreshElements();
-});
+// });
 
 function setTheme(className) {
     document.body.className = className;

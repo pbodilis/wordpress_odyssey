@@ -27,33 +27,14 @@ Template Name: Functions
     @require_once(TEMPLATEPATH . '/func/javascript.php');
 //     @require_once(TEMPLATEPATH . '/func/header.php');
 
-function odyssey_get_image() {
-//     $postId = 6;
-//     $post = get_post($postId);
-// var_dump($_REQUEST);
-
-    $post = current(get_posts(array(
-//         'order' => 'ASC',
-        'limit' => 1
-    )));
-
-    $ret = array();
 
 
-    $image = YapbImage::getInstanceFromDb($post->ID);
-    if (!is_null($image)) { // that's a yapb post
-        $post->image = $image;
-        $ret['imageName'] = $post->image->uri;
-    } // carry on as usual
+// include mustache engine
+require dirname(__FILE__) . '/mustache.php/src/Mustache/Autoloader.php';
+Mustache_Autoloader::register();
 
-    $ret['imageTitle'] = $post->post_title;
 
-//     header('Content-type: application/json');
-    echo json_encode($ret);
-    die();
-}
-add_action('wp_ajax_odyssey_get_image', 'odyssey_get_image');
-add_action('wp_ajax_nopriv_odyssey_get_image', 'odyssey_get_image');
+
 
 
 // load_config ()

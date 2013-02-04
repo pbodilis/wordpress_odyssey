@@ -22,15 +22,18 @@
      */
     function odyssey_embed_javascripts()
     {
-//         echo '<script type="text/javascript" src="' . ODYSSEY_TEMPLATE_DIR . '/js/jquery-1.7.2.min.js"></script>';
-        echo '<script type="text/javascript" src="' . ODYSSEY_TEMPLATE_DIR . '/js/jquery-1.9.0.min.js"></script>';
-        echo '<script type="text/javascript" src="' . ODYSSEY_TEMPLATE_DIR . '/js/jquery.mousewheel.js"></script>';
-        // <!-- <script type="text/javascript" src="' . ODYSSEY_TEMPLATE_DIR . '/js/mwheelIntent.js"></script>'; -->
-        echo '<script type="text/javascript" src="' . ODYSSEY_TEMPLATE_DIR . '/js/jquery.jscrollpane.min.js"></script>';
-
         // template engine
-        echo '<script type="text/javascript" src="' . ODYSSEY_TEMPLATE_DIR . '/js/mustache.js"></script>';
-        echo '<script type="text/javascript" src="' . ODYSSEY_TEMPLATE_DIR . '/js/jquery.mustache.js"></script>';
+        wp_enqueue_script('odyssey-mustache',           get_template_directory_uri() . '/js/mustache.js',                 array('jquery'));
+        wp_enqueue_script('odyssey-jquery-mustache',    get_template_directory_uri() . '/js/jquery.mustache.js',          array('jquery'));
+
+        // embed the javascript file that makes the AJAX request
+        wp_enqueue_script('odyssey-ajax-request',       get_template_directory_uri() . '/js/odyssey.js', array('jquery'));
+
+        // declare the URL to the file that handles the AJAX request (wp-admin/admin-ajax.php)
+        wp_localize_script('odyssey-ajax-request', 'OdysseyAjax', array(
+            'ajaxurl' => admin_url('admin-ajax.php'),
+            'ajaxtpl' => get_template_directory_uri() . '/templates/',
+        ));
 
 //         <script type="text/javascript">
 //             var imageWidth = <IMAGE_WIDTH>;
@@ -43,7 +46,7 @@
 //             var imgPrevId = <IMAGE_PREVIOUS_ID>;
 //             var imgNextId = <IMAGE_NEXT_ID>;
 //         </script>
-        echo '<script type="text/javascript" src="' . ODYSSEY_TEMPLATE_DIR . '/js/functions.desktop.unpack.js"></script>';
+//         echo '<script type="text/javascript" src="' . ODYSSEY_TEMPLATE_DIR . '/js/functions.desktop.unpack.js"></script>';
 //         echo '<script type="text/javascript" src="' . ODYSSEY_TEMPLATE_DIR . '/js/functions.comments.unpack.js"></script>';
 
 //         <script type="text/javascript">
@@ -57,5 +60,35 @@
 //         </script>
     }
 
+    /**
+     * \returns a JSON array
+     */
+    function odyssey_get_json_post() {
+    //     $postId = 6;
+    //     $post = get_post($postId);
+    // var_dump($_REQUEST);
+
+        $post = current(get_posts(array(
+    //         'order' => 'ASC',
+            'limit' => 1
+        )));
+
+        $ret = array();
+
+
+        $image = YapbImage::getInstanceFromDb($post->ID);
+        if (!is_null($image)) { // that's a yapb post
+            $post->image = $image;
+            $ret['imageName'] = $post->image->uri;
+        } // carry on as usual
+
+        $ret['imageTitle'] = $post->post_title;
+
+    //     header('Content-type: application/json');
+        echo json_encode($ret);
+        die();
+    }
+    add_action('wp_ajax_odyssey_get_json_post', 'odyssey_get_json_post');
+    add_action('wp_ajax_nopriv_odyssey_get_json_post', 'odyssey_get_json_post');
 
 ?>
