@@ -4,9 +4,9 @@ Template Name: Functions
 */
 
 
-/*
-    This file is part of Grain Theme for WordPress.
-*/
+/**
+ *   This file is part of Odyssey Theme for WordPress.
+ */
 
 /* Warm up engine */
 
@@ -28,33 +28,29 @@ Template Name: Functions
 //     @require_once(TEMPLATEPATH . '/func/header.php');
 
 function odyssey_get_image() {
+//     $postId = 6;
+//     $post = get_post($postId);
+// var_dump($_REQUEST);
 
-    $postId = 4;
-
-    $post = get_post(4);
-
-    query_posts(array(
-        'order' => 'ASC',
+    $post = current(get_posts(array(
+//         'order' => 'ASC',
         'limit' => 1
-    ));
+    )));
 
-    if (have_posts()) the_post();
-var_dump($post);
-$img = Yapb::getInstanceFromDb($post['ID']);
-var_dump($img);
+    $ret = array();
 
+
+    $image = YapbImage::getInstanceFromDb($post->ID);
+    if (!is_null($image)) { // that's a yapb post
+        $post->image = $image;
+        'imageName'  => $post->image->uri,
+    } // carry on as usual
 
     $ret = array(
-        'have_posts()' => have_posts(),
-        'imageName'  => $post->image->uri,
         'imageTitle' => $post->post_title,
     );
 
-//     $ret = array(
-//         'imageName'  => 'wp-content/uploads/2013/01/20121024-20120822-ParDeLaVilette-001177.jpg',
-//         'imageTitle' => 'coin title',
-//     );
-
+//     header('Content-type: application/json');
     echo json_encode($ret);
     die();
 }
