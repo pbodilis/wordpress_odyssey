@@ -43,12 +43,10 @@ function odyssey_get_image() {
     $image = YapbImage::getInstanceFromDb($post->ID);
     if (!is_null($image)) { // that's a yapb post
         $post->image = $image;
-        'imageName'  => $post->image->uri,
+        $ret['imageName'] = $post->image->uri;
     } // carry on as usual
 
-    $ret = array(
-        'imageTitle' => $post->post_title,
-    );
+    $ret['imageTitle'] = $post->post_title;
 
 //     header('Content-type: application/json');
     echo json_encode($ret);
