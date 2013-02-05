@@ -21,14 +21,20 @@ session_start();
     <link rel="alternate" type="application/rss+xml" title="<?php bloginfo('name'); ?> Comments RSS Feed" href="<?php bloginfo('comments_rss2_url'); ?>" />
     <link rel="alternate" type="application/atom+xml" title="<?php bloginfo('name'); ?> Atom Feed" href="<?php bloginfo('atom_url'); ?>" />
 
-    <link href="<?php echo get_template_directory_uri() . '/templates/photoblog_image.mustache.html'; ?>" rel="template" id="imageTemplate"/>
-
     <title><?php bloginfo('name'); ?> <?php wp_title(); ?></title>
 
     <!-- theme js -->
-    <?php theCore()->embedJs(); ?>
+    <?php theCore()->embedJavascript(); ?>
+    <?php theCore()->embedTemplates(); ?>
 
     <?php wp_head(); ?>
+
+    <script type="text/javascript">
+        var imageWidth = 311;
+        var imageHeight = 553;
+        var dE = document.documentElement;
+    </script>
+
 </head>
 <body>
 

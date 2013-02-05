@@ -37,7 +37,7 @@ Mustache_Autoloader::register();
 
 // include odysssey engine
 require dirname(__FILE__) . '/library/Odyssey/Autoloader.php';
-Odyssey_Autoloader::register();
+\Odyssey\Autoloader::register();
 
 function theCore() {
     static $core;
@@ -58,7 +58,7 @@ function theCore() {
 //             'logger' => new Mustache_Logger_StreamLogger('php://stderr'),
         ));
 
-        $core = Odyssey_Core::getInstance();
+        $core = \Odyssey\Core::getInstance();
         $core->init(array(
             'enable_js' => true,
             'template_engine' => $mustache,

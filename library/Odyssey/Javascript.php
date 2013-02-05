@@ -1,15 +1,21 @@
 <?php
 /**
- * This file is part of Odyssey Theme for WordPress.
+ * This file is part of Odyssey theme for wordpress.
+ *
+ * (c) 2013 Pierre Bodilis
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
+namespace Odyssey;
 
-    /**
-     *  JavaScript helper functions
-     *  @package Odyssey Theme for WordPress
-     *  @subpackage JavaScript
-     */
-class Odyssey_Javascript
+/**
+ *  JavaScript helper functions
+ *  @package Odyssey Theme for WordPress
+ *  @subpackage JavaScript
+ */
+class Javascript
 {
     public function __construct()
     {
@@ -23,20 +29,18 @@ class Odyssey_Javascript
      *
      * @since 0.1
      */
-    public function embed()
+    public function embedJavascript()
     {
         // template engine
-        wp_enqueue_script('odyssey-mustache',           get_template_directory_uri() . '/js/mustache.js',        array('jquery'));
-//         wp_enqueue_script('odyssey-jquery-mustache',    get_template_directory_uri() . '/js/jquery.mustache.js', array('jquery'));
-        wp_enqueue_script('odyssey-chevron',    get_template_directory_uri() . '/js/chevron.js', array('jquery'));
+        wp_enqueue_script('odyssey-mustache' ,    get_template_directory_uri() . '/js/mustache.js', array('jquery'));
+        wp_enqueue_script('odyssey-chevron',      get_template_directory_uri() . '/js/chevron.js',  array('jquery'));
 
         // embed the javascript file that makes the AJAX request
-        wp_enqueue_script('odyssey-ajax-request',       get_template_directory_uri() . '/js/odyssey.js',         array('jquery'));
+        wp_enqueue_script('odyssey-ajax-request', get_template_directory_uri() . '/js/odyssey.js',  array('jquery'));
 
         // declare the URL to the file that handles the AJAX request (wp-admin/admin-ajax.php)
         wp_localize_script('odyssey-ajax-request', 'OdysseyAjax', array(
             'ajaxurl' => admin_url('admin-ajax.php'),
-            'ajaxtpl' => get_template_directory_uri() . '/templates/',
         ));
 //         <script type="text/javascript">
 //             var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
@@ -49,11 +53,26 @@ class Odyssey_Javascript
 //         </script>
     }
 
+    public function embedTemplates()
+    {
+        $ret = '';
+        $tpls = array(
+            'imageTemplate' => 'photoblog_image.mustache.html',
+        );
+        $tplDir = get_template_directory_uri() . '/templates/';
+        foreach($tpls as $tplName => $tplFile) {
+            $ret .= '<link href="' . $tplDir . $tplFile . '" rel="template" id="' . $tplName . '"/>' . PHP_EOL;
+        }
+        return $ret;
+    }
+        
+
+
     /**
      * \returns a JSON array
      */
     public function getJsonPost() {
-        $ret = Odyssey_Core::getInstance()->getPost();
+        $ret = Core::getInstance()->getPost();
         echo json_encode($ret);
         die();
     }

@@ -1,15 +1,15 @@
     <div id="photo_frame">
         <div id="img">
-            <img src="{{imageName}}" alt="{{imageTitle}}"/>
-            {{#imagePreviousId}}
-            <a href="./index.php?showimage={{imagePreviousId}}" class="navLink prev"><span class="navArrow" title="Previous: {{imagePreviousTitle}}"></span></a>
-            {{/imagePreviousId}}
-            {{#imageNextId}}
-            <a href="./index.php?showimage={{imageNextId}}"     class="navLink next"><span class="navArrow" title="Next:     {{imageNextTitle}}">    </span></a>
-            {{/imageNextId}}
+            <img src="{{imageUri}}" alt="{{postTitle}}"/>
+            {{#next}}
+            <a href="{{postUri}}" class="navLink prev"><span class="navArrow" title="Previous: {{postTitle}}"></span></a>
+            {{/next}}
+            {{#previous}}
+            <a href="{{postUri}}" class="navLink next"><span class="navArrow" title="Next: {{postTitle}}">    </span></a>
+            {{/previous}}
         </div>
         <div id="photo_infos">
-            <h2>{{imageTitle}}</h2>
-//              <p>&#149; <ODYSSEY_CAPTURE_TIME> &#149;</p>
+            <h2>{{postTitle}}</h2>
+            <p>&#149; {{exifCaptureTime}} &#149;</p>
         </div>
     </div>

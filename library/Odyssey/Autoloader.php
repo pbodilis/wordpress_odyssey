@@ -1,6 +1,6 @@
 <?php
 
-/*
+/**
  * This file is part of Odyssey theme for wordpress.
  *
  * (c) 2013 Pierre Bodilis
@@ -9,10 +9,12 @@
  * file that was distributed with this source code.
  */
 
+namespace Odyssey;
+
 /**
  * Odyssey class autoloader.
  */
-class Odyssey_Autoloader
+class Autoloader
 {
 
     private $baseDir;
@@ -61,7 +63,7 @@ class Odyssey_Autoloader
             return;
         }
 
-        $file = sprintf('%s/%s.php', $this->baseDir, str_replace('_', '/', $class));
+        $file = sprintf('%s/%s.php', $this->baseDir, str_replace('\\', '/', $class));
         if (is_file($file)) {
             require $file;
         }

@@ -6,79 +6,9 @@ Template Name: Index Template
 get_header();
 ?>
 
-    <div id="panel">
-        <div id="panel_handle">
-            <div id="panel_handle_arrowbox">
-                <div id="panel_handle_arrow"></div>
-            </div>
-            <h2>Info,&nbsp;rate&nbsp;&amp;&nbsp;Comments</h2>
-        </div>
-        <div id="panel_scroll">
-            <div id="panel_content">
-<!--                <h4 class="image_title"><IMAGE_TITLE></h4> -->
-                <div class="image_notes"><IMAGE_NOTES></div>
-                <div class="panel_blocks">
-                    <ul>
-                        <li><EXIF_CAMERA_MODEL></li>
-                        <li><EXIF_FOCAL_LENGTH></li>
-                        <li><EXIF_APERTURE></li>
-                        <li><EXIF_EXPOSURE_TIME></li>
-                        <li><EXIF_EXPOSURE_BIAS></li>
-                        <li>ISO <EXIF_ISO></li>
-                        <li><EXIF_FLASH_SUBIFD></li>
-                        <li><EXIF_CAPTURE_DATE></li>
-                    </ul>
-                </div>
-                <div class="panel_blocks"><ODYSSEY_IMAGE_CATEGORIES></div>
-                <div class="panel_blocks extras">
-                    <a href="http://www.coolphotoblogs.com/"><img src="http://www.coolphotoblogs.com/cpb.gif" alt="coolphotoblogs" width="80" height="15" border="0"/></a>
-                    <a href="http://www.coolphotoblogs.com/profile4962"><img src="http://www.coolphotoblogs.com/profile.gif" alt="my profile" width="80" height="15" border="0"/></a>
-                </div>
-                <div class="panel_blocks"><AJAX_RATE stars="10" img_width="14px"></div>
-                <h5>Leave a comment</h5>
-                <div id="commentform">
-                    <form id="form" method="post" action="index.php?x=save_comment" name="commentform" accept-charset="UTF-8">
-                        <div id="vinfos_block">
-                            <div id="name_block">
-                                <label for="name">Name:</label>
-                                <input id="name" class="input_vinfos" type="text" name="name" value="<VINFO_NAME>" />
-                            </div>
-                            <div id="email_block">
-                                <label for="email">Email (not visible):</label>
-                                <input id="email" class="input_vinfos" type="text" name="email" value="<VINFO_EMAIL>" />
-                            </div>
-                            <div id="url_block">
-                                <label for="url">URL (if any):</label>
-                                <input id="url" class="input_vinfos" type="text" name="url" value="<VINFO_URL>" />
-                            </div>
-                        </div>
-                        <textarea class="input_vinfos" id="message" name="message" cols="0" rows="0"></textarea>
-                        <div id="vinfos_save_block">
-                            <input id="save_user_info" type="checkbox" value="set" name="vcookie" checked="checked" />
-                            <label for="save_user_info">Save user info</label>
-                        </div>
-                        <input class="input_submit" type="submit" id="comment_submit" value="Add Comment" />
-                        <div class="clr"></div>
-                        <input type="hidden" name="parent_id" value="<IMAGE_ID>" />
-                        <input type="hidden" name="parent_name" value="<IMAGE_NAME>" />
-                        <input type="hidden" name="withthankyou" value="no" />
-                    </form>
-                </div>
-                <div id="thank_for_comment">Thank you for visiting and taking the time to comment on the picture.</div>
-                <h5><IMAGE_COMMENTS_NUMBER> Comment(s)</h5>
-                <div id="image_comments">
-                    <ODYSSEY_COMMENTS>
-                </div>
-<!--                 <div class="panel_blocks powered_template">Powered by <a href="http://pixelpost.org/" title="Pixelpost">Pixelpost</a> - Template: <a href="http://www.pixelpost.org/extend/templates/odyssey/">Rasul v2.6</a></div> -->
-            </div>
-        </div>
-    </div>
-
-<div id="photo_frame"></div>
-
-
 
 <?php
+    theCore()->render('photoblog_image', theCore()->getPost());
 
 if (have_posts()): 
 	while (have_posts()): the_post();
