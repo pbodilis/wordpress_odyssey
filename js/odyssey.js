@@ -13,6 +13,9 @@
         $('#photo_frame').fadeIn(400);
     });
 
+    $(window).resize(function () {
+        setPhotoPositionAndInfo();
+    });
 
     function setPhotoPositionAndInfo() {
         var borderWidth = 5; // check in css file #photo_frame for consistency
@@ -42,7 +45,7 @@
         });
         $('#photo_frame').css({
             'margin-left': (dE.clientWidth - frameWidth  ) / 2 - borderWidth,
-            'margin-top': (dE.clientHeight - frameHeight + $('header').height()) / 2 - borderWidth - offsetHeight
+            'margin-top': (dE.clientHeight - frameHeight - $('header').height() / 2) / 2 - borderWidth - offsetHeight
         });
     }
 

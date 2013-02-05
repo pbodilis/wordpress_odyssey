@@ -90,14 +90,31 @@ a,a:focus,a:active,div{outline:none;}
 body {
     margin: 0;
     padding: 0;
-    background: rgb(85,85,85);
     font-family:Tahoma,Arial,Helvetica,sans-serif;
     height:100%;
+    background-color: rgb(85,85,85);
 
-    background: rgb(85,85,85);
+    -webkit-transition: background 0.5s ease-in-out;
+    -moz-transition: background 0.5s ease-in-out;
+    -o-transition: background 0.5s ease-in-out;
+    -ms-transition: background 0.5s ease-in-out;
+    transition: background 0.5s ease-in-out;
 }
-
-
+body.forImageDisplay {
+    overflow:hidden;
+}
+body.white {
+    background-color: rgb(255,255,255);
+}
+body.light_grey {
+    background-color: rgb(230,230,230);
+}
+body.dark_grey {
+    background-color: rgb(85,85,85);
+}
+body.black {
+    background-color: rgb(0,0,0);
+}
 
 /* ******************************* image: header ******************************* */
 header {
@@ -202,7 +219,7 @@ body.white .menu.but.nav a.prev span {
     background-color: rgb(0,0,0);
 }
 .menu.but.social a {
-    background: url(./images/odyssey_menu_butt_20x20.png) no-repeat rgb(200,200,200);
+    background: url(../images/odyssey_menu_butt_20x20.png) no-repeat rgb(200,200,200);
 }
 .menu.but.social a:hover {
     background-color: rgb(255,255,255);
@@ -263,9 +280,13 @@ body.white .menu.but.nav a.prev span {
     display: list-item;
 }
 
-/* ******************************* image ******************************* */
+
+/* ******************************* image: Center and photo ******************************* */
 #photo_frame {
+    position:absolute;
+    overflow-x:hidden !important;
     z-index:-999;
+    display: none;
 }
 #img {
     position:relative;
@@ -275,15 +296,65 @@ body.white .menu.but.nav a.prev span {
 #img img {
     width: 100%;
 }
+#img a {
+    width:50%;
+    height:100%;
+    position: absolute;
+    top:0;
+}
+#img a.prev {
+    left: 0;
+}
+#img a.next {
+    right:0;
+}
+#img a .navArrow {
+    display:none;
+    height:30px;
+    position:absolute;
+    top:50%;
+    margin-top:-15px;
+
+    background:url(../images/arrows.png) no-repeat;
+    opacity:0.85;
+    filter:alpha(opacity=85);
+    z-index:9999;
+}
+#img a:hover .navArrow {
+    display:block;
+}
+#img a .navArrow[title]:hover::after {
+    display: block;
+    content: attr(title);
+    font-size: 14px;
+    position: relative;
+    padding: 8px;
+    color: rgb(201,201,201);
+    background-color: rgb(68,68,68);
+    opacity:0.85;
+    filter:alpha(opacity=85);
+}
+#img a.prev .navArrow {
+    text-align: left;
+    left:45px;
+    padding-left: 30px;
+    background-position:left top;
+}
+#img a.next .navArrow {
+    text-align: right;
+    right:45px;
+    padding-right: 30px;
+    background-position:right bottom;
+}
 
 #photo_frame #photo_infos {
     text-align: right;
     color: rgb(161,161,161);
+    height: 42px; /* hardcoded to help position calculation */
 }
 #photo_frame #photo_infos p {
-    font-size: 24px;
+    font-size: 12px;
 }
-
 /* ******************************* image: panel handle ******************************* */
 #panel {
     position: absolute;

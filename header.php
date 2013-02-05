@@ -30,8 +30,8 @@ session_start();
     <?php wp_head(); ?>
 
     <script type="text/javascript">
-        var imageWidth = 311;
-        var imageHeight = 553;
+        var imageWidth = 683;
+        var imageHeight = 1024;
         var dE = document.documentElement;
     </script>
 
