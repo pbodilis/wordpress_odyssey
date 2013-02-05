@@ -22,9 +22,13 @@ class Core
 
     static private $instance;
 
+    protected $postCache;
+
     private function __construct(array $params = array())
     {
         $this->init($params);
+
+        $this->postCache = array();
     }
 
     static public function getInstance(array $params = array())
@@ -69,26 +73,31 @@ class Core
     /**
      * \returns an array with the following info:
      */
-    public function getPost($id = NULL, $getAdjacent = true)
+    public function getPost($postId = NULL, $getAdjacent = true)
     {
         $ret = array();
 
-        if (is_null($id)) {
-            $post = current(get_posts(array(
-//                 'order' => 'ASC',
-                'limit' => 1
-            )));
-        } else {
-            $post = get_post($postId);
+        if (is_null($postId)) {
+            $postId = url_to_postid( $url );
         }
 
-        $image = \YapbImage::getInstanceFromDb($post->ID);
-        if (!is_null($image)) { // that's a yapb post
-            $post->image = $image;
-            $ret['imageUri'] = $post->image->uri;
-        } // carry on as usual
-//             $next = get_next_post();
-//             $previous = get_previous_post();
+        if (isset($this->postCache[$postId])) {
+            return $this->postCache[$postId];
+        }
+
+// //             if (have_posts()) {
+// //                 while (have_posts())
+// //                     the_post();
+// //             }
+//             $post = current(get_posts(array(
+// //                 'order' => 'ASC',
+//                 'limit' => 1
+//             )));
+//         } else {
+        $post = get_post($postId);
+//         }
+
+        $ret['image'] = $this->getPostImage($post->ID);
 
         $ret['postTitle'] = $post->post_title;
         $ret['postUri']   = get_permalink($post->ID);
@@ -106,6 +115,31 @@ class Core
         }
         return $ret;
     }
+
+    public function getPostImage($postId)
+    {
+        $ret = array();
+        $image = \YapbImage::getInstanceFromDb($postId);
+        if (!is_null($image)) { // that's a yapb post
+            $ret['uri']    = $image->uri;
+            $ret['width']  = $image->width;
+            $ret['height'] = $image->height;
+
+            $ret['exif'] = $this->getPostImageExif($image);
+        }
+        return $ret;
+    }
+
+    public function getPostImageExif($image)
+    {
+        $exifs = \ExifUtils::getExifData($image);
+        if (isset($exifs['DateTime'])) {
+            $d = new \DateTime($exifs['DateTime']);
+            $exifs['captureDate'] = $d->format('Y-m-d');
+        }
+        return $exifs;
+    }
+
 }
 
 ?>

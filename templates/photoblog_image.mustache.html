@@ -1,6 +1,6 @@
     <div id="photo_frame">
         <div id="img">
-            <img src="{{imageUri}}" alt="{{postTitle}}"/>
+            <img src="{{image.uri}}" alt="{{postTitle}}"/>
             {{#next}}
             <a href="{{postUri}}" class="navLink prev"><span class="navArrow" title="Previous: {{postTitle}}"></span></a>
             {{/next}}
@@ -10,6 +10,8 @@
         </div>
         <div id="photo_infos">
             <h2>{{postTitle}}</h2>
-            <p>&#149; {{exifCaptureTime}} &#149;</p>
+            {{#image.exif.captureDate}}
+            <p>&#149; {{image.exif.captureDate}} &#149;</p>
+            {{/image.exif.captureDate}}
         </div>
     </div>
