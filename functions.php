@@ -10,13 +10,13 @@ Template Name: Functions
 
 /* Warm up engine */
 
-    @require_once(TEMPLATEPATH . '/func/version.php');
+//     @require_once(TEMPLATEPATH . '/func/version.php');
 
 /* Helper functions */
 
 //     @require_once(TEMPLATEPATH . '/func/php4fix.php');
 //     @require_once(TEMPLATEPATH . '/func/littlehelpers.php');
-    @require_once(TEMPLATEPATH . '/func/paths.php');
+//     @require_once(TEMPLATEPATH . '/func/paths.php');
 //     @require_once(TEMPLATEPATH . '/func/locale.php');
 //     @require_once(TEMPLATEPATH . '/func/options.php');
 //     @require_once(TEMPLATEPATH . '/func/upgrade.php');
@@ -24,16 +24,50 @@ Template Name: Functions
 /* HTML header */
 
 //     @require_once(TEMPLATEPATH . '/func/stylesheets.php');
-    @require_once(TEMPLATEPATH . '/func/javascript.php');
+//     @require_once(TEMPLATEPATH . '/func/javascript.php');
 //     @require_once(TEMPLATEPATH . '/func/header.php');
 
 
 
+
+
 // include mustache engine
-require dirname(__FILE__) . '/mustache.php/src/Mustache/Autoloader.php';
+require dirname(__FILE__) . '/library/Mustache/Autoloader.php';
 Mustache_Autoloader::register();
 
+// include odysssey engine
+require dirname(__FILE__) . '/library/Odyssey/Autoloader.php';
+Odyssey_Autoloader::register();
 
+function theCore() {
+    static $core;
+    if (!isset($core)) {
+        $mustache = new Mustache_Engine(array(
+            'template_class_prefix' => '__MyTemplates_',
+        //     'cache' => dirname(__FILE__).'/tmp/cache/mustache',
+        //     'cache_file_mode' => 0666, // Please, configure your umask instead of doing this :)
+            'loader' => new Mustache_Loader_FilesystemLoader(dirname(__FILE__) . '/templates', $options = array('extension' => '.mustache.html',)),
+        //     'partials_loader' => new Mustache_Loader_FilesystemLoader(dirname(__FILE__).'/views/partials'),
+        //     'helpers' => array('i18n' => function($text) {
+        //         // do something translatey here...
+        //     }),
+            'escape' => function($value) {
+                return htmlspecialchars($value, ENT_COMPAT, 'UTF-8');
+            },
+            'charset' => 'ISO-8859-1',
+//             'logger' => new Mustache_Logger_StreamLogger('php://stderr'),
+        ));
+
+        $core = Odyssey_Core::getInstance();
+        $core->init(array(
+            'enable_js' => true,
+            'template_engine' => $mustache,
+        ));
+    }
+    return $core;
+}
+
+theCore();
 
 
 
@@ -46,17 +80,17 @@ function load_monolit_config () {
 add_Action('init', 'load_monolit_config');
 
 
-// load_locale ()
-// ADAPTED FROM GRAIN
-// loads language specific strings
-// this far only the default lang.php is supported
-function load_locale () {
-	$lang_file = TEMPLATEPATH . '/lang/lang.php';
-	require_once( $lang_file );
-}
-add_action('init', 'load_locale');
-
-
+// // load_locale ()
+// // ADAPTED FROM GRAIN
+// // loads language specific strings
+// // this far only the default lang.php is supported
+// function load_locale () {
+// 	$lang_file = TEMPLATEPATH . '/lang/lang.php';
+// 	require_once( $lang_file );
+// }
+// add_action('init', 'load_locale');
+// 
+// 
 // headline ($level, $text)
 // prints a HTML headline (h1, h2, etc.)
 function headline ($level, $text) {
@@ -117,7 +151,7 @@ function monolit_get_postoutput ($about_id = null) {
 	global $post;
 	$out  = the_title('<h2>', '</h2>', false);
 	// print timestamp if no about_id is supplied or if it's supplied and configured
-	if (($about_id == null) or (MONOLIT_SET_SHOW_ABOUT_TIMESTAMP == 1) and ($about_id != null)) 
+	if (($about_id == null) or (MONOLIT_SET_SHOW_ABOUT_TIMESTAMP == 1) and ($about_id != null))
 		$out .= the_date(null, '<p>' . MSG_PUBLISHED . ' ', '</p>', false);
 	$out .= str_replace(']]>', ']]&gt;', apply_filters('the_content', get_the_content()));
 	return $out;
@@ -236,7 +270,7 @@ function monolit_print_thumb () {
 			print $thethumbnail;
 		endif;
 		print '</div> <!-- class="archive-photo" -->' . "\n";
-	endif; 
+	endif;
 	print '</div> <!-- class="archive-post" -->' . "\n";
 }
 
@@ -247,7 +281,7 @@ function monolit_print_thumb () {
 function monolit_print_comment () {
 	$out  = '<li id="comment-' . get_comment_ID() . '">' . "\n";
 	$out .= '<cite>' . MSG_COMMENT_FROM . ': ' . get_comment_author_link() . "</cite>\n";
-	if ($comment->comment_approved == '0') 
+	if ($comment->comment_approved == '0')
 		$out .= "<em>" . MSG_COMMENT_NOT_MODERATED . "</em>\n";
 	$out .= "<br />\n";
 	print $out;

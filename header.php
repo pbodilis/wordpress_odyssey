@@ -21,10 +21,12 @@ session_start();
     <link rel="alternate" type="application/rss+xml" title="<?php bloginfo('name'); ?> Comments RSS Feed" href="<?php bloginfo('comments_rss2_url'); ?>" />
     <link rel="alternate" type="application/atom+xml" title="<?php bloginfo('name'); ?> Atom Feed" href="<?php bloginfo('atom_url'); ?>" />
 
+    <link href="<?php echo get_template_directory_uri() . '/templates/photoblog_image.mustache.html'; ?>" rel="template" id="imageTemplate"/>
+
     <title><?php bloginfo('name'); ?> <?php wp_title(); ?></title>
 
     <!-- theme js -->
-    <?php odyssey_embed_javascripts(); ?>
+    <?php theCore()->embedJs(); ?>
 
     <?php wp_head(); ?>
 </head>
@@ -37,22 +39,5 @@ $data = array(
     'blogHomeUri' => get_bloginfo('url'),
 );
 
-$mustache = new Mustache_Engine(array(
-    'template_class_prefix' => '__MyTemplates_',
-//     'cache' => dirname(__FILE__).'/tmp/cache/mustache',
-//     'cache_file_mode' => 0666, // Please, configure your umask instead of doing this :)
-    'loader' => new Mustache_Loader_FilesystemLoader(dirname(__FILE__) . '/templates', $options = array('extension' => '.mustache.html',)),
-//     'partials_loader' => new Mustache_Loader_FilesystemLoader(dirname(__FILE__).'/views/partials'),
-//     'helpers' => array('i18n' => function($text) {
-//         // do something translatey here...
-//     }),
-    'escape' => function($value) {
-        return htmlspecialchars($value, ENT_COMPAT, 'UTF-8');
-    },
-    'charset' => 'ISO-8859-1',
-    'logger' => new Mustache_Logger_StreamLogger('php://stderr'),
-));
-
-$tpl = $mustache->loadTemplate('photoblog_header');
-echo $tpl->render($data);
+theCore()->render('photoblog_header', $data);
 ?>
