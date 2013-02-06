@@ -315,7 +315,7 @@ body.white .menu.but.nav a.prev span {
     top:50%;
     margin-top:-15px;
 
-    background:url(../images/arrows.png) no-repeat;
+    background:url(./images/arrows.png) no-repeat;
     opacity:0.85;
     filter:alpha(opacity=85);
     z-index:9999;

@@ -35,12 +35,18 @@ class Javascript
         wp_enqueue_script('odyssey-mustache' ,    get_template_directory_uri() . '/js/mustache.js', array('jquery'));
         wp_enqueue_script('odyssey-chevron',      get_template_directory_uri() . '/js/chevron.js',  array('jquery'));
 
+        // pub sub implementation
+        wp_enqueue_script('odyssey-pubsub',       get_template_directory_uri() . '/js/ba-tiny-pubsub.js', array('jquery'));
+
         // embed the javascript file that makes the AJAX request
-        wp_enqueue_script('odyssey-ajax-request', get_template_directory_uri() . '/js/odyssey.js',  array('jquery'));
+        wp_enqueue_script('odyssey-core',         get_template_directory_uri() . '/js/odyssey.core.js',  array('jquery'));
+        wp_enqueue_script('odyssey-image',        get_template_directory_uri() . '/js/odyssey.image.js', array('jquery'));
+        wp_enqueue_script('odyssey',              get_template_directory_uri() . '/js/odyssey.js',       array('jquery'));
 
         // declare the URL to the file that handles the AJAX request (wp-admin/admin-ajax.php)
-        wp_localize_script('odyssey-ajax-request', 'OdysseyAjax', array(
+        wp_localize_script('odyssey-core', 'odyssey', array(
             'ajaxurl' => admin_url('admin-ajax.php'),
+            'postStr' => json_encode(Core::getInstance()->getPost()),
         ));
 //         <script type="text/javascript">
 //             var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
