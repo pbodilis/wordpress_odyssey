@@ -1,7 +1,12 @@
 (function($) {
-    $.subscribe('/window/first', function(e, post) {
-        setPhotoPositionAndInfo(post.image);
-        $('#photo_frame').fadeIn(400);
+    $.subscribe('post.update', function(e, post) {
+    	// once rendering is done and html code done, place the image
+		$("#photoblog_image").Chevron("render", post, function(result) {
+alert(result);
+			$('#photo_frame').html(result);
+	        setPhotoPositionAndInfo(post.image);
+	        $('#photo_frame').fadeIn(400);
+	    });
     });
 
     $.subscribe('/window/resize', function(e, post) {

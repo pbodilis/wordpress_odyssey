@@ -157,7 +157,9 @@
               value = value[names[i++]];
             }
           } else {
-            value = context.view[name];
+            if (context.view) {
+                value = context.view[name];
+            }
           }
 
           if (value != null) break;

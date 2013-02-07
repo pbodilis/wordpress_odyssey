@@ -1,8 +1,8 @@
 (function($) {
-    $(window).load(function () {
-        $.publish('/window/first', odyssey.post);
+/*    $(window).load(function () {
+        $.publish('post.update', odyssey.post);
     });
-
+*/
     $(window).resize(function () {
         $.publish('/window/resize', odyssey.post);
     });

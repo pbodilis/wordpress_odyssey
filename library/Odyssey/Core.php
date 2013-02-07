@@ -78,7 +78,15 @@ class Core
         $ret = array();
 
         if (is_null($postId)) {
-            $postId = url_to_postid( $url );
+        	if (is_null($url)) {
+                $post = current(get_posts(array(
+ //                 'order' => 'ASC',
+                    'limit' => 1
+                )));
+        	} else {
+                $postId = url_to_postid( $url );
+                $post = get_post($postId);
+        	}
         }
 
         if (isset($this->postCache[$postId])) {
@@ -89,15 +97,11 @@ class Core
 // //                 while (have_posts())
 // //                     the_post();
 // //             }
-//             $post = current(get_posts(array(
-// //                 'order' => 'ASC',
-//                 'limit' => 1
-//             )));
 //         } else {
-        $post = get_post($postId);
 //         }
 
         $ret['image'] = $this->getPostImage($post->ID);
+//		$ret = array_merge($ret, $this->getPostImage($post->ID));
 
         $ret['postTitle'] = $post->post_title;
         $ret['postUri']   = get_permalink($post->ID);
@@ -125,7 +129,7 @@ class Core
             $ret['width']  = $image->width;
             $ret['height'] = $image->height;
 
-            $ret['exif'] = $this->getPostImageExif($image);
+//            $ret['exif'] = $this->getPostImageExif($image);
         }
         return $ret;
     }

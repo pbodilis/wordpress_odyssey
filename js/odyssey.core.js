@@ -1,6 +1,19 @@
-(function(o) {
-    o.post = jQuery.parseJSON(o.postStr);
-}(odyssey))
+//(function(o) {
+//    o.post = jQuery.parseJSON(o.postStr);
+//}(odyssey));
+
+(function($) {
+	$.ajax({
+		url: odyssey.ajaxurl,
+		dataType: 'json',
+		data:{
+            'action': 'odyssey_get_json_post',
+        },
+	}).done(function() {
+		var post = $.parseJSON(post);
+		$.publish('post.update', post);
+	});
+})(jQuery);
 
 // 
 // var odyssey = {

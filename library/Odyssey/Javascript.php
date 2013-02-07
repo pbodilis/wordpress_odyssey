@@ -63,7 +63,7 @@ class Javascript
     {
         $ret = '';
         $tpls = array(
-            'imageTemplate' => 'photoblog_image.mustache.html',
+            'photoblog_image' => 'photoblog_image.mustache.html',
         );
         $tplDir = get_template_directory_uri() . '/templates/';
         foreach($tpls as $tplName => $tplFile) {
