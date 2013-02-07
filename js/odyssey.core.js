@@ -1,18 +1,32 @@
-//(function(o) {
-//    o.post = jQuery.parseJSON(o.postStr);
-//}(odyssey));
-
 (function($) {
-	$.ajax({
-		url: odyssey.ajaxurl,
-		dataType: 'json',
-		data:{
-            'action': 'odyssey_get_json_post',
-        },
-	}).done(function() {
-		var post = $.parseJSON(post);
-		$.publish('post.update', post);
-	});
+    $.extend({
+        core: {
+            post: null,
+
+            getPost: function(id) {
+                var ajaxArgs = {
+                    action: 'odyssey_get_json_post',
+                }
+                if (typeof(id) !== 'undefined') {
+                    ajaxArgs.id = id;
+                }
+                $.ajax({
+                    url:      odyssey.ajaxurl,
+                    dataType: 'json',
+                    data:     ajaxArgs,
+                }).done($.core.updateLocalPost);
+            },
+            updateLocalPost: function(p) {
+                $.core.post = p;
+                $.publish('post.update');
+            },
+
+            nextPost: function() {
+            },
+            prevPost: function() {
+            }
+        }
+    });
 })(jQuery);
 
 // 

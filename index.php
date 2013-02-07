@@ -6,9 +6,9 @@ Template Name: Index Template
 get_header();
 ?>
 
-
+<div id="photo_frame"/>
 <?php
-    theCore()->render('photoblog_image', theCore()->getPost());
+//     theCore()->render('photoblog_image', theCore()->getPost());
 
 // if (have_posts()): 
 // 	while (have_posts()): the_post();

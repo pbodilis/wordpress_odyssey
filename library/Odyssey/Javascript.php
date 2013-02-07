@@ -77,8 +77,9 @@ class Javascript
     /**
      * \returns a JSON array
      */
-    public function getJsonPost() {
-        $ret = Core::getInstance()->getPost();
+    public function getJsonPost($id) {
+        // find something better than direct access to $_GET/$_POST
+        $ret = Core::getInstance()->getPost($_GET['id']);
         echo json_encode($ret);
         die();
     }

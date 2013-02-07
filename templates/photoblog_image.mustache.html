@@ -1,5 +1,13 @@
-    <div id="photo_frame">
-        <div id="img">
+    <div id="photo_frame"
+            {{#frame}}
+            style="margin-left: {{marginLeft}}px; margin-top: {{marginTop}}px;"
+            {{/frame}}
+        >
+        <div id="img"
+                {{#frame}}
+                style="width: {{width}}px; height: {{height}}px;"
+                {{/frame}}
+            >
             <img src="{{image.uri}}" alt="{{postTitle}}"/>
             {{#next}}
             <a href="{{postUri}}" class="navLink prev"><span class="navArrow" title="Previous: {{postTitle}}"></span></a>

@@ -347,12 +347,12 @@ body.white .menu.but.nav a.prev span {
     background-position:right bottom;
 }
 
-#photo_frame #photo_infos {
+#photo_infos {
     text-align: right;
     color: rgb(161,161,161);
     height: 42px; /* hardcoded to help position calculation */
 }
-#photo_frame #photo_infos p {
+#photo_infos p {
     font-size: 12px;
 }
 /* ******************************* image: panel handle ******************************* */

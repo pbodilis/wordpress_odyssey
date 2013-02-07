@@ -28,13 +28,6 @@ session_start();
     <?php theCore()->embedTemplates(); ?>
 
     <?php wp_head(); ?>
-
-    <script type="text/javascript">
-        var imageWidth = 683;
-        var imageHeight = 1024;
-        var dE = document.documentElement;
-    </script>
-
 </head>
 <body>
 

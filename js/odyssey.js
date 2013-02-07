@@ -1,12 +1,9 @@
 (function($) {
-/*    $(window).load(function () {
-        $.publish('post.update', odyssey.post);
-    });
-*/
-    $(window).resize(function () {
-        $.publish('/window/resize', odyssey.post);
-    });
 
+//     // start the thing
+//     $.core.getPost();
+    $.core.updateLocalPost($.parseJSON(odyssey.postStr));
+    
 })(jQuery);
 
 
