@@ -39,6 +39,7 @@ Mustache_Autoloader::register();
 require dirname(__FILE__) . '/library/Odyssey/Autoloader.php';
 \Odyssey\Autoloader::register();
 
+// launch odyssey engine
 function theCore() {
     static $core;
     if (!isset($core)) {
@@ -66,8 +67,15 @@ function theCore() {
     }
     return $core;
 }
-
 theCore();
+
+
+function odyssey_order( $query ) {
+    $query->set('order', 'ASC');
+}
+add_action( 'pre_get_posts', 'odyssey_order' );
+
+
 
 
 

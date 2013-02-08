@@ -81,17 +81,18 @@ class Core
         if (is_null($postId)) {
             if (is_home()) {
                 $post = current(get_posts(array(
-//                     'order' => 'ASC',
                     'limit' => 1
                 )));
             } else {
                 $url = get_permalink();
                 $postId = url_to_postid($url);
-                $post = current(get_posts(array(
-                    'p' => $postId,
-//                     'order' => 'ASC',
-                    'limit' => 1
-                )));
+                $post = get_post($postId);
+
+//                 $post = current(get_posts(array(
+//                     'p' => $postId,
+// //                     'order' => 'ASC',
+//                     'limit' => 1
+//                 )));
             }
         } else {
             $post = get_post($postId);
@@ -108,11 +109,13 @@ class Core
         $ret['postUri']   = get_permalink($post->ID);
 
         if ($getAdjacent) {
+            // wp considers that the next post is the previous one in time...
             $nextPost = get_next_post();
             if (!empty($nextPost)) {
                 $ret['previous'] = $this->getPost($nextPost->ID, false);
             }
 
+            // ...while the previous one is the one coming up after the current one
             $prevPost = get_previous_post();
             if (!empty($prevPost)) {
                 $ret['next'] = $this->getPost($prevPost->ID, false);
