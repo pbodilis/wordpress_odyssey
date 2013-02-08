@@ -2,9 +2,13 @@ odyssey.image = {
     getPhotoFramePosition: function (image) {
         // those values should be extracted from the css
         // var photoInfosHeight = jQuery('#photo_infos').height();
-        var photoInfosHeight = 40;
-        // var headerHeight     = jQuery('header').height();
+        var photoInfosHeight = 42;
+        //var headerHeight     = jQuery('header').height();
         var headerHeight     = 30;
+        if (document.getElementById('wpadminbar')) {
+            //headerHeight += jQuery('#wpadminbar').height();
+            headerHeight += 28;
+		}
 
         // check in css file #photo_frame for consistency
         var borderWidth      = 5;
@@ -15,7 +19,7 @@ odyssey.image = {
 
 //         var photoInfosHeight = jQuery('#photo_infos').height();
         var photoInfosHeight = 40; // guess on the photo info height
-        var displayHeightArea = dE.clientHeight - headerHeight - borderWidth * 2 - photoInfosHeight - 20;
+        var displayHeightArea = dE.clientHeight - headerHeight - borderWidth * 3 - photoInfosHeight - 20;
 
         if (image.height < displayHeightArea) {
             resizedHeight = image.height;
@@ -31,8 +35,7 @@ odyssey.image = {
             offsetHeight = photoInfosHeight / 2;
         }
         frameHeight = Math.round(resizedHeight);
-        frameWidth = Math.round(resizedWidth);
-
+        frameWidth  = Math.round(resizedWidth);
         return {
             width:      frameWidth,
             height:     frameHeight,

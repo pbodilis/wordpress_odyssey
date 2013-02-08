@@ -9,12 +9,12 @@
                 {{/frame}}
             >
             <img src="{{image.uri}}" alt="{{postTitle}}"/>
-            {{#next}}
-            <a href="{{postUri}}" class="navLink prev"><span class="navArrow" title="Previous: {{postTitle}}"></span></a>
-            {{/next}}
             {{#previous}}
-            <a href="{{postUri}}" class="navLink next"><span class="navArrow" title="Next: {{postTitle}}">    </span></a>
+            <a href="{{postUri}}" class="navLink prev"><span class="navArrow" title="Previous: {{postTitle}}"></span></a>
             {{/previous}}
+            {{#next}}
+            <a href="{{postUri}}" class="navLink next"><span class="navArrow" title="Next: {{postTitle}}">    </span></a>
+            {{/next}}
         </div>
         <div id="photo_infos">
             <h2>{{postTitle}}</h2>

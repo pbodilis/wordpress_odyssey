@@ -80,7 +80,7 @@ class Core
         if (is_null($postId)) {
             if (is_null($url)) {
                 $post = current(get_posts(array(
-                 'order' => 'ASC',
+                    //'order' => 'ASC',
                     'limit' => 1
                 )));
             } else {
@@ -107,21 +107,20 @@ class Core
 
         $ret['postTitle'] = $post->post_title;
         $ret['postUri']   = get_permalink($post->ID);
+//echo"<pre>";
+//var_dump($post);
 
         if ($getAdjacent) {
-            // weirdly, wordpress considers that the post in the past is the next one...
             $nextPost = get_next_post();
-// echo"<pre>";
-// var_dump($nextPost);
+//var_dump($nextPost);
             if (!empty($nextPost)) {
-                $ret['previous'] = $this->getPost($nextPost->ID, false);
+                $ret['next'] = $this->getPost($nextPost->ID, false);
             }
 
-            // ... and more recent post is previous, 
             $prevPost = get_previous_post();
-// var_dump($prevPost);
+//var_dump($prevPost);
             if (!empty($prevPost)) {
-                $ret['next'] = $this->getPost($prevPost->ID, false);
+                $ret['previous'] = $this->getPost($prevPost->ID, false);
             }
         }
         return $ret;

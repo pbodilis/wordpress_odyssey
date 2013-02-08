@@ -119,7 +119,6 @@ body.black {
 /* ******************************* image: header ******************************* */
 header {
     position:absolute;
-    top:0;
     left:0;
     width:100%;
     height:30px;
@@ -472,8 +471,7 @@ body.white .menu.but.nav a.prev span {
     border-radius: 4px;
 }
 /* Yuk! CSS Hack for IE6 3 pixel bug :( */
-* html .jspCorner
-{
+* html .jspCorner {
     margin: 0 -3px 0 0;
 }
 
