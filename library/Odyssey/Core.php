@@ -77,15 +77,21 @@ class Core
     {
         $ret = array();
 
+// echo"<pre>";
         if (is_null($postId)) {
-            if (is_null($url)) {
+            if (is_home()) {
                 $post = current(get_posts(array(
-                    //'order' => 'ASC',
+//                     'order' => 'ASC',
                     'limit' => 1
                 )));
             } else {
+                $url = get_permalink();
                 $postId = url_to_postid($url);
-                $post = get_post($postId);
+                $post = current(get_posts(array(
+                    'p' => $postId,
+//                     'order' => 'ASC',
+                    'limit' => 1
+                )));
             }
         } else {
             $post = get_post($postId);
@@ -95,32 +101,21 @@ class Core
             return $this->postCache[$postId];
         }
 
-// //             if (have_posts()) {
-// //                 while (have_posts())
-// //                     the_post();
-// //             }
-//         } else {
-//         }
-
         $ret['image'] = $this->getPostImage($post->ID);
 //		$ret = array_merge($ret, $this->getPostImage($post->ID));
 
         $ret['postTitle'] = $post->post_title;
         $ret['postUri']   = get_permalink($post->ID);
-//echo"<pre>";
-//var_dump($post);
 
         if ($getAdjacent) {
             $nextPost = get_next_post();
-//var_dump($nextPost);
             if (!empty($nextPost)) {
-                $ret['next'] = $this->getPost($nextPost->ID, false);
+                $ret['previous'] = $this->getPost($nextPost->ID, false);
             }
 
             $prevPost = get_previous_post();
-//var_dump($prevPost);
             if (!empty($prevPost)) {
-                $ret['previous'] = $this->getPost($prevPost->ID, false);
+                $ret['next'] = $this->getPost($prevPost->ID, false);
             }
         }
         return $ret;
