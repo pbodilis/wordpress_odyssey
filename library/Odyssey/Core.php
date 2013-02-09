@@ -77,29 +77,16 @@ class Core
     {
         $ret = array();
 
-// echo"<pre>";
         if (is_null($postId)) {
-            if (is_home()) {
-                $post = current(get_posts(array(
-                    'limit' => 1
-                )));
-            } else {
-                $url = get_permalink();
-                $postId = url_to_postid($url);
-                $post = get_post($postId);
-
-//                 $post = current(get_posts(array(
-//                     'p' => $postId,
-// //                     'order' => 'ASC',
-//                     'limit' => 1
-//                 )));
-            }
+        	if (have_posts()) {
+        		the_post();
+        	}
+			global $post;
         } else {
+        	if ($getAdjacent) { // if adjacent post are required, 
+                global $post;
+        	}
             $post = get_post($postId);
-        }
-
-        if (isset($this->postCache[$postId])) {
-            return $this->postCache[$postId];
         }
 
         $ret['image'] = $this->getPostImage($post->ID);
@@ -107,18 +94,17 @@ class Core
 
         $ret['postTitle'] = $post->post_title;
         $ret['postUri']   = get_permalink($post->ID);
+        $ret['postID']    = $post->ID;
 
         if ($getAdjacent) {
-            // wp considers that the next post is the previous one in time...
             $nextPost = get_next_post();
             if (!empty($nextPost)) {
-                $ret['previous'] = $this->getPost($nextPost->ID, false);
+                $ret['next'] = $this->getPost($nextPost->ID, false);
             }
 
-            // ...while the previous one is the one coming up after the current one
             $prevPost = get_previous_post();
             if (!empty($prevPost)) {
-                $ret['next'] = $this->getPost($prevPost->ID, false);
+                $ret['previous'] = $this->getPost($prevPost->ID, false);
             }
         }
         return $ret;

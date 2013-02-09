@@ -8,7 +8,7 @@ odyssey.core = {
         if (typeof(id) !== 'undefined') {
             ajaxArgs.id = id;
         }
-        $.ajax({
+        jQuery.ajax({
             url:      odyssey.ajaxurl,
             dataType: 'json',
             data:     ajaxArgs,
@@ -19,40 +19,17 @@ odyssey.core = {
         jQuery.publish('post.update');
     },
 
-    nextPost: function() {
-    },
     prevPost: function() {
+        if (odyssey.core.post.previous) {
+        	odyssey.core.getPost(odyssey.core.post.previous.postID);
+        }
+    },
+    nextPost: function() {
+        if (odyssey.core.post.next) {
+        	odyssey.core.getPost(odyssey.core.post.next.postID);
+        }
     }
 };
 
-// 
-// var odyssey = {
-//     var post;
-// 
-//     // constructor
-//     var odyssey = function () {
-//     };
-// 
-//     // prototype
-//     odyssey.prototype = {
-//         constructor: odyssey,
-//         init: function (p) {
-//             post = p;
-//         },
-//         getPost: function() {
-//             return post;
-//         }
-//     };
-// 
-//     // return module
-//     return odyssey;
-// };
-// 
-// (function($) {
-//     $.extend({
-//         /*
-//             * cc means "conference common"
-//             */
-//         CC : {
-// 
-// })(jQuery);
+jQuery.subscribe('core.previous', odyssey.core.prevPost);
+jQuery.subscribe('core.next',     odyssey.core.nextPost);

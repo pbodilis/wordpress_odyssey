@@ -41,6 +41,7 @@ class Javascript
         // embed the javascript file that makes the AJAX request
         wp_enqueue_script('odyssey-core',         get_template_directory_uri() . '/js/odyssey.core.js',  array('jquery'));
         wp_enqueue_script('odyssey-image',        get_template_directory_uri() . '/js/odyssey.image.js', array('jquery'));
+        wp_enqueue_script('odyssey-keyboard',     get_template_directory_uri() . '/js/odyssey.keyboard.js', array('jquery'));
         wp_enqueue_script('odyssey',              get_template_directory_uri() . '/js/odyssey.js',       array('jquery'));
 
         // declare the URL to the file that handles the AJAX request (wp-admin/admin-ajax.php)

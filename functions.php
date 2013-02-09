@@ -72,10 +72,11 @@ theCore();
 
 function odyssey_order( $query ) {
     $query->set('order', 'ASC');
+    $query->set('orderby', 'ID');
+    $query->set('post_type', 'post');
+    $query->set('post_status', 'publish');
 }
-add_action( 'pre_get_posts', 'odyssey_order' );
-
-
+//add_action( 'pre_get_posts', 'odyssey_order' );
 
 
 
