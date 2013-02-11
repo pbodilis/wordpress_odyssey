@@ -19,11 +19,6 @@ odyssey.core = {
         if (odyssey.core.posts[id]) { // do we have the current post in cache ?
             odyssey.core.posts.currentID = id; // just set the current cursor to the given id
 
-            // check the adjacent post are here
-            var current = odyssey.core.posts[odyssey.core.posts.currentID];
-            if (current.previousID) { current.previous = odyssey.core.posts[current.previousID]; }
-            if (current.nextID)     { current.next = odyssey.core.posts[current.nextID];         }
-
             odyssey.core.postNotifyAll(); // notify all views the current post needs to be displayed
         } else { // retrieve the post
             var ajaxArgs = {
@@ -51,18 +46,14 @@ odyssey.core = {
         // now, while the current post is loaded by the rest of the application
         // get the post beyond the current adjacent's post.
         var current = odyssey.core.getCurrentPost();
-        if (current.previous && current.previous.previousID) {
-            odyssey.core.retrievePost(current.previous.previousID);
-        }
-        if (current.next && current.next.nextID) {
-            odyssey.core.retrievePost(current.next.nextID);
-        }
+        if (current.previous && current.previous.previousID) { odyssey.core.cachePost(current.previous.previousID); }
+        if (current.next     && current.next.nextID)         { odyssey.core.cachePost(current.next.nextID); }
     },
 
     /**
      * retrieves the post with the given id
      */
-    retrievePost: function(id) {
+    cachePost: function(id) {
         if (odyssey.core.posts[id]) {
         } else {
             var ajaxArgs = {
