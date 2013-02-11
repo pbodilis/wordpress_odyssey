@@ -1,7 +1,7 @@
 odyssey.core = {
     post: null,
 
-    getPost: function(id) {
+    getPost: function(e, id) {
         var ajaxArgs = {
             action: 'odyssey_get_json_post',
         }
@@ -19,17 +19,20 @@ odyssey.core = {
         jQuery.publish('post.update');
     },
 
-    prevPost: function() {
+    prevPost: function(e) {
         if (odyssey.core.post.previous) {
-        	odyssey.core.getPost(odyssey.core.post.previous.postID);
+        	odyssey.core.getPost(e, odyssey.core.post.previous.postID);
         }
     },
-    nextPost: function() {
+    nextPost: function(e) {
         if (odyssey.core.post.next) {
-        	odyssey.core.getPost(odyssey.core.post.next.postID);
+        	odyssey.core.getPost(e, odyssey.core.post.next.postID);
         }
     }
 };
 
+jQuery.subscribe('core.get',      odyssey.core.getPost);
 jQuery.subscribe('core.previous', odyssey.core.prevPost);
 jQuery.subscribe('core.next',     odyssey.core.nextPost);
+
+

@@ -32,16 +32,20 @@ class Javascript
     public function embedJavascript()
     {
         // template engine
-        wp_enqueue_script('odyssey-mustache' ,    get_template_directory_uri() . '/js/mustache.js', array('jquery'));
-        wp_enqueue_script('odyssey-chevron',      get_template_directory_uri() . '/js/chevron.js',  array('jquery'));
+        wp_enqueue_script('mustache' ,    get_template_directory_uri() . '/js/mustache.js', array('jquery'));
+        wp_enqueue_script('chevron',      get_template_directory_uri() . '/js/chevron.js',  array('jquery'));
 
         // pub sub implementation
-        wp_enqueue_script('odyssey-pubsub',       get_template_directory_uri() . '/js/ba-tiny-pubsub.js', array('jquery'));
+        wp_enqueue_script('pubsub',       get_template_directory_uri() . '/js/ba-tiny-pubsub.js', array('jquery'));
+
+        wp_enqueue_script('history',      get_template_directory_uri() . '/js/history.js');
+        wp_enqueue_script('history-adapter',      get_template_directory_uri() . '/js/history.adapter.native.js');
 
         // embed the javascript file that makes the AJAX request
         wp_enqueue_script('odyssey-core',         get_template_directory_uri() . '/js/odyssey.core.js',  array('jquery'));
         wp_enqueue_script('odyssey-image',        get_template_directory_uri() . '/js/odyssey.image.js', array('jquery'));
         wp_enqueue_script('odyssey-keyboard',     get_template_directory_uri() . '/js/odyssey.keyboard.js', array('jquery'));
+        wp_enqueue_script('odyssey-history',     get_template_directory_uri() . '/js/odyssey.history.js', array('jquery'));
         wp_enqueue_script('odyssey',              get_template_directory_uri() . '/js/odyssey.js',       array('jquery'));
 
         // declare the URL to the file that handles the AJAX request (wp-admin/admin-ajax.php)
