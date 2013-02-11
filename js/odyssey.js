@@ -1,4 +1,4 @@
-odyssey.core.updateLocalPost(jQuery.parseJSON(odyssey.postStr));
+odyssey.core.updateCurrentPost(jQuery.parseJSON(odyssey.postStr));
 
 
 // odyssey.init();

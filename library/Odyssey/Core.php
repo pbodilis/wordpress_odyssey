@@ -13,7 +13,7 @@ namespace Odyssey;
 /**
  *  Core functions
  *  @package Odyssey Theme for WordPress
- *  @subpackage JavaScript
+ *  @subpackage Core
  */
 class Core
 {
@@ -69,44 +69,62 @@ class Core
         echo $tpl->render($data);
     }
 
+    public function getPostAndAdjacents($postId = NULL)
+    {
+        $current = $this->getPost($postId);
+        $ret = array(
+            'currentID'    => $current['ID'],
+            $current['ID'] => $current,
+        );
+        if (isset($current['nextID'])) {
+            $next = $this->getPost($current['nextID']);
+            $ret[$next['ID']] = $next;
+        }
+        if (isset($current['previousID'])) {
+            $prev = $this->getPost($current['previousID']);
+            $ret[$prev['ID']] = $prev;
+        }
+        return $ret;
+    }
 
     /**
      * \returns an array with the following info:
      */
-    public function getPost($postId = NULL, $getAdjacent = true)
+    public function getPost($postId = NULL)
     {
         $ret = array();
 
         if (is_null($postId)) {
-        	if (have_posts()) {
-        		the_post();
-        	}
-			global $post;
+            if (have_posts()) {
+                the_post();
+            }
+            global $post;
         } else {
-        	if ($getAdjacent) { // if adjacent post are required, 
-                global $post;
-        	}
+            if (isset($this->postCache[$postId])) { // we already gather info for this post
+                return $this->postCache[$postId];   // return the cached data
+            }
+            global $post;
             $post = get_post($postId);
         }
 
         $ret['image'] = $this->getPostImage($post->ID);
-//		$ret = array_merge($ret, $this->getPostImage($post->ID));
+//      $ret = array_merge($ret, $this->getPostImage($post->ID));
 
-        $ret['postTitle'] = $post->post_title;
-        $ret['postUri']   = get_permalink($post->ID);
-        $ret['postID']    = $post->ID;
+        $ret['title'] = $post->post_title;
+        $ret['uri']   = get_permalink($post->ID);
+        $ret['ID']    = $post->ID;
 
-        if ($getAdjacent) {
-            $nextPost = get_next_post();
-            if (!empty($nextPost)) {
-                $ret['next'] = $this->getPost($nextPost->ID, false);
-            }
-
-            $prevPost = get_previous_post();
-            if (!empty($prevPost)) {
-                $ret['previous'] = $this->getPost($prevPost->ID, false);
-            }
+        $nextPost = get_next_post();
+        if (!empty($nextPost)) {
+            $ret['nextID'] = $nextPost->ID;
         }
+
+        $prevPost = get_previous_post();
+        if (!empty($prevPost)) {
+            $ret['previousID'] = $prevPost->ID;
+        }
+
+        $this->postCache[$post->ID] = $ret;
         return $ret;
     }
 
@@ -119,7 +137,7 @@ class Core
             $ret['width']  = $image->width;
             $ret['height'] = $image->height;
 
-           $ret['exif'] = $this->getPostImageExif($image);
+        $ret['exif'] = $this->getPostImageExif($image);
         }
         return $ret;
     }

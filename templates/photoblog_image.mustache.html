@@ -8,16 +8,16 @@
                 style="width: {{width}}px; height: {{height}}px;"
                 {{/frame}}
             >
-            <img src="{{image.uri}}" alt="{{postTitle}}"/>
+            <img src="{{image.uri}}" alt="{{title}}"/>
             {{#previous}}
-            <a href="{{postUri}}" class="navLink prev"><span class="navArrow" title="Previous: {{postTitle}}"></span></a>
+            <a href="{{uri}}" class="navLink prev"><span class="navArrow" title="Previous: {{title}}"></span></a>
             {{/previous}}
             {{#next}}
-            <a href="{{postUri}}" class="navLink next"><span class="navArrow" title="Next: {{postTitle}}">    </span></a>
+            <a href="{{uri}}" class="navLink next"><span class="navArrow" title="Next: {{title}}">    </span></a>
             {{/next}}
         </div>
         <div id="photo_infos">
-            <h2>{{postTitle}}</h2>
+            <h2>{{title}}</h2>
             {{#image.exif.captureDate}}
             <p>&#149; {{image.exif.captureDate}} &#149;</p>
             {{/image.exif.captureDate}}

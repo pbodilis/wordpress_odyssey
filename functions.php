@@ -1,35 +1,8 @@
 <?php
-/*
-Template Name: Functions
-*/
-
 
 /**
  *   This file is part of Odyssey Theme for WordPress.
  */
-
-/* Warm up engine */
-
-//     @require_once(TEMPLATEPATH . '/func/version.php');
-
-/* Helper functions */
-
-//     @require_once(TEMPLATEPATH . '/func/php4fix.php');
-//     @require_once(TEMPLATEPATH . '/func/littlehelpers.php');
-//     @require_once(TEMPLATEPATH . '/func/paths.php');
-//     @require_once(TEMPLATEPATH . '/func/locale.php');
-//     @require_once(TEMPLATEPATH . '/func/options.php');
-//     @require_once(TEMPLATEPATH . '/func/upgrade.php');
-
-/* HTML header */
-
-//     @require_once(TEMPLATEPATH . '/func/stylesheets.php');
-//     @require_once(TEMPLATEPATH . '/func/javascript.php');
-//     @require_once(TEMPLATEPATH . '/func/header.php');
-
-
-
-
 
 // include mustache engine
 require dirname(__FILE__) . '/library/Mustache/Autoloader.php';
@@ -68,17 +41,6 @@ function theCore() {
     return $core;
 }
 theCore();
-
-
-function odyssey_order( $query ) {
-    $query->set('order', 'ASC');
-    $query->set('orderby', 'ID');
-    $query->set('post_type', 'post');
-    $query->set('post_status', 'publish');
-}
-//add_action( 'pre_get_posts', 'odyssey_order' );
-
-
 
 // load_config ()
 // loads custom settings from config file

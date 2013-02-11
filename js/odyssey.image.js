@@ -1,5 +1,7 @@
 odyssey.image = {
-    getPhotoFramePosition: function (image) {
+    image: null,
+
+    getPhotoFramePosition: function(image) {
         // those values should be extracted from the css
         // var photoInfosHeight = jQuery('#photo_infos').height();
         var photoInfosHeight = 42;
@@ -43,8 +45,8 @@ odyssey.image = {
             marginTop:  (dE.clientHeight - frameHeight + headerHeight) / 2 - borderWidth - offsetHeight
         };
     },
-    render: function(e) {
-        post = odyssey.core.post;
+    render: function(e, post) {
+        odyssey.image.image = post.image;
         post.frame = odyssey.image.getPhotoFramePosition(post.image);
 
         // once rendering is done, insert the image
@@ -54,16 +56,15 @@ odyssey.image = {
         });
     },
     resize: function(e) {
-        post = odyssey.core.post;
-        post.frame = odyssey.image.getPhotoFramePosition(post.image);
+        frame = odyssey.image.getPhotoFramePosition(odyssey.image.image);
 
         jQuery('#photo_frame #img').css({
-            'width': post.frame.width,
-            'height': post.frame.height
+            'width': frame.width,
+            'height': frame.height
         });
         jQuery('#photo_frame').css({
-            'margin-left': post.frame.marginLeft,
-            'margin-top': post.frame.marginTop
+            'margin-left': frame.marginLeft,
+            'margin-top': frame.marginTop
         });
     },
 }

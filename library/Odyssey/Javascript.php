@@ -20,6 +20,8 @@ class Javascript
     public function __construct()
     {
         // add the callbacks
+        add_action('wp_ajax_odyssey_get_json_post_and_adjacents',        array(&$this, 'getJsonPostAndAdjacents'));
+        add_action('wp_ajax_nopriv_odyssey_get_json_post_and_adjacents', array(&$this, 'getJsonPostAndAdjacents'));
         add_action('wp_ajax_odyssey_get_json_post',        array(&$this, 'getJsonPost'));
         add_action('wp_ajax_nopriv_odyssey_get_json_post', array(&$this, 'getJsonPost'));
     }
@@ -32,26 +34,26 @@ class Javascript
     public function embedJavascript()
     {
         // template engine
-        wp_enqueue_script('mustache' ,    get_template_directory_uri() . '/js/mustache.js', array('jquery'));
-        wp_enqueue_script('chevron',      get_template_directory_uri() . '/js/chevron.js',  array('jquery'));
+        wp_enqueue_script('mustache',        get_template_directory_uri() . '/js/mustache.js', array('jquery'));
+        wp_enqueue_script('chevron',         get_template_directory_uri() . '/js/chevron.js',  array('jquery'));
 
         // pub sub implementation
-        wp_enqueue_script('pubsub',       get_template_directory_uri() . '/js/ba-tiny-pubsub.js', array('jquery'));
+        wp_enqueue_script('pubsub',          get_template_directory_uri() . '/js/ba-tiny-pubsub.js', array('jquery'));
 
-        wp_enqueue_script('history',      get_template_directory_uri() . '/js/history.js');
-        wp_enqueue_script('history-adapter',      get_template_directory_uri() . '/js/history.adapter.native.js');
+        wp_enqueue_script('history',         get_template_directory_uri() . '/js/history.js');
+        wp_enqueue_script('history-adapter', get_template_directory_uri() . '/js/history.adapter.native.js');
 
         // embed the javascript file that makes the AJAX request
-        wp_enqueue_script('odyssey-core',         get_template_directory_uri() . '/js/odyssey.core.js',  array('jquery'));
-        wp_enqueue_script('odyssey-image',        get_template_directory_uri() . '/js/odyssey.image.js', array('jquery'));
-        wp_enqueue_script('odyssey-keyboard',     get_template_directory_uri() . '/js/odyssey.keyboard.js', array('jquery'));
-        wp_enqueue_script('odyssey-history',     get_template_directory_uri() . '/js/odyssey.history.js', array('jquery'));
-        wp_enqueue_script('odyssey',              get_template_directory_uri() . '/js/odyssey.js',       array('jquery'));
+        wp_enqueue_script('odyssey-core',     get_template_directory_uri() . '/js/odyssey.core.js',     array('jquery'));
+        wp_enqueue_script('odyssey-image',    get_template_directory_uri() . '/js/odyssey.image.js',    array('jquery'));
+        wp_enqueue_script('odyssey-keyboard', get_template_directory_uri() . '/js/odyssey.keyboard.js', array('jquery'));
+        wp_enqueue_script('odyssey-history',  get_template_directory_uri() . '/js/odyssey.history.js',  array('jquery'));
+        wp_enqueue_script('odyssey',          get_template_directory_uri() . '/js/odyssey.js',          array('jquery'));
 
         // declare the URL to the file that handles the AJAX request (wp-admin/admin-ajax.php)
         wp_localize_script('odyssey-core', 'odyssey', array(
             'ajaxurl' => admin_url('admin-ajax.php'),
-            'postStr' => json_encode(Core::getInstance()->getPost()),
+            'postStr' => json_encode(theCore()->getPostAndAdjacents()),
         ));
 //         <script type="text/javascript">
 //             var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
@@ -77,14 +79,22 @@ class Javascript
         return $ret;
     }
         
-
+    /**
+     * \returns a JSON array
+     */
+    public function getJsonPost() {
+        // find something better than direct access to $_GET/$_POST
+        $ret = Core::getInstance()->getPost($_GET['id']);
+        echo json_encode($ret);
+        die();
+    }
 
     /**
      * \returns a JSON array
      */
-    public function getJsonPost($id) {
+    public function getJsonPostAndAdjacents() {
         // find something better than direct access to $_GET/$_POST
-        $ret = Core::getInstance()->getPost($_GET['id']);
+        $ret = Core::getInstance()->getPostAndAdjacents($_GET['id']);
         echo json_encode($ret);
         die();
     }
