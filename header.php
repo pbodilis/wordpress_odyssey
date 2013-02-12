@@ -34,8 +34,8 @@ session_start();
 <?php
 
 $data = array(
-    'blogName'    => get_bloginfo('name'),
-    'blogHomeUri' => get_bloginfo('url'),
+    'name'    => get_bloginfo('name'),
+    'homeUri' => get_bloginfo('url'),
 );
 
 theCore()->render('photoblog_header', $data);

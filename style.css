@@ -218,7 +218,7 @@ body.white .menu.but.nav a.prev span {
     background-color: rgb(0,0,0);
 }
 .menu.but.social a {
-    background: url(../images/odyssey_menu_butt_20x20.png) no-repeat rgb(200,200,200);
+    background: url(./images/odyssey_menu_butt_20x20.png) no-repeat rgb(200,200,200);
 }
 .menu.but.social a:hover {
     background-color: rgb(255,255,255);
