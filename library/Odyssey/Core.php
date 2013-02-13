@@ -69,6 +69,15 @@ class Core
         echo $tpl->render($data);
     }
 
+    /**
+     * \returns various information about the blog, including:
+     *  - name
+     *  - home uri
+     */
+    public function getBlog()
+    {
+    }
+
     public function getPostAndAdjacents($postId = NULL)
     {
         $current = $this->getPost($postId);

@@ -34,9 +34,12 @@ session_start();
 <?php
 
 $data = array(
-    'name'    => get_bloginfo('name'),
-    'homeUri' => get_bloginfo('url'),
+    'name'        => get_bloginfo('name'),
+    'uri'         => get_bloginfo('url'),
+    'description' => get_bloginfo('description'),
 );
+
+var_dump(get_pages());
 
 theCore()->render('photoblog_header', $data);
 ?>
