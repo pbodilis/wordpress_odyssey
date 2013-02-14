@@ -6,22 +6,26 @@
 session_start();
 // if (isset($_REQUEST['info']) && !empty($_REQUEST['info']))
 //     $_SESSION['odyssey:info'] = $_REQUEST['info'];
+
+
+$blog = theCore()->getBlog();
+
 ?>
 
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr" dir="ltr">
 <head>
-    <meta http-equiv="Content-Type" content="<?php bloginfo('html_type'); ?>; charset=<?php bloginfo('charset'); ?>" />
-    <meta name="generator" content="WordPress <?php bloginfo('version'); ?>" /> <!-- leave this for stats -->
-    <meta name="title" content="<?php wp_title(); ?>" />
+    <meta http-equiv="Content-Type" content="<?php echo $blog['html_type']; ?>; charset=<?php echo $blog['charset']; ?>" />
+    <meta name="generator" content="WordPress <?php echo $blog['version']; ?>" /> <!-- leave this for stats -->
+    <meta name="title" content="<?php echo $blog['title']; ?>" />
 
-    <link rel="stylesheet" href="<?php bloginfo('stylesheet_url'); ?>" type="text/css" media="screen" />
-    <link rel="alternate" type="application/rss+xml" title="<?php bloginfo('name'); ?> RSS Feed" href="<?php bloginfo('rss2_url'); ?>" />
-    <link rel="alternate" type="application/rss+xml" title="<?php bloginfo('name'); ?> Comments RSS Feed" href="<?php bloginfo('comments_rss2_url'); ?>" />
-    <link rel="alternate" type="application/atom+xml" title="<?php bloginfo('name'); ?> Atom Feed" href="<?php bloginfo('atom_url'); ?>" />
+    <link rel="stylesheet" href="<?php echo $blog['stylesheet_url']; ?>" type="text/css" media="screen" />
+    <link rel="alternate" type="application/rss+xml" title="<?php echo $blog['name']; ?> RSS Feed" href="<?php echo $blog['rss2_url']; ?>" />
+    <link rel="alternate" type="application/rss+xml" title="<?php echo $blog['name']; ?> Comments RSS Feed" href="<?php echo $blog['comments_rss2_url']; ?>" />
+    <link rel="alternate" type="application/atom+xml" title="<?php echo $blog['name']; ?> Atom Feed" href="<?php echo $blog['atom_url']; ?>" />
 
-    <title><?php bloginfo('name'); ?> <?php wp_title(); ?></title>
+    <title><?php echo $blog['name']; ?> <?php echo $blog['title']; ?></title>
 
     <!-- theme js -->
     <?php theCore()->embedJavascript(); ?>
@@ -29,17 +33,12 @@ session_start();
 
     <?php wp_head(); ?>
 </head>
-<body>
+<body <?php body_class();?> >
 
 <?php
 
-$data = array(
-    'name'        => get_bloginfo('name'),
-    'uri'         => get_bloginfo('url'),
-    'description' => get_bloginfo('description'),
-);
 
-var_dump(get_pages());
+//var_dump(get_pages());
 
 theCore()->render('photoblog_header', $data);
 ?>

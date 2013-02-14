@@ -72,10 +72,26 @@ class Core
     /**
      * \returns various information about the blog, including:
      *  - name
-     *  - home uri
-     */
+     *  - uri
+     *  - description
+	 *      */
     public function getBlog()
     {
+		$ret = array(
+		    'title'             => wp_title('&raquo;', false),
+		    'name'              => get_bloginfo('name'),
+		    'url'               => home_url('/'),
+		    'wpurl'             => site_url('/'),
+		    'version'           => get_bloginfo('version'),
+		    'html_type'         => get_bloginfo('html_type'),
+		    'description'       => get_bloginfo('description'),
+		    'stylesheet_url'    => get_bloginfo('stylesheet_url'),
+		    'rss2_url'          => get_bloginfo('rss2_url'),
+		    'comments_rss2_url' => get_bloginfo('comments_rss2_url'),
+		    'atom_url'          => get_bloginfo('atom_url'),
+		    'charset'           => get_bloginfo('charset'),
+		);
+		return $ret;
     }
 
     public function getPostAndAdjacents($postId = NULL)
@@ -126,6 +142,7 @@ class Core
         $nextPost = get_next_post();
         if (!empty($nextPost)) {
             $ret['nextID'] = $nextPost->ID;
+        $this->postCache[$post->ID] = $ret;
         }
 
         $prevPost = get_previous_post();
