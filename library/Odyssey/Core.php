@@ -131,12 +131,33 @@ class Core
             global $post;
             $post = get_post($postId);
         }
+echo "<pre>\n";
+// var_dump($post);
+
+$args = array(
+   'post_type' => 'attachment',
+   'numberposts' => -1,
+   'post_status' => null,
+   'post_parent' => $post->ID
+  );
+
+  $attachments = get_posts( $args );
+var_dump($attachments);
+//      if ( $attachments ) {
+//         foreach ( $attachments as $attachment ) {
+//            echo '<li>';
+//            echo wp_get_attachment_image( $attachment->ID, 'full' );
+//            echo '<p>';
+//            echo apply_filters( 'the_title', $attachment->post_title );
+//            echo '</p></li>';
+//           }
+//      }
 
         $ret['image'] = $this->getPostImage($post->ID);
 //      $ret = array_merge($ret, $this->getPostImage($post->ID));
 
         $ret['title'] = $post->post_title;
-        $ret['uri']   = get_permalink($post->ID);
+        $ret['url']   = get_permalink($post->ID);
         $ret['ID']    = $post->ID;
 
         $nextPost = get_next_post();
@@ -159,7 +180,7 @@ class Core
         $ret = array();
         $image = \YapbImage::getInstanceFromDb($postId);
         if (!is_null($image)) { // that's a yapb post
-            $ret['uri']    = $image->uri;
+            $ret['url']    = $image->uri;
             $ret['width']  = $image->width;
             $ret['height'] = $image->height;
 
@@ -168,14 +189,55 @@ class Core
         return $ret;
     }
 
+    /**
+     * use native php exif_read_data to retrieve exif data instead of yapb lib phpExifRW and ExifUtils
+     * this method still retrieves all selected exif filter in yapb to return the required exif info
+     *
+     * @return array of selected exif, with at least captureDate
+     */
     public function getPostImageExif($image)
     {
-        $exifs = \ExifUtils::getExifData($image);
-        if (isset($exifs['DateTime'])) {
-            $d = new \DateTime($exifs['DateTime']);
-            $exifs['captureDate'] = $d->format('Y-m-d');
+        $filename = dirname(ABSPATH) . $image->uri;
+        $exifs = @exif_read_data($filename, 'EXIF' );
+        $exifs = array_change_key_case($exifs);
+
+        $ret = array();
+
+        $commaSeparatedList = get_option('yapb_view_exif_tagnames');
+        if ($commaSeparatedList == 'none') return array();
+        $tagnamesToBeShown = explode(',', $commaSeparatedList);
+        foreach($tagnamesToBeShown as $tagname) {
+            $ltagname = strtolower($tagname);
+            if (isset($exifs[$ltagname])) {
+                switch ($ltagname) {
+                    case 'fnumber':
+                    case 'focallength':
+                        $tagvalue = self::computeMath($exifs[$ltagname]);
+                        break;
+                    default:
+                        $tagvalue = $exifs[$ltagname];
+                        break;
+                }
+                $ret[$tagname] = $tagvalue;
+            }
         }
-        return $exifs;
+
+        if (isset($exifs['datetime'])) {
+            $ret['captureDate'] = date_i18n(get_option('date_format'), strtotime($exifs['datetime']));
+        }
+        return $ret;
+    }
+
+    /**
+     * compute mathematic string (such as the one contained in an exif field) without the use of eval
+     */
+    static private function computeMath($mathString)
+    {
+        $mathString = trim($mathString);                                   // trim white spaces
+        $mathString = ereg_replace('[^0-9\+-\*\/\(\) ]', '', $mathString); // remove any non-numbers chars; exception for math operators
+
+        $compute = create_function("", "return (" . $mathString . ");" );
+        return 0 + $compute();
     }
 
 }

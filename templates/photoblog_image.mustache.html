@@ -8,13 +8,13 @@
                 style="width: {{width}}px; height: {{height}}px;"
                 {{/frame}}
             >
-            <img src="{{image.uri}}" alt="{{title}}"/>
+            <img src="{{image.url}}" alt="{{title}}"/>
             <nav>
             {{#previous}}
-            <a href="{{uri}}" class="navLink prev"><span class="navArrow" title="Previous: {{title}}"></span></a>
+            <a href="{{url}}" class="navLink prev"><span class="navArrow" title="Previous: {{title}}"></span></a>
             {{/previous}}
             {{#next}}
-            <a href="{{uri}}" class="navLink next"><span class="navArrow" title="Next: {{title}}">    </span></a>
+            <a href="{{url}}" class="navLink next"><span class="navArrow" title="Next: {{title}}">    </span></a>
             {{/next}}
             </nav>
         </div>

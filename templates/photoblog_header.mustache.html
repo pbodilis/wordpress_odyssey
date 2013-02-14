@@ -1,6 +1,6 @@
     <header>
         <h1 id="logo">
-            <a href="{{uri}}" title="{{description}}">
+            <a href="{{url}}" title="{{description}}">
                 {{{name}}}
             </a>
         </h1>
@@ -8,7 +8,7 @@
         <div class="menu txt">
             <ul>
 <!--                 <li><a class="item" href="{{homeUri}}" title="Back to the latest picture"> {{{name}}} </a></li> -->
-                <li><a class="item" href="{{uri}}" title="{{title}}"> {{name}} </a></li>
+                <li><a class="item" href="{{url}}" title="{{title}}"> {{name}} </a></li>
             </ul>
         </div>
         {{/pages}}
@@ -25,10 +25,10 @@
         </div>
         <nav class="menu but">
             {{#next}}
-            <a href="{{uri}}" class="prev" title="Previous: {{title}}"><span class="navArrow"></span></a>
+            <a href="{{url}}" class="prev" title="Previous: {{title}}"><span class="navArrow"></span></a>
             {{/next}}
             {{#previous}}
-            <a href="{{uri}}" class="next" title="Previous: {{title}}"><span class="navArrow"></span></a>
+            <a href="{{url}}" class="next" title="Previous: {{title}}"><span class="navArrow"></span></a>
             {{/previous}}
         </nav>
         <div class="menu but tooltip">

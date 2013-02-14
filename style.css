@@ -1,48 +1,15 @@
 /*
 Theme Name: odyssey
 Theme URI: https://github.com/pbodilis/wordpress_odyssey
-Description: <p>A photoblog theme based on <a href="http://www.wordpress.org/">Wordpress</a> and <a href="http://johannes.jarolim.com/yapb/">YAPB</a></p>
-Version: 0.1
 Author: Pierre Bodilis
 Author URI: http://rataki.eu
-.
-**IMPORTANT**
-Configuring the theme:
+Description: <p>A photoblog theme based on <a href="http://www.wordpress.org/">Wordpress</a> and <a href="http://johannes.jarolim.com/yapb/">YAPB</a></p>
+Version: 0.1
+License: GNU General Public License v2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Tags: gray, white, black, YAPB theme, photoblog, unipost
+Text Domain: Odyssey
 
-If you wan to enable archives:
-  - Create an 'archives' page through Manage/Pages. Remember the title and be
-    sure to select the 'Arcives' template under "Page Template".
-  - in the config/config.php file
-    => change the value of MONOLIT_SET_ARCHIVE_WP_TITLE to the title of the page
-       you just created
-    => change the value of MONOLIT_SET_SHOW_ABOUT to 1
-
-If you want to enable an about page:
-  - Create an 'about' page through Manage/Pages. Remember the title.
-  - in the config/config.php file:
-    => change the value of MONOLIT_SET_ABOUT_WP_TITLE to the title of the page
-       you just created
-    => change the value of MONOLIT_SET_SHOW_ARCHIVES to 1
-
-Changing the copyright notice and other settings
-  - Copyright: Change the MONOLIT_SET_COPYRIGHT to whatever you want the
-    copyright notice to say.
-  - Change other configuration values in the file if needed. They are pretty
-    much self-explanatory.
-
-About sizes:
-  The theme automatically resizes images to a max width of 900 pixels and a
-  max height that is customizable through the MONOLIT_SET_MAX_HEIGHT value
-  (default is 600 pixels). If you want wider images the layout will break 
-  unless you change the stylesheet (look for the 'inside' class).
-
-About language and messages:
-  Language and messages can be configured through the lang/lang.php file. It
-  might take some skill to figure out which message goes where :-)
-
-Todo:
-  - a smarter way to control the configuration, ie. via admin page
-.
 */
 
 

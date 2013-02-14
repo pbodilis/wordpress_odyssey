@@ -40,5 +40,5 @@ $blog = theCore()->getBlog();
 
 //var_dump(get_pages());
 
-theCore()->render('photoblog_header', $data);
+theCore()->render('photoblog_header', $blog);
 ?>
