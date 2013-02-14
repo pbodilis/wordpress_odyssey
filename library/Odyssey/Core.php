@@ -131,33 +131,12 @@ class Core
             global $post;
             $post = get_post($postId);
         }
-echo "<pre>\n";
-// var_dump($post);
-
-$args = array(
-   'post_type' => 'attachment',
-   'numberposts' => -1,
-   'post_status' => null,
-   'post_parent' => $post->ID
-  );
-
-  $attachments = get_posts( $args );
-var_dump($attachments);
-//      if ( $attachments ) {
-//         foreach ( $attachments as $attachment ) {
-//            echo '<li>';
-//            echo wp_get_attachment_image( $attachment->ID, 'full' );
-//            echo '<p>';
-//            echo apply_filters( 'the_title', $attachment->post_title );
-//            echo '</p></li>';
-//           }
-//      }
 
         $ret['image'] = $this->getPostImage($post->ID);
 //      $ret = array_merge($ret, $this->getPostImage($post->ID));
 
         $ret['title'] = $post->post_title;
-        $ret['url']   = get_permalink($post->ID);
+        $ret['url']   = get_permalink();
         $ret['ID']    = $post->ID;
 
         $nextPost = get_next_post();
@@ -175,17 +154,40 @@ var_dump($attachments);
         return $ret;
     }
 
+    /**
+     * @return the first attached image of a post as the main post image
+     */
     public function getPostImage($postId)
     {
         $ret = array();
-        $image = \YapbImage::getInstanceFromDb($postId);
-        if (!is_null($image)) { // that's a yapb post
-            $ret['url']    = $image->uri;
-            $ret['width']  = $image->width;
-            $ret['height'] = $image->height;
 
-        $ret['exif'] = $this->getPostImageExif($image);
+        $args = array(
+            'numberposts'    => 1,
+            'order'          => 'ASC',
+            'post_mime_type' => 'image',
+            'post_parent'    => $postId,
+            'post_status'    => null,
+            'post_type'      => 'attachment'
+        );
+
+        $attachments = get_children( $args );
+        if ($attachments) {
+            $attachment = current($attachments);
+            $data = wp_get_attachment_image_src( $attachment->ID, 'full');
+
+            $ret['url']    = $data[0];
+            $ret['width']  = $data[1];
+            $ret['height'] = $data[2];
         }
+
+//         $image = \YapbImage::getInstanceFromDb($postId);
+//         if (!is_null($image)) { // that's a yapb post
+//             $ret['url']    = $image->uri;
+//             $ret['width']  = $image->width;
+//             $ret['height'] = $image->height;
+// 
+//             $ret['exif'] = $this->getPostImageExif($image);
+//         }
         return $ret;
     }
 
