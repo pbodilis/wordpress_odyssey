@@ -47,7 +47,8 @@ if (!isset($content_width)) {
     $content_width = 900;
 }
 
-add_theme_support('post-formats', array('image', 'video'));
+
+
 
 // // load_config ()
 // // loads custom settings from config file
