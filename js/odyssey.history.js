@@ -3,7 +3,7 @@ odyssey.history = {
 
     update: function(e, post) {
         odyssey.history.postID = post.ID;
-        History.pushState({postID: post.ID}, post.title, post.uri);
+        History.pushState({postID: post.ID}, post.title, post.url);
     },
     popstate: function() {
         var state = History.getState(); // Note: We are using History.getState() instead of event.state

@@ -173,21 +173,15 @@ class Core
         $attachments = get_children( $args );
         if ($attachments) {
             $attachment = current($attachments);
-            $data = wp_get_attachment_image_src( $attachment->ID, 'full');
+            $data = wp_get_attachment_image_src($attachment->ID, 'full');
 
             $ret['url']    = $data[0];
             $ret['width']  = $data[1];
             $ret['height'] = $data[2];
+
+            $ret['exif']   = $this->getPostImageExif(get_attached_file($attachment->ID));
         }
 
-//         $image = \YapbImage::getInstanceFromDb($postId);
-//         if (!is_null($image)) { // that's a yapb post
-//             $ret['url']    = $image->uri;
-//             $ret['width']  = $image->width;
-//             $ret['height'] = $image->height;
-// 
-//             $ret['exif'] = $this->getPostImageExif($image);
-//         }
         return $ret;
     }
 
@@ -197,9 +191,9 @@ class Core
      *
      * @return array of selected exif, with at least captureDate
      */
-    public function getPostImageExif($image)
+    public function getPostImageExif($filename)
     {
-        $filename = dirname(ABSPATH) . $image->uri;
+//         $filename = dirname(ABSPATH) . $image->uri;
         $exifs = @exif_read_data($filename, 'EXIF' );
         $exifs = array_change_key_case($exifs);
 
