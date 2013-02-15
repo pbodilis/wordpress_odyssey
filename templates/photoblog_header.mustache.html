@@ -25,10 +25,10 @@
         </div>
         <nav class="menu but">
             {{#next}}
-            <a href="{{url}}" class="prev" title="Previous: {{title}}"><span class="navArrow"></span></a>
+            <a href="{{url}}" class="prev" title="{{#_i18n}}Previous:{{/_i18n}} {{title}}"><span class="navArrow"></span></a>
             {{/next}}
             {{#previous}}
-            <a href="{{url}}" class="next" title="Previous: {{title}}"><span class="navArrow"></span></a>
+            <a href="{{url}}" class="next" title="{{#_i18n}}Next:{{/_i18n}} {{title}}"><span class="navArrow"></span></a>
             {{/previous}}
         </nav>
         <div class="menu but tooltip">
@@ -37,13 +37,13 @@
             </a>
             <div class="help">
                 <ul>
-                    <li>Keyboard navigation:
+                    <li>{{#_i18n}}Keyboard navigation:{{/_i18n}}
                         <ul>
-                            <li>press '&larr;' or '&rarr;' to jump to previous or next picture</li>
-                            <li>press 'space' to toggle panel</li>
+                            <li>{{#_i18n}}press '&larr;' or '&rarr;' to jump to previous or next picture{{/_i18n}}</li>
+                            <li>{{#_i18n}}press 'space' to toggle panel{{/_i18n}}</li>
                         </ul>
                     </li>
-                    <li>Use the square buttons to change background color</li>
+                    <li>{{#_i18n}}Use the square buttons to change background color{{/_i18n}}</li>
                 </ul>
             </div>
         </div>

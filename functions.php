@@ -32,6 +32,9 @@ function theCore() {
 //             'logger' => new Mustache_Logger_StreamLogger('php://stderr'),
         ));
 
+        // add i18n localization
+        $mustache->addHelper('_i18n', function($text) {return __($text);});
+
         $core = \Odyssey\Core::getInstance();
         $core->init(array(
             'enable_js' => true,
