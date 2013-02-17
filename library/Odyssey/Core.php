@@ -17,8 +17,10 @@ namespace Odyssey;
  */
 class Core
 {
+    protected $admin;
+    protected $exifManager;
     protected $jsHandle;
-    protected $templateEngine;
+    protected $renderer;
 
     static private $instance;
 
@@ -41,11 +43,11 @@ class Core
 
     public function init(array $params = array())
     {
+        $this->admin = Admin::getInstance();
+        $this->exifManager = ExifManager::getInstance();
+        $this->renderer = Renderer::getInstance();
         if (isset($params['enable_js']) && $params['enable_js']) {
             $this->jsHandle = new Javascript();
-        }
-        if (isset($params['template_engine'])) {
-            $this->templateEngine = $params['template_engine'];
         }
     }
 
@@ -65,8 +67,7 @@ class Core
 
     public function render($template, $data)
     {
-        $tpl = $this->templateEngine->loadTemplate($template);
-        echo $tpl->render($data);
+        echo $this->renderer->render($template, $data);
     }
 
     /**
@@ -179,63 +180,11 @@ class Core
             $ret['width']  = $data[1];
             $ret['height'] = $data[2];
 
-            $ret['exif']   = $this->getPostImageExif(get_attached_file($attachment->ID));
+            $ret['exif']   = $this->exifManager->getImageExif(get_attached_file($attachment->ID));
         }
 
         return $ret;
     }
-
-    /**
-     * use native php exif_read_data to retrieve exif data instead of yapb lib phpExifRW and ExifUtils
-     * this method still retrieves all selected exif filter in yapb to return the required exif info
-     *
-     * @return array of selected exif, with at least captureDate
-     */
-    public function getPostImageExif($filename)
-    {
-//         $filename = dirname(ABSPATH) . $image->uri;
-        $exifs = @exif_read_data($filename, 'EXIF' );
-        $exifs = array_change_key_case($exifs);
-
-        $ret = array();
-
-        $commaSeparatedList = get_option('yapb_view_exif_tagnames');
-        if ($commaSeparatedList == 'none') return array();
-        $tagnamesToBeShown = explode(',', $commaSeparatedList);
-        foreach($tagnamesToBeShown as $tagname) {
-            $ltagname = strtolower($tagname);
-            if (isset($exifs[$ltagname])) {
-                switch ($ltagname) {
-                    case 'fnumber':
-                    case 'focallength':
-                        $tagvalue = self::computeMath($exifs[$ltagname]);
-                        break;
-                    default:
-                        $tagvalue = $exifs[$ltagname];
-                        break;
-                }
-                $ret[$tagname] = $tagvalue;
-            }
-        }
-
-        if (isset($exifs['datetime'])) {
-            $ret['captureDate'] = date_i18n(get_option('date_format'), strtotime($exifs['datetime']));
-        }
-        return $ret;
-    }
-
-    /**
-     * compute mathematic string (such as the one contained in an exif field) without the use of eval
-     */
-    static private function computeMath($mathString)
-    {
-        $mathString = trim($mathString);                                   // trim white spaces
-        $mathString = ereg_replace('[^0-9\+-\*\/\(\) ]', '', $mathString); // remove any non-numbers chars; exception for math operators
-
-        $compute = create_function("", "return (" . $mathString . ");" );
-        return 0 + $compute();
-    }
-
 }
 
 ?>

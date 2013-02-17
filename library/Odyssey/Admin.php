@@ -18,6 +18,8 @@ namespace Odyssey;
 class Admin
 {
     static private $instance;
+    
+    private $managers = array();
 
     public function __construct()
     {
@@ -32,36 +34,38 @@ class Admin
         }
         return self::$instance;
     }
+    
+    public function register(&$m)
+    {
+        $this->managers[] = &$m;
+    }
 
-    function buildAdminPage() {
+    public function buildAdminPage() {
         add_menu_page(
             'Odyssey theme settings',      // page_title
             'Odyssey theme settings',      // menu_title
             'manage_options',              // capability
             'odyssey_settings',            // menu_slug
-            array(&$this, 'settingPage')); // renderer
+            array(&$this, 'getSettingPage')); // renderer
 
-        foreach() {
-            
+        foreach($this->managers as $manager) {
+            add_submenu_page(
+                'odyssey_settings',        // parent_slug
+                $manager->getPageTitle(), //'Exif settings',           // page_title
+                $manager->getMenuTitle(), //'Exif settings',           // menu_title
+                'manage_options',          // capability
+                $manager->getMenuSlug(), //'odyssey-settings-exifs',  // menu_slug
+                array(&$manager, getSettingPage)); //array(&$this, 'settingPage')); // renderer
         }
         
-        add_submenu_page(
-            'odyssey_settings',        // parent_slug
-            'Exif settings',           // page_title
-            'Exif settings',           // menu_title
-            'manage_options',          // capability
-            'odyssey-settings-exifs',  // menu_slug
-            array(&$this, 'settinPage')); // renderer
     }
-
-
-// This tells WordPress to call the function named "setup_theme_admin_menus"
-// when it's time to create the menu pages.
-add_action("admin_menu", "setup_theme_admin_menus");
-
-function setup_theme_admin_menus() {
-}
-
+    
+    public function getSettingPage()
+    {
+        $output = '';
+        $output .= '<h2>PROUT</h2>';
+        echo $output;
+    }
 
 }
 
