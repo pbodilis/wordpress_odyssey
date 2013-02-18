@@ -58,7 +58,8 @@ odyssey.core = {
         } else {
             var ajaxArgs = {
                 action: 'odyssey_get_json_post',
-                id:      id
+                id:     id,
+                post_nonce: odyssey.core.posts.post_nonce
             }
             jQuery.ajax({
                 url:      odyssey.ajaxurl,
