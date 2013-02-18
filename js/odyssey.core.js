@@ -57,8 +57,8 @@ odyssey.core = {
         if (odyssey.core.posts[id]) {
         } else {
             var ajaxArgs = {
-                action: 'odyssey_get_json_post',
-                id:     id,
+                action:     'odyssey_get_json_post',
+                id:         id,
                 post_nonce: odyssey.core.posts.post_nonce
             }
             jQuery.ajax({

@@ -75,24 +75,24 @@ class Core
      *  - name
      *  - uri
      *  - description
-	 *      */
+     */
     public function getBlog()
     {
-		$ret = array(
-		    'title'             => wp_title('&raquo;', false),
-		    'name'              => get_bloginfo('name'),
-		    'url'               => home_url('/'),
-		    'wpurl'             => site_url('/'),
-		    'version'           => get_bloginfo('version'),
-		    'html_type'         => get_bloginfo('html_type'),
-		    'description'       => get_bloginfo('description'),
-		    'stylesheet_url'    => get_bloginfo('stylesheet_url'),
-		    'rss2_url'          => get_bloginfo('rss2_url'),
-		    'comments_rss2_url' => get_bloginfo('comments_rss2_url'),
-		    'atom_url'          => get_bloginfo('atom_url'),
-		    'charset'           => get_bloginfo('charset'),
-		);
-		return $ret;
+        $ret = array(
+            'title'             => wp_title('&raquo;', false),
+            'name'              => get_bloginfo('name'),
+            'url'               => home_url('/'),
+            'wpurl'             => site_url('/'),
+            'version'           => get_bloginfo('version'),
+            'html_type'         => get_bloginfo('html_type'),
+            'description'       => get_bloginfo('description'),
+            'stylesheet_url'    => get_bloginfo('stylesheet_url'),
+            'rss2_url'          => get_bloginfo('rss2_url'),
+            'comments_rss2_url' => get_bloginfo('comments_rss2_url'),
+            'atom_url'          => get_bloginfo('atom_url'),
+            'charset'           => get_bloginfo('charset'),
+        );
+        return $ret;
     }
 
     public function getPostAndAdjacents($postId = NULL)
@@ -132,13 +132,13 @@ class Core
             global $post;
             $post = get_post($postId);
         }
-
         $ret['image'] = $this->getPostImage($post->ID);
 //      $ret = array_merge($ret, $this->getPostImage($post->ID));
 
-        $ret['title'] = $post->post_title;
-        $ret['url']   = get_permalink();
-        $ret['ID']    = $post->ID;
+        $ret['title']   = $post->post_title;
+        $ret['url']     = get_permalink();
+        $ret['ID']      = $post->ID;
+        $ret['content'] = apply_filters('the_content', $post->post_content);
 
         $nextPost = get_next_post();
         if (!empty($nextPost)) {

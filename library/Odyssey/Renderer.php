@@ -31,7 +31,7 @@ class Renderer
                 'loader' => new \Mustache_Loader_FilesystemLoader(
                 	dirname(dirname(dirname(__FILE__))) . '/templates',
                 	$options = array('extension' => '.mustache.html',)
-    			),
+            ),
             //     'partials_loader' => new Mustache_Loader_FilesystemLoader(dirname(__FILE__).'/views/partials'),
             //     'helpers' => array('i18n' => function($text) {
             //         // do something translatey here...
@@ -41,8 +41,8 @@ class Renderer
                 },
                 'charset' => 'ISO-8859-1',
     //             'logger' => new Mustache_Logger_StreamLogger('php://stderr'),
-	        )
-		);
+            )
+        );
 
         // add i18n localization
         $this->mustache->addHelper('_i18n', function($text) {return __($text);});

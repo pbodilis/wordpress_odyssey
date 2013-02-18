@@ -50,12 +50,12 @@ class Admin
 
         foreach($this->managers as $manager) {
             add_submenu_page(
-                'odyssey_settings',        // parent_slug
-                $manager->getPageTitle(), //'Exif settings',           // page_title
-                $manager->getMenuTitle(), //'Exif settings',           // menu_title
-                'manage_options',          // capability
-                $manager->getMenuSlug(), //'odyssey-settings-exifs',  // menu_slug
-                array(&$manager, getSettingPage)); //array(&$this, 'settingPage')); // renderer
+                'odyssey_settings',                  // parent_slug
+                $manager->getPageTitle(),            // page_title
+                $manager->getMenuTitle(),            // menu_title
+                'manage_options',                    // capability
+                $manager->getMenuSlug(),             // menu_slug
+                array(&$manager, 'getSettingPage')); // renderer
         }
         
     }

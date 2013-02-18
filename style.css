@@ -3,11 +3,11 @@ Theme Name: odyssey
 Theme URI: https://github.com/pbodilis/wordpress_odyssey
 Author: Pierre Bodilis
 Author URI: http://rataki.eu
-Description: <p>A photoblog theme based on <a href="http://www.wordpress.org/">Wordpress</a> and <a href="http://johannes.jarolim.com/yapb/">YAPB</a></p>
+Description: <p>A photoblog theme based on <a href="http://www.wordpress.org/">Wordpress</a></p>
 Version: 0.1
 License: GNU General Public License v2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
-Tags: gray, white, black, YAPB theme, photoblog, unipost
+Tags: gray, white, black
 Text Domain: Odyssey
 
 */
@@ -233,6 +233,7 @@ body.white .menu.but.nav a.prev span {
     border: 1px solid rgb(34,34,34);
     position: absolute;
     top: 35px;
+    margin-left: -300px;
 
     opacity: 0.5;
     filter:alpha(opacity=50);

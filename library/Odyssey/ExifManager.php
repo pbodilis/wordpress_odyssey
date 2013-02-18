@@ -17,8 +17,9 @@ namespace Odyssey;
  */
 class ExifManager
 {
-	const OPTION_NAME = 'odyssey_settings_exifs';
-	const SUBMIT_NAME = 'odyssey_exif_submit';
+    const OPTION_NAME = 'odyssey_settings_exifs';
+    const SUBMIT_NAME = 'odyssey_exif_submit';
+
     static private $instance;
 
     public function __construct()
@@ -49,61 +50,61 @@ class ExifManager
         return 'odyssey-settings-exifs';
     }
 
-	static public function getDefaultExifSettings()
+    static public function getDefaultExifSettings()
     {
-    	return array(
-			array('id' => 'Make',             'exif' => 'Manufacturer',     'checked' => false),
-			array('id' => 'Model',            'exif' => 'Model Name',       'checked' => true),
-			array('id' => 'DateTimeOriginal', 'exif' => 'Date',             'checked' => true),
-			array('id' => 'ExposureProgram',  'exif' => 'Exposure Program', 'checked' => true),
-			array('id' => 'ExposureTime',     'exif' => 'Exposure Time',    'checked' => true),
-			array('id' => 'FNumber',          'exif' => 'F Number',         'checked' => true),
-			array('id' => 'ISOSpeedRatings',  'exif' => 'ISO',              'checked' => true),
-			array('id' => 'FocalLength',      'exif' => 'Focal Length',     'checked' => true),
-			array('id' => 'MeteringMode',     'exif' => 'Metering Mode',    'checked' => false),
-			array('id' => 'LightSource',      'exif' => 'Light Source',     'checked' => true),
-			array('id' => 'SensingMethod',    'exif' => 'Sensing Method',   'checked' => true),
-			array('id' => 'ExposureMode',     'exif' => 'Exposure Mode',    'checked' => false),
-			
-			array('id' => 'FileName',         'exif' => 'File Name',        'checked' => false),
-			array('id' => 'FileSize',         'exif' => 'File Size',        'checked' => false),
-			array('id' => 'Software',         'exif' => 'Software',         'checked' => false),
-			array('id' => 'XResolution',      'exif' => 'X Resolution',     'checked' => false),
-			array('id' => 'YResolution',      'exif' => 'Y Resolution',     'checked' => false),
-			array('id' => 'ExifVersion',      'exif' => 'Exif Version',     'checked' => false),
+        return array(
+            array('id' => 'Make',             'exif' => 'Manufacturer',     'checked' => false),
+            array('id' => 'Model',            'exif' => 'Model Name',       'checked' => true),
+            array('id' => 'DateTimeOriginal', 'exif' => 'Date',             'checked' => true),
+            array('id' => 'ExposureProgram',  'exif' => 'Exposure Program', 'checked' => true),
+            array('id' => 'ExposureTime',     'exif' => 'Exposure Time',    'checked' => true),
+            array('id' => 'FNumber',          'exif' => 'F Number',         'checked' => true),
+            array('id' => 'ISOSpeedRatings',  'exif' => 'ISO',              'checked' => true),
+            array('id' => 'FocalLength',      'exif' => 'Focal Length',     'checked' => true),
+            array('id' => 'MeteringMode',     'exif' => 'Metering Mode',    'checked' => false),
+            array('id' => 'LightSource',      'exif' => 'Light Source',     'checked' => true),
+            array('id' => 'SensingMethod',    'exif' => 'Sensing Method',   'checked' => true),
+            array('id' => 'ExposureMode',     'exif' => 'Exposure Mode',    'checked' => false),
 
-			array('id' => 'Title',            'exif' => 'Title',            'checked' => false),
-		);
+            array('id' => 'FileName',         'exif' => 'File Name',        'checked' => false),
+            array('id' => 'FileSize',         'exif' => 'File Size',        'checked' => false),
+            array('id' => 'Software',         'exif' => 'Software',         'checked' => false),
+            array('id' => 'XResolution',      'exif' => 'X Resolution',     'checked' => false),
+            array('id' => 'YResolution',      'exif' => 'Y Resolution',     'checked' => false),
+            array('id' => 'ExifVersion',      'exif' => 'Exif Version',     'checked' => false),
+
+            array('id' => 'Title',            'exif' => 'Title',            'checked' => false),
+        );
     }
 
-	public function getExifSettings()
-	{
-		return get_option(self::OPTION_NAME, self::getDefaultExifSettings());
+    public function getExifSettings()
+    {
+        return get_option(self::OPTION_NAME, self::getDefaultExifSettings());
     }
-    
+
     function getSettingPage()
     {
-    	$exifSettings = $this->getExifSettings();
+        $exifSettings = $this->getExifSettings();
         if (isset($_POST[self::SUBMIT_NAME])) {
-        	unset($_POST[self::SUBMIT_NAME]);
-			$doUpdate = false;
-    		foreach ($exifSettings as &$exifSetting) {
-    			// it's checked now (as it is part of the POST), but wasn't checked before -> update
-    			if (isset($_POST[$exifSetting['id']]) && !$exifSetting['checked']) {
-    				$exifSetting['checked'] = true;
-    				$doUpdate = true;
-    			// it's unchecked now (as it is not part of the POST), but was checked before -> update
-				} else if (!isset($_POST[$exifSetting['id']]) && $exifSetting['checked']) {
-    				$exifSetting['checked'] = false;
-    				$doUpdate = true;
-    			}
-			}
+            unset($_POST[self::SUBMIT_NAME]);
+            $doUpdate = false;
+            foreach ($exifSettings as &$exifSetting) {
+                // it's checked now (as it is part of the POST), but wasn't checked before -> update
+                if (isset($_POST[$exifSetting['id']]) && !$exifSetting['checked']) {
+                    $exifSetting['checked'] = true;
+                    $doUpdate = true;
+                // it's unchecked now (as it is not part of the POST), but was checked before -> update
+                } else if (!isset($_POST[$exifSetting['id']]) && $exifSetting['checked']) {
+                    $exifSetting['checked'] = false;
+                    $doUpdate = true;
+                }
+            }
             $doUpdate && update_option(self::OPTION_NAME, $exifSettings);
         }
-		
+
         echo Renderer::getInstance()->render('admin_exif', array(
-        	'exifSettings' => array_values($exifSettings),
-        	'submitName'   => self::SUBMIT_NAME,
+            'exifSettings' => array_values($exifSettings),
+            'submitName'   => self::SUBMIT_NAME,
         ));
     }
 
@@ -120,11 +121,11 @@ class ExifManager
         $ret = array();
 
         foreach($exifSettings as $exifSetting) {
-        	if (isset($exifs[$exifSetting['id']]) === false) {
-                continue;
-        	}
-			
-			$exifTagname = $exifSetting['id'];
+            if (isset($exifs[$exifSetting['id']]) === false) {
+                    continue;
+            }
+
+            $exifTagname = $exifSetting['id'];
             switch ($exifTagname) {
                 case 'FNumber':
                 case 'FocalLength':
