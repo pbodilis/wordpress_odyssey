@@ -10,7 +10,7 @@ odyssey.image = {
         if (document.getElementById('wpadminbar')) {
             //headerHeight += jQuery('#wpadminbar').height();
             headerHeight += 28;
-		}
+        }
 
         // check in css file #photo_frame for consistency
         var borderWidth      = 5;

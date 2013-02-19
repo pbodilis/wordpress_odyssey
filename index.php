@@ -7,6 +7,8 @@ get_header();
 ?>
 
 <div id="photo_frame"></div>
+<div id="panel"></div>
+
 <?php
 //     theCore()->render('photoblog_image', theCore()->getPost());
 

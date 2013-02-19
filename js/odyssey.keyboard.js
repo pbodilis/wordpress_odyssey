@@ -11,6 +11,7 @@ odyssey.keyboard = {
             if (!txtFocus) { // if typing text, do not trigger events !
                 switch(e.which){
                     case 32:
+                        jQuery.publish('panel.toggle');
                         break;
                     case 37:
                         jQuery.publish('core.previous');

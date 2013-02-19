@@ -175,12 +175,13 @@ class Core
         if ($attachments) {
             $attachment = current($attachments);
             $data = wp_get_attachment_image_src($attachment->ID, 'full');
-
             $ret['url']    = $data[0];
             $ret['width']  = $data[1];
             $ret['height'] = $data[2];
 
-            $ret['exif']   = $this->exifManager->getImageExif(get_attached_file($attachment->ID));
+            $imgFilename = get_attached_file($attachment->ID);
+            $ret['captureDate'] = $this->exifManager->getCaptureDate($imgFilename);
+            $ret['exifs']       = $this->exifManager->getImageExif($imgFilename);
         }
 
         return $ret;

@@ -7,26 +7,23 @@
         </div>
         <div id="panel_scroll">
             <div id="panel_content">
-<!--                <h4 class="image_title"><IMAGE_TITLE></h4> -->
-                <div class="image_notes"><IMAGE_NOTES></div>
+                <h4 class="image_title">{{title}}</h4>
+                <div class="image_notes">{{content}}</div>
+                {{#image.exifs.0}}
                 <div class="panel_blocks">
                     <ul>
-                        <li><EXIF_CAMERA_MODEL></li>
-                        <li><EXIF_FOCAL_LENGTH></li>
-                        <li><EXIF_APERTURE></li>
-                        <li><EXIF_EXPOSURE_TIME></li>
-                        <li><EXIF_EXPOSURE_BIAS></li>
-                        <li>ISO <EXIF_ISO></li>
-                        <li><EXIF_FLASH_SUBIFD></li>
-                        <li><EXIF_CAPTURE_DATE></li>
+                        {{#image.exifs}}
+                        <li>{{value}}</li>
+                        {{/image.exifs}}
                     </ul>
                 </div>
-                <div class="panel_blocks"><ODYSSEY_IMAGE_CATEGORIES></div>
-                <div class="panel_blocks extras">
+                {{/image.exifs.0}}
+<!--                 <div class="panel_blocks"><ODYSSEY_IMAGE_CATEGORIES></div> -->
+<!--                <div class="panel_blocks extras">
                     <a href="http://www.coolphotoblogs.com/"><img src="http://www.coolphotoblogs.com/cpb.gif" alt="coolphotoblogs" width="80" height="15" border="0"/></a>
                     <a href="http://www.coolphotoblogs.com/profile4962"><img src="http://www.coolphotoblogs.com/profile.gif" alt="my profile" width="80" height="15" border="0"/></a>
-                </div>
-                <div class="panel_blocks"><AJAX_RATE stars="10" img_width="14px"></div>
+                </div>-->
+<!--                <div class="panel_blocks"><AJAX_RATE stars="10" img_width="14px"></div>
                 <h5>Leave a comment</h5>
                 <div id="commentform">
                     <form id="form" method="post" action="index.php?x=save_comment" name="commentform" accept-charset="UTF-8">
@@ -60,7 +57,7 @@
                 <h5><IMAGE_COMMENTS_NUMBER> Comment(s)</h5>
                 <div id="image_comments">
                     <ODYSSEY_COMMENTS>
-                </div>
+                </div>-->
 <!--                 <div class="panel_blocks powered_template">Powered by <a href="http://pixelpost.org/" title="Pixelpost">Pixelpost</a> - Template: <a href="http://www.pixelpost.org/extend/templates/odyssey/">Rasul v2.6</a></div> -->
             </div>
         </div>

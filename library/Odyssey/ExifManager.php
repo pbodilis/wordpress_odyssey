@@ -22,9 +22,12 @@ class ExifManager
 
     static private $instance;
 
+    private $exifCache;
+
     public function __construct()
     {
         Admin::getInstance()->register($this);
+        $this->exifCache = array();
     }
 
     static public function getInstance(array $params = array())
@@ -117,12 +120,12 @@ class ExifManager
     public function getImageExif($filename)
     {
         $exifSettings = $this->getExifSettings();
-        $exifs = @exif_read_data($filename, 'EXIF' );
+        $exifs = $this->readExif($filename);
         $ret = array();
 
         foreach($exifSettings as $exifSetting) {
             if (isset($exifs[$exifSetting['id']]) === false) {
-                    continue;
+                continue;
             }
 
             $exifTagname = $exifSetting['id'];
@@ -131,11 +134,6 @@ class ExifManager
                 case 'FocalLength':
                     $tagvalue = self::computeMath($exifs[$exifTagname]);
                     break;
-                case 'DateTime':
-                case 'DateTimeOriginal':
-                    $tagvalue = date_i18n(get_option('date_format'), strtotime($exifs[$exifTagname]));
-		            $ret['captureDate'] = $tagvalue;
-                    break;
                 default:
                     $tagvalue = $exifs[$exifTagname];
                     break;
@@ -143,6 +141,25 @@ class ExifManager
             $ret[] = array('name' => __($exifSetting['exif']), 'value' => $tagvalue);
         }
         return $ret;
+    }
+
+    public function getCaptureDate($filename)
+    {
+        $exifs = $this->readExif($filename);
+        if (isset($exifs['DateTime'])) {
+            return date_i18n(get_option('date_format'), strtotime($exifs['DateTime']));
+        } else {
+            return false;
+        }
+    }
+
+    private function readExif($filename)
+    {
+        if (!isset($this->exifCache[$filename])) {
+            $this->exifCache[$filename] = @exif_read_data($filename, 'EXIF');
+        }
+
+        return $this->exifCache[$filename];
     }
 
     /**

@@ -50,6 +50,7 @@ class Javascript
         // embed the javascript file that makes the AJAX request
         wp_enqueue_script('odyssey-core',       get_template_directory_uri() . '/js/odyssey.core.js',       array('jquery'));
         wp_enqueue_script('odyssey-image',      get_template_directory_uri() . '/js/odyssey.image.js',      array('jquery'));
+        wp_enqueue_script('odyssey-panel',      get_template_directory_uri() . '/js/odyssey.panel.js',      array('jquery'));
         wp_enqueue_script('odyssey-keyboard',   get_template_directory_uri() . '/js/odyssey.keyboard.js',   array('jquery'));
         wp_enqueue_script('odyssey-history',    get_template_directory_uri() . '/js/odyssey.history.js',    array('history', 'history-adapter'));
         wp_enqueue_script('odyssey-navigation', get_template_directory_uri() . '/js/odyssey.navigation.js', array('jquery'));
@@ -78,6 +79,7 @@ class Javascript
         $ret = '';
         $tpls = array(
             'photoblog_image' => 'photoblog_image.mustache.html',
+            'photoblog_panel' => 'photoblog_panel.mustache.html',
         );
         $tplDir = get_template_directory_uri() . '/templates/';
         foreach($tpls as $tplName => $tplFile) {
