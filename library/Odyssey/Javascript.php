@@ -99,8 +99,8 @@ class Javascript
 
         // find something better than direct access to $_GET/$_POST
         $ret = array(
-            'post'  => Core::getInstance()->getPost($_GET['id']),
-            'nonce' => wp_create_nonce(self::POST_NONCE),
+            'post'                     => Core::getInstance()->getPost($_GET['id']),
+            self::POST_NONCE_EMBEDNAME => wp_create_nonce(self::POST_NONCE),
         );
         echo json_encode($ret);
         die();
@@ -117,8 +117,8 @@ class Javascript
 
         // find something better than direct access to $_GET/$_POST
         $ret = array(
-            'posts' => Core::getInstance()->getPostAndAdjacents($_GET['id']),
-            'nonce' => wp_create_nonce(self::POST_NONCE),
+            'posts'                    => Core::getInstance()->getPostAndAdjacents($_GET['id']),
+            self::POST_NONCE_EMBEDNAME => wp_create_nonce(self::POST_NONCE),
         );
         echo json_encode($ret);
         die();

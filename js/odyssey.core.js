@@ -22,7 +22,8 @@ odyssey.core = {
             odyssey.core.postNotifyAll(); // notify all views the current post needs to be displayed
         } else { // retrieve the post
             var ajaxArgs = {
-                action: 'odyssey_get_json_post_and_adjacents',
+                action:     'odyssey_get_json_post_and_adjacents',
+                post_nonce: odyssey.post_nonce
             }
             if (typeof(id) !== 'undefined') {
                 ajaxArgs.id = id;
