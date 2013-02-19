@@ -1,13 +1,13 @@
 odyssey.navigation = {
     init: function() {
-        jQuery(document).on('click', 'nav .prev', function(event) {
+        jQuery(document).on('click', 'nav .prev', function(e) {
             jQuery.publish('core.previous');
-            event.preventDefault();
+            e.preventDefault();
             return false;
         });
-        jQuery(document).on('click', 'nav .next', function(event) {
+        jQuery(document).on('click', 'nav .next', function(e) {
             jQuery.publish('core.next');
-            event.preventDefault();
+            e.preventDefault();
             return false;
         });
     }

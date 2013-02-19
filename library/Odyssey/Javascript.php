@@ -25,8 +25,8 @@ class Javascript
         // add the callbacks
         add_action('wp_ajax_odyssey_get_json_post_and_adjacents',        array(&$this, 'getJsonPostAndAdjacents'));
         add_action('wp_ajax_nopriv_odyssey_get_json_post_and_adjacents', array(&$this, 'getJsonPostAndAdjacents'));
-        add_action('wp_ajax_odyssey_get_json_post',        array(&$this, 'getJsonPost'));
-        add_action('wp_ajax_nopriv_odyssey_get_json_post', array(&$this, 'getJsonPost'));
+        add_action('wp_ajax_odyssey_get_json_post',                      array(&$this, 'getJsonPost'));
+        add_action('wp_ajax_nopriv_odyssey_get_json_post',               array(&$this, 'getJsonPost'));
     }
 
     /**
@@ -49,6 +49,7 @@ class Javascript
 
         // embed the javascript file that makes the AJAX request
         wp_enqueue_script('odyssey-core',       get_template_directory_uri() . '/js/odyssey.core.js',       array('jquery'));
+        wp_enqueue_script('odyssey-cookie',     get_template_directory_uri() . '/js/odyssey.cookie.js',     array('jquery'));
         wp_enqueue_script('odyssey-image',      get_template_directory_uri() . '/js/odyssey.image.js',      array('jquery'));
         wp_enqueue_script('odyssey-panel',      get_template_directory_uri() . '/js/odyssey.panel.js',      array('jquery'));
         wp_enqueue_script('odyssey-keyboard',   get_template_directory_uri() . '/js/odyssey.keyboard.js',   array('jquery'));
@@ -57,11 +58,10 @@ class Javascript
         wp_enqueue_script('odyssey',            get_template_directory_uri() . '/js/odyssey.js',            array('jquery'));
 
         // declare the URL to the file that handles the AJAX request (wp-admin/admin-ajax.php)
-        $ret = theCore()->getPostAndAdjacents();
-        $ret[self::POST_NONCE_EMBEDNAME] = wp_create_nonce(self::POST_NONCE);
         wp_localize_script('odyssey-core', 'odyssey', array(
-            'ajaxurl' => admin_url('admin-ajax.php'),
-            'postStr' => json_encode($ret),
+            'ajaxurl'                  => admin_url('admin-ajax.php'),
+            'postStr'                  => json_encode(Core::getInstance()->getPostAndAdjacents()),
+            self::POST_NONCE_EMBEDNAME => wp_create_nonce(self::POST_NONCE),
         ));
 //         <script type="text/javascript">
 //             var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
@@ -92,14 +92,16 @@ class Javascript
      * \returns a JSON array
      */
     public function getJsonPost() {
-        $nonce = $_GET[self::POST_NONCE_EMBEDNAME];
+        $nonce = isset($_GET[self::POST_NONCE_EMBEDNAME]) ? $_GET[self::POST_NONCE_EMBEDNAME] : null;
         // check to see if the submitted nonce matches with the generated nonce we created earlier
         if (!wp_verify_nonce($nonce, self::POST_NONCE))
             die ('Busted!');
 
         // find something better than direct access to $_GET/$_POST
-        $ret = Core::getInstance()->getPost($_GET['id']);
-        $ret['nonce'] = wp_create_nonce(self::POST_NONCE);
+        $ret = array(
+            'post'  => Core::getInstance()->getPost($_GET['id']),
+            'nonce' => wp_create_nonce(self::POST_NONCE),
+        );
         echo json_encode($ret);
         die();
     }
@@ -108,14 +110,16 @@ class Javascript
      * \returns a JSON array
      */
     public function getJsonPostAndAdjacents() {
-        $nonce = $_GET[self::POST_NONCE_EMBEDNAME];
+        $nonce = isset($_GET[self::POST_NONCE_EMBEDNAME]) ? $_GET[self::POST_NONCE_EMBEDNAME] : null;
         // check to see if the submitted nonce matches with the generated nonce we created earlier
         if (!wp_verify_nonce($nonce, self::POST_NONCE))
             die ('Busted!');
 
         // find something better than direct access to $_GET/$_POST
-        $ret = Core::getInstance()->getPostAndAdjacents($_GET['id']);
-        $ret['nonce'] = wp_create_nonce(self::POST_NONCE);
+        $ret = array(
+            'posts' => Core::getInstance()->getPostAndAdjacents($_GET['id']),
+            'nonce' => wp_create_nonce(self::POST_NONCE),
+        );
         echo json_encode($ret);
         die();
     }

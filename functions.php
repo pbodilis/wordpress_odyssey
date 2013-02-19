@@ -39,7 +39,9 @@ function oddyssey_filter_content($content) {
             $content = strip_shortcodes($content);
             // ouch, now, that's a ugly hack :/
             // remove the image, the link and the paragraph in which the image is.
-            $content = preg_replace('/<img[^>]+\>/i', __('Download image'), $content, 1);
+            $content = preg_replace('/<img[^>]+\>/', __('Download image'), $content, 1);
+            $content = preg_replace('/<p[^>]*>[\s|&nbsp;]*<\/p>/', '', $content);
+            $content = preg_replace('/(width|height)="\d*"\s/', '', $content);
             break;
         default:
             break;

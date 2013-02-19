@@ -12,6 +12,8 @@ odyssey.keyboard = {
                 switch(e.which){
                     case 32:
                         jQuery.publish('panel.toggle');
+                        e.preventDefault();
+                        return false;
                         break;
                     case 37:
                         jQuery.publish('core.previous');

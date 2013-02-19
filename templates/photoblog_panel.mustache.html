@@ -8,12 +8,12 @@
         <div id="panel_scroll">
             <div id="panel_content">
                 <h4 class="image_title">{{title}}</h4>
-                <div class="image_notes">{{content}}</div>
+                <div class="image_notes">{{{content}}}</div>
                 {{#image.exifs.0}}
                 <div class="panel_blocks">
                     <ul>
                         {{#image.exifs}}
-                        <li>{{value}}</li>
+                        <li>{{name}}{{value}}</li>
                         {{/image.exifs}}
                     </ul>
                 </div>

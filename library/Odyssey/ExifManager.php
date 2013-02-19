@@ -124,21 +124,24 @@ class ExifManager
         $ret = array();
 
         foreach($exifSettings as $exifSetting) {
-            if (isset($exifs[$exifSetting['id']]) === false) {
+            $exifTagname = $exifSetting['id'];
+            if (!$exifSetting['checked'] || isset($exifs[$exifTagname]) === false) {
                 continue;
             }
 
-            $exifTagname = $exifSetting['id'];
             switch ($exifTagname) {
                 case 'FNumber':
                 case 'FocalLength':
                     $tagvalue = self::computeMath($exifs[$exifTagname]);
                     break;
+                case 'ExposureProgram':
+                    $tagvalue = self::exposureProgram($exifs[$exifTagname]);
+                    break;
                 default:
                     $tagvalue = $exifs[$exifTagname];
                     break;
             }
-            $ret[] = array('name' => __($exifSetting['exif']), 'value' => $tagvalue);
+            $ret[] = array('name' => __($exifSetting['exif'].': '), 'value' => $tagvalue);
         }
         return $ret;
     }
@@ -172,6 +175,28 @@ class ExifManager
 
         $compute = create_function("", "return (" . $mathString . ");" );
         return 0 + $compute();
+    }
+
+    /**
+     *
+     */
+    static private function exposureProgram($ep)
+    {
+        $ep2str = array(
+            0 => 'Not defined',
+            1 => 'Manual',
+            2 => 'Normal program',
+            3 => 'Aperture priority',
+            4 => 'Shutter priority',
+            5 => 'Creative program',
+            6 => 'Action program',
+            7 => 'Portrait mode',
+            8 => 'Landscape mode',
+        );
+        if (!isset($ep2str[$ep])) {
+            $ep = 0;
+        }
+        return $ep2str[$ep];
     }
 
 }

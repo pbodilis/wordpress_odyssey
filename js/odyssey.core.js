@@ -31,7 +31,10 @@ odyssey.core = {
                 url:      odyssey.ajaxurl,
                 dataType: 'json',
                 data:     ajaxArgs,
-            }).done(odyssey.core.updateCurrentPost);
+            }).done(function(r) {
+                odyssey.post_nonce = r.nonce;
+                odyssey.core.updateCurrentPost(r.posts);
+            });
         }
     },
     updateCurrentPost: function(p) {
@@ -59,14 +62,15 @@ odyssey.core = {
             var ajaxArgs = {
                 action:     'odyssey_get_json_post',
                 id:         id,
-                post_nonce: odyssey.core.posts.post_nonce
+                post_nonce: odyssey.post_nonce
             }
             jQuery.ajax({
                 url:      odyssey.ajaxurl,
                 dataType: 'json',
                 data:     ajaxArgs,
-            }).done(function(post) {
-                odyssey.core.posts[id] = post;
+            }).done(function(r) {
+                odyssey.core.posts[id] = r.post;
+                odyssey.core.nonce     = r.nonce;
             });
         }
     },

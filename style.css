@@ -482,7 +482,10 @@ body.white .menu.but.nav a.prev span {
 }
 #panel_content .image_notes {
     font-size: 12.5px;
-    text-indent: 20px;
+/*     text-indent: 20px; */
+}
+#panel_content .image_notes p img {
+/*     width: 100%; */
 }
 #panel_content .panel_blocks {
     font-size: 10.5px;
