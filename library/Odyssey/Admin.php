@@ -40,30 +40,38 @@ class Admin
     }
 
     public function buildAdminPage() {
-        add_menu_page(
+
+        add_submenu_page(
+            'themes.php',                  // parent_slug
             'Odyssey theme settings',      // page_title
             'Odyssey theme settings',      // menu_title
             'manage_options',              // capability
-            'odyssey_settings',            // menu_slug
+            'odyssey_theme_settings',      // menu_slug
             array(&$this, 'getSettingPage')); // renderer
-
-        foreach($this->managers as $manager) {
-            add_submenu_page(
-                'odyssey_settings',                  // parent_slug
-                $manager->getPageTitle(),            // page_title
-                $manager->getMenuTitle(),            // menu_title
-                'manage_options',                    // capability
-                $manager->getMenuSlug(),             // menu_slug
-                array(&$manager, 'getSettingPage')); // renderer
-        }
+//         add_menu_page(
+//             'Odyssey theme settings',      // page_title
+//             'Odyssey theme settings',      // menu_title
+//             'manage_options',              // capability
+//             'odyssey_settings',            // menu_slug
+//             array(&$this, 'getSettingPage')); // renderer
+// 
+//         foreach($this->managers as $manager) {
+//             add_submenu_page(
+//                 'odyssey_settings',                  // parent_slug
+//                 $manager->getPageTitle(),            // page_title
+//                 $manager->getMenuTitle(),            // menu_title
+//                 'manage_options',                    // capability
+//                 $manager->getMenuSlug(),             // menu_slug
+//                 array(&$manager, 'getSettingPage')); // renderer
+//         }
         
     }
     
     public function getSettingPage()
     {
-        $output = '';
-        $output .= '<h2>PROUT</h2>';
-        echo $output;
+        foreach($this->managers as $manager) {
+            $manager->getSettingPage();
+        }
     }
 
 }

@@ -42,9 +42,9 @@ class Core
 
     public function init(array $params = array())
     {
-        $this->admin = Admin::getInstance();
+        $this->admin       = Admin::getInstance();
         $this->exifManager = ExifManager::getInstance();
-        $this->renderer = Renderer::getInstance();
+        $this->renderer    = Renderer::getInstance();
         if (isset($params['enable_js']) && $params['enable_js']) {
             $this->jsHandle = Javascript::getInstance();
         }
