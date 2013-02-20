@@ -33,7 +33,7 @@ if (!isset($content_width)) {
 
 add_theme_support('post-formats', array('image', 'video'));
 
-function oddyssey_filter_content($content) {
+function odyssey_filter_content($content) {
     switch (get_post_format()) {
         case 'image':
             $content = strip_shortcodes($content);
@@ -49,7 +49,18 @@ function oddyssey_filter_content($content) {
     
     return $content;
 }
-add_filter('the_content', 'oddyssey_filter_content');
+add_filter('the_content', 'odyssey_filter_content');
 // remove_filter('the_content', 'wpautop');
+
+
+
+add_filter('body_class','odyssey_body_class');
+function odyssey_body_class($classes) {
+	// add 'class-name' to the $classes array
+	$color = isset($_COOKIE['odyssey_theme_color']) ? $_COOKIE['odyssey_theme_color'] : '';
+	$classes[] = $color;
+	// return the $classes array
+	return $classes;
+}
 
 ?>
