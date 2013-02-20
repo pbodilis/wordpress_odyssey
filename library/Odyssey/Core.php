@@ -22,17 +22,9 @@ class Core
     protected $jsHandle;
     protected $renderer;
 
-    static private $instance;
-
     protected $postCache;
 
-    private function __construct(array $params = array())
-    {
-        $this->init($params);
-
-        $this->postCache = array();
-    }
-
+    static private $instance;
     static public function getInstance(array $params = array())
     {
         if (!isset(self::$instance)) {
@@ -41,13 +33,20 @@ class Core
         return self::$instance;
     }
 
+    public function __construct(array $params = array())
+    {
+        $this->init($params);
+
+        $this->postCache = array();
+    }
+
     public function init(array $params = array())
     {
         $this->admin = Admin::getInstance();
         $this->exifManager = ExifManager::getInstance();
         $this->renderer = Renderer::getInstance();
         if (isset($params['enable_js']) && $params['enable_js']) {
-            $this->jsHandle = new Javascript();
+            $this->jsHandle = Javascript::getInstance();
         }
     }
 
@@ -132,7 +131,8 @@ class Core
             global $post;
             $post = get_post($postId);
         }
-        $ret['image'] = $this->getPostImage($post->ID);
+        $ret['image']    = $this->getPostImage($post->ID);
+        $ret['comments'] = $this->getPostComments($post->ID);
 //      $ret = array_merge($ret, $this->getPostImage($post->ID));
 
         $ret['title']   = $post->post_title;
@@ -185,6 +185,36 @@ class Core
         }
 
         return $ret;
+    }
+
+    public function getPostComments($postId)
+    {
+        $ret = array();
+
+        $args = array(
+            'post_id' => $postId,
+            'status'  => 'approve',
+        );
+
+        $comments = get_comments($args);
+        foreach($comments as $comment) {
+            $ret[] = array(
+                'author'    => $comment->comment_author,
+                'authorUrl' => $comment->comment_author_url,
+                'date'      => $comment->comment_date,
+                'content'   => $comment->comment_content,
+            );
+        }
+        
+//         var_dump($ret);
+        return $ret;
+    }
+
+    public function getPanelState()
+    {
+        return array(
+            'panelClass' => isset($_COOKIE['odyssey_theme_panelVisibility']) ? $_COOKIE['odyssey_theme_panelVisibility'] : '',
+        );
     }
 }
 

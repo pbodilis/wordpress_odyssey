@@ -17,16 +17,9 @@ namespace Odyssey;
  */
 class Admin
 {
-    static private $instance;
-    
     private $managers = array();
 
-    public function __construct()
-    {
-        // add the callbacks
-        add_action('admin_menu', array(&$this, 'buildAdminPage'));
-    }
-
+    static private $instance;
     static public function getInstance(array $params = array())
     {
         if (!isset(self::$instance)) {
@@ -34,7 +27,13 @@ class Admin
         }
         return self::$instance;
     }
-    
+
+    public function __construct()
+    {
+        // add the callbacks
+        add_action('admin_menu', array(&$this, 'buildAdminPage'));
+    }
+
     public function register(&$m)
     {
         $this->managers[] = &$m;

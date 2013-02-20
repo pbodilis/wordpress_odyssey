@@ -17,11 +17,18 @@ namespace Odyssey;
  */
 class Renderer
 {
-    static private $instance;
-
     protected $mustache;
 
-    public function __construct()
+    static private $instance;
+    static public function getInstance(array $params = array())
+    {
+        if (!isset(self::$instance)) {
+            self::$instance = new self($params);
+        }
+        return self::$instance;
+    }
+
+    public function __construct(array $params = array())
     {
         $this->mustache = new \Mustache_Engine(
             array(
@@ -46,14 +53,6 @@ class Renderer
 
         // add i18n localization
         $this->mustache->addHelper('_i18n', function($text) {return __($text);});
-    }
-
-    static public function getInstance(array $params = array())
-    {
-        if (!isset(self::$instance)) {
-            self::$instance = new self($params);
-        }
-        return self::$instance;
     }
 
     public function render($template, $data)

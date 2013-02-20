@@ -16,7 +16,6 @@ namespace Odyssey;
  */
 class Autoloader
 {
-
     private $baseDir;
 
     /**

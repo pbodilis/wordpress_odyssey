@@ -20,6 +20,18 @@ class Javascript
     const POST_NONCE_EMBEDNAME = 'post_nonce';
     const POST_NONCE           = 'oddyssey-ajax-post-nonce';
 
+    const COMMENTS_NONCE_EMBEDNAME = 'comments_nonce';
+    const COMMENTS_NONCE           = 'oddyssey-ajax-comments-nonce';
+
+    static private $instance;
+    static public function getInstance(array $params = array())
+    {
+        if (!isset(self::$instance)) {
+            self::$instance = new self($params);
+        }
+        return self::$instance;
+    }
+
     public function __construct()
     {
         // add the callbacks
@@ -27,6 +39,11 @@ class Javascript
         add_action('wp_ajax_nopriv_odyssey_get_json_post_and_adjacents', array(&$this, 'getJsonPostAndAdjacents'));
         add_action('wp_ajax_odyssey_get_json_post',                      array(&$this, 'getJsonPost'));
         add_action('wp_ajax_nopriv_odyssey_get_json_post',               array(&$this, 'getJsonPost'));
+        add_action('wp_ajax_odyssey_get_json_comments',                  array(&$this, 'getJsonComments'));
+        add_action('wp_ajax_nopriv_odyssey_get_json_comments',           array(&$this, 'getJsonComments'));
+
+        add_action('wp_head',            array(&$this, 'enqueueTemplates'), 0);
+        add_action('wp_enqueue_scripts', array(&$this, 'enqueueJavascript'));
     }
 
     /**
@@ -34,33 +51,34 @@ class Javascript
      *
      * @since 0.1
      */
-    public function embedJavascript()
+    public function enqueueJavascript()
     {
         // template engine
-        wp_enqueue_script('mustache',          get_template_directory_uri() . '/js/mustache.js',            array('jquery'));
-        wp_enqueue_script('chevron',           get_template_directory_uri() . '/js/chevron.js',             array('jquery'));
+        wp_enqueue_script('mustache',           get_template_directory_uri() . '/js/mustache.js',           array('jquery'));
+        wp_enqueue_script('chevron',            get_template_directory_uri() . '/js/chevron.js',            array('jquery'));
 
         // pub sub implementation
-        wp_enqueue_script('pubsub',            get_template_directory_uri() . '/js/ba-tiny-pubsub.js',      array('jquery'));
+        wp_enqueue_script('pubsub',             get_template_directory_uri() . '/js/ba-tiny-pubsub.js',     array('jquery'));
 
         // js hsitory management
-        wp_enqueue_script('history',           get_template_directory_uri() . '/js/history.js');
-        wp_enqueue_script('history-adapter',   get_template_directory_uri() . '/js/history.adapter.native.js');
+        wp_enqueue_script('history',            get_template_directory_uri() . '/js/history.js');
+        wp_enqueue_script('history-adapter',    get_template_directory_uri() . '/js/history.adapter.native.js');
 
         // embed the javascript file that makes the AJAX request
-        wp_enqueue_script('odyssey-core',       get_template_directory_uri() . '/js/odyssey.core.js',       array('jquery'));
-        wp_enqueue_script('odyssey-cookie',     get_template_directory_uri() . '/js/odyssey.cookie.js',     array('jquery'));
-        wp_enqueue_script('odyssey-image',      get_template_directory_uri() . '/js/odyssey.image.js',      array('jquery'));
-        wp_enqueue_script('odyssey-panel',      get_template_directory_uri() . '/js/odyssey.panel.js',      array('jquery'));
-        wp_enqueue_script('odyssey-keyboard',   get_template_directory_uri() . '/js/odyssey.keyboard.js',   array('jquery'));
-        wp_enqueue_script('odyssey-history',    get_template_directory_uri() . '/js/odyssey.history.js',    array('history', 'history-adapter'));
-        wp_enqueue_script('odyssey-navigation', get_template_directory_uri() . '/js/odyssey.navigation.js', array('jquery'));
-        wp_enqueue_script('odyssey',            get_template_directory_uri() . '/js/odyssey.js',            array('jquery'));
+        wp_enqueue_script('odyssey-core',       get_template_directory_uri() . '/js/odyssey.core.js',       array('jquery'), false, true);
+        wp_enqueue_script('odyssey-cookie',     get_template_directory_uri() . '/js/odyssey.cookie.js',     array('jquery'), false, true);
+        wp_enqueue_script('odyssey-image',      get_template_directory_uri() . '/js/odyssey.image.js',      array('jquery'), false, true);
+        wp_enqueue_script('odyssey-header',     get_template_directory_uri() . '/js/odyssey.header.js',     array('jquery'), false, true);
+        wp_enqueue_script('odyssey-panel',      get_template_directory_uri() . '/js/odyssey.panel.js',      array('jquery'), false, true);
+        wp_enqueue_script('odyssey-keyboard',   get_template_directory_uri() . '/js/odyssey.keyboard.js',   array('jquery'), false, true);
+        wp_enqueue_script('odyssey-history',    get_template_directory_uri() . '/js/odyssey.history.js',    array('history', 'history-adapter'), false, true);
+        wp_enqueue_script('odyssey-navigation', get_template_directory_uri() . '/js/odyssey.navigation.js', array('jquery'), false, true);
+        wp_enqueue_script('odyssey',            get_template_directory_uri() . '/js/odyssey.js',            array('jquery'), false, true);
 
         // declare the URL to the file that handles the AJAX request (wp-admin/admin-ajax.php)
         wp_localize_script('odyssey-core', 'odyssey', array(
             'ajaxurl'                  => admin_url('admin-ajax.php'),
-            'postStr'                  => json_encode(Core::getInstance()->getPostAndAdjacents()),
+            'posts'                    => json_encode(Core::getInstance()->getPostAndAdjacents()),
             self::POST_NONCE_EMBEDNAME => wp_create_nonce(self::POST_NONCE),
         ));
 //         <script type="text/javascript">
@@ -74,18 +92,18 @@ class Javascript
 //         </script>
     }
 
-    public function embedTemplates()
+    public function enqueueTemplates()
     {
         $ret = '';
         $tpls = array(
-            'photoblog_image' => 'photoblog_image.mustache.html',
-            'photoblog_panel' => 'photoblog_panel.mustache.html',
+            'photoblog_image'   => 'photoblog_image.mustache.html',
+            'photoblog_content' => 'photoblog_content.mustache.html',
         );
         $tplDir = get_template_directory_uri() . '/templates/';
         foreach($tpls as $tplName => $tplFile) {
             $ret .= '<link href="' . $tplDir . $tplFile . '" rel="template" id="' . $tplName . '"/>' . PHP_EOL;
         }
-        return $ret;
+        echo $ret;
     }
         
     /**
@@ -119,6 +137,24 @@ class Javascript
         $ret = array(
             'posts'                    => Core::getInstance()->getPostAndAdjacents($_GET['id']),
             self::POST_NONCE_EMBEDNAME => wp_create_nonce(self::POST_NONCE),
+        );
+        echo json_encode($ret);
+        die();
+    }
+
+    /**
+     * \returns a JSON array
+     */
+    public function getJsonComments() {
+        $nonce = isset($_GET[self::COMMENTS_NONCE_EMBEDNAME]) ? $_GET[self::COMMENTS_NONCE_EMBEDNAME] : null;
+        // check to see if the submitted nonce matches with the generated nonce we created earlier
+        if (!wp_verify_nonce($nonce, self::COMMENTS_NONCE))
+            die ('Busted!');
+
+        // find something better than direct access to $_GET/$_POST
+        $ret = array(
+            'comments'                     => Core::getInstance()->getComments($_GET['id']),
+            self::COMMENTS_NONCE_EMBEDNAME => wp_create_nonce(self::COMMENTS_NONCE),
         );
         echo json_encode($ret);
         die();

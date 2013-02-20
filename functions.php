@@ -17,8 +17,7 @@ function theCore() {
     static $core;
     if (!isset($core)) {
 
-        $core = \Odyssey\Core::getInstance();
-        $core->init(array(
+        $core = \Odyssey\Core::getInstance(array(
             'enable_js' => true,
         ));
     }
@@ -56,11 +55,11 @@ add_filter('the_content', 'odyssey_filter_content');
 
 add_filter('body_class','odyssey_body_class');
 function odyssey_body_class($classes) {
-	// add 'class-name' to the $classes array
-	$color = isset($_COOKIE['odyssey_theme_color']) ? $_COOKIE['odyssey_theme_color'] : '';
-	$classes[] = $color;
-	// return the $classes array
-	return $classes;
+    // add 'class-name' to the $classes array
+    $color = isset($_COOKIE['odyssey_theme_color']) ? $_COOKIE['odyssey_theme_color'] : '';
+    $classes[] = $color;
+    // return the $classes array
+    return $classes;
 }
 
 ?>

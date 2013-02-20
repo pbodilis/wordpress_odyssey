@@ -20,22 +20,21 @@ class ExifManager
     const OPTION_NAME = 'odyssey_settings_exifs';
     const SUBMIT_NAME = 'odyssey_exif_submit';
 
-    static private $instance;
-
     private $exifCache;
 
-    public function __construct()
-    {
-        Admin::getInstance()->register($this);
-        $this->exifCache = array();
-    }
-
+    static private $instance;
     static public function getInstance(array $params = array())
     {
         if (!isset(self::$instance)) {
             self::$instance = new self($params);
         }
         return self::$instance;
+    }
+
+    public function __construct(array $params = array())
+    {
+        Admin::getInstance()->register($this);
+        $this->exifCache = array();
     }
 
     public function getPageTitle()

@@ -28,9 +28,6 @@ $blog = theCore()->getBlog();
     <title><?php echo $blog['name']; ?> <?php echo $blog['title']; ?></title>
 
     <!-- theme js -->
-    <?php theCore()->embedJavascript(); ?>
-    <?php theCore()->embedTemplates(); ?>
-
     <?php wp_head(); ?>
 </head>
 <body <?php body_class();?> >

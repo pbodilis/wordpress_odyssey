@@ -7,13 +7,15 @@ odyssey.image = {
         var photoInfosHeight = 42;
         //var headerHeight     = jQuery('header').height();
         var headerHeight     = 30;
-        if (document.getElementById('wpadminbar')) {
+        if (jQuery('body').hasClass('admin-bar')) { // am I logged in?
             //headerHeight += jQuery('#wpadminbar').height();
             headerHeight += 28;
         }
+        // panel handle width
+        var panelHandleWidth = 32;
 
         // check in css file #photo_frame for consistency
-        var borderWidth      = 5;
+        var borderWidth = 5;
 
         var dE = document.documentElement;
 
@@ -39,10 +41,10 @@ odyssey.image = {
         frameHeight = Math.round(resizedHeight);
         frameWidth  = Math.round(resizedWidth);
         return {
-            width:      frameWidth,
-            height:     frameHeight,
-            marginLeft: (dE.clientWidth - frameWidth  ) / 2 - borderWidth,
-            marginTop:  (dE.clientHeight - frameHeight + headerHeight) / 2 - borderWidth - offsetHeight
+            width:  frameWidth,
+            height: frameHeight,
+            left:   (dE.clientWidth - frameWidth + panelHandleWidth) / 2 - borderWidth,
+            top:    (dE.clientHeight - frameHeight + headerHeight) / 2 - borderWidth - offsetHeight
         };
     },
     render: function(e, post) {
@@ -63,8 +65,8 @@ odyssey.image = {
             'height': frame.height
         });
         jQuery('#photo_frame').css({
-            'margin-left': frame.marginLeft,
-            'margin-top': frame.marginTop
+            'left': frame.marginLeft,
+            'top': frame.marginTop
         });
     },
 }
