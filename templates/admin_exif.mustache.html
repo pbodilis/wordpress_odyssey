@@ -1,21 +1,23 @@
-<h2>Display Exif Settings</h2>
-<form action="" method="post" id="odyssey_exif_form" style="margin: auto; width: 600px; ">
-	<hr size="1" />
-	<span style="font-weight: bold;" >&bull; Items to display:</span><br />
-    <ul>
-    {{#exifSettings}}
-        <li>
-            <input id="{{id}}" name="{{id}}" type="checkbox" value="1" 
-                {{#checked}}
-                checked="checked"
-                {{/checked}}
-                style="margin-left: 10px;" /> 
-           <label for="{{id}}">{{exif}}</label>
-       </li>
-	{{/exifSettings}}
-	</ul>
-	<br />
-	*Only valid data will be displayed.<br />
-	<hr size="1" />
-	<p class="submit"><input type="submit" name="{{submitName}}" value="Update options &raquo;" /></p>
-</form>
+<div  style="float: left; width: 300px; ">
+    <h2>Display Exif Settings</h2>
+    <form action="" method="post" id="odyssey_exif_form">
+        <hr size="1" />
+        <span style="font-weight: bold;" >&bull; Items to display:</span><br />
+        <ul>
+            {{#settings}}
+            <li>
+                <input id="{{id}}" name="{{id}}" type="checkbox" value="1"
+                    {{#enabled}}
+                    checked="checked"
+                    {{/enabled}}
+                    style="margin-left: 10px;" />
+            <label for="{{id}}">{{exif}}</label>
+        </li>
+            {{/settings}}
+        </ul>
+        <br />
+        *Only valid data will be displayed.<br />
+        <hr size="1" />
+        <p class="submit"><input type="submit" name="{{submitName}}" value="Update options &raquo;" /></p>
+    </form>
+</div>

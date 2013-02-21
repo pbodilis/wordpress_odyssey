@@ -45,6 +45,7 @@ class Core
         $this->admin       = Admin::getInstance();
         $this->exifManager = ExifManager::getInstance();
         $this->renderer    = Renderer::getInstance();
+        $this->social      = Social::getInstance();
         if (isset($params['enable_js']) && $params['enable_js']) {
             $this->jsHandle = Javascript::getInstance();
         }
