@@ -53,23 +53,23 @@ add_filter('the_content', 'odyssey_filter_content');
 
 
 
-// add_filter('body_class','odyssey_body_class');
-// function odyssey_body_class($classes) {
-//     // add 'class-name' to the $classes array
-//     $color = isset($_COOKIE['odyssey_theme_color']) ? $_COOKIE['odyssey_theme_color'] : '';
-//     $classes[] = $color;
-//     // return the $classes array
-//     return $classes;
-// }
-// 
-$defaults = array(
-    'default-color'          => 'rgb(85, 85, 85)',
-    'default-image'          => '',
-    'wp-head-callback'       => '_custom_background_cb',
-    'admin-head-callback'    => '',
-    'admin-preview-callback' => ''
-);
-add_theme_support('custom-background', $defaults);
+add_filter('body_class','odyssey_body_class');
+function odyssey_body_class($classes) {
+    // add 'class-name' to the $classes array
+    $color = isset($_COOKIE['odyssey_theme_color']) ? $_COOKIE['odyssey_theme_color'] : '';
+    $classes[] = $color;
+    // return the $classes array
+    return $classes;
+}
+
+// $defaults = array(
+//     'default-color'          => 'rgb(85, 85, 85)',
+//     'default-image'          => '',
+//     'wp-head-callback'       => '_custom_background_cb',
+//     'admin-head-callback'    => '',
+//     'admin-preview-callback' => ''
+// );
+// add_theme_support('custom-background', $defaults);
 
 
 // register_sidebar(array(
