@@ -53,22 +53,47 @@ add_filter('the_content', 'odyssey_filter_content');
 
 
 
-add_filter('body_class','odyssey_body_class');
-function odyssey_body_class($classes) {
-    // add 'class-name' to the $classes array
-    $color = isset($_COOKIE['odyssey_theme_color']) ? $_COOKIE['odyssey_theme_color'] : '';
-    $classes[] = $color;
-    // return the $classes array
-    return $classes;
-}
+// add_filter('body_class','odyssey_body_class');
+// function odyssey_body_class($classes) {
+//     // add 'class-name' to the $classes array
+//     $color = isset($_COOKIE['odyssey_theme_color']) ? $_COOKIE['odyssey_theme_color'] : '';
+//     $classes[] = $color;
+//     // return the $classes array
+//     return $classes;
+// }
+// 
+$defaults = array(
+    'default-color'          => 'rgb(85, 85, 85)',
+    'default-image'          => '',
+    'wp-head-callback'       => '_custom_background_cb',
+    'admin-head-callback'    => '',
+    'admin-preview-callback' => ''
+);
+add_theme_support('custom-background', $defaults);
 
-// $defaults = array(
-//     'default-color'          => '000000',
-//     'default-image'          => '',
-//     'wp-head-callback'       => '_custom_background_cb',
-//     'admin-head-callback'    => '',
-//     'admin-preview-callback' => ''
+
+// register_sidebar(array(
+//   'name' => __('the Sidebar on top'),
+//   'id' => 'heading-sidebar',
+//   'description' => __( 'Widgets in this area will be shown inline on top of the screen.' ),
+// ));
+// 
+// function your_widget_display($args) {
+//    extract($args);
+//    echo $before_widget;
+//    echo $before_title . 'My Unique Widget' . $after_title;
+//    echo $after_widget;
+//    // print some HTML for the widget to display here
+//    echo "Your Widget Test";
+// }
+// 
+// wp_register_sidebar_widget(
+//     'your_widget_1',        // your unique widget id
+//     'Your Widget',          // widget name
+//     'your_widget_display',  // callback function
+//     array(                  // options
+//         'description' => 'Description of what your widget does'
+//     )
 // );
-// add_theme_support( 'custom-background', $defaults );
 
 ?>

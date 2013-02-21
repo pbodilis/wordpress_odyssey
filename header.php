@@ -9,6 +9,8 @@ session_start();
 
 
 $blog = theCore()->getBlog();
+theCore()->render('photoblog_header', $blog);
+
 
 ?>
 
@@ -36,6 +38,6 @@ $blog = theCore()->getBlog();
 
 
 //var_dump(get_pages());
+get_sidebar();
 
-theCore()->render('photoblog_header', $blog);
 ?>

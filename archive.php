@@ -6,7 +6,7 @@ Template Name: Archive Pages
 /*
 Remember to edit search.php - it's similar except for the headline
 */
-
+/*
 get_header();
 
 monolit_print_container('b');
@@ -55,5 +55,5 @@ endif;
 
 monolit_print_container('e');
 
-get_footer();
+get_footer();*/
 ?>
