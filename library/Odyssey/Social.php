@@ -51,10 +51,10 @@ class Social
     static public function getDefaultSocialSettings()
     {
         return array(
-            array('id' => 'Twitter',    'label' => 'Twitter',   'enabled' => false),
-            array('id' => 'Facebook',   'label' => 'Facebook',  'enabled' => true),
-            array('id' => 'Flickr',     'label' => 'Flickr',    'enabled' => true),
-            array('id' => 'GooglePlus', 'label' => 'Google +',  'enabled' => false),
+            array('id' => 'Twitter',    'label' => 'Twitter',   'enabled' => false, 'value' => ''),
+            array('id' => 'Facebook',   'label' => 'Facebook',  'enabled' => true,  'value' => 'Facebook page url'),
+            array('id' => 'Flickr',     'label' => 'Flickr',    'enabled' => true,  'value' => 'Flickr page url'),
+            array('id' => 'GooglePlus', 'label' => 'Google +',  'enabled' => false, 'value' => 'Google+ page url'),
         );
     }
 
@@ -66,23 +66,21 @@ class Social
     function getSettingPage()
     {
         $settings = $this->getSocialSettings();
-//         if (isset($_POST[self::SUBMIT_NAME])) {
-//             unset($_POST[self::SUBMIT_NAME]);
-//             $doUpdate = false;
-//             foreach ($exifSettings as &$exifSetting) {
-//                 // it's enabled now (as it is part of the POST), but wasn't enabled before -> update
-//                 if (isset($_POST[$exifSetting['id']]) && !$exifSetting['enabled']) {
-//                     $exifSetting['enabled'] = true;
-//                     $doUpdate = true;
-//                 // it's unenabled now (as it is not part of the POST), but was enabled before -> update
-//                 } else if (!isset($_POST[$exifSetting['id']]) && $exifSetting['enabled']) {
-//                     $exifSetting['enabled'] = false;
-//                     $doUpdate = true;
-//                 }
-//             }
-//             $doUpdate && update_option(self::OPTION_NAME, $exifSettings);
-//         }
-// 
+        if (isset($_POST[self::SUBMIT_NAME])) {
+            unset($_POST[self::SUBMIT_NAME]);
+            foreach ($settings as &$setting) {
+                // it's enabled now (as it is part of the POST), but wasn't enabled before -> update
+                if (isset($_POST[$setting['id']]) && !$setting['enabled']) {
+                    $setting['enabled'] = true;
+                // it's unenabled now (as it is not part of the POST), but was enabled before -> update
+                } else if (!isset($_POST[$setting['id']]) && $setting['enabled']) {
+                    $setting['enabled'] = false;
+                }
+                $setting['value'] = $_POST['tf-' . $setting['id']];
+            }
+            update_option(self::OPTION_NAME, $settings);
+        }
+
         echo Renderer::getInstance()->render('admin_social', array(
             'settings'   => $settings,
             'submitName' => self::SUBMIT_NAME,

@@ -61,12 +61,12 @@ odyssey.image = {
         frame = odyssey.image.getPhotoFramePosition(odyssey.image.image);
 
         jQuery('#photo_frame #img').css({
-            'width': frame.width,
+            'width':  frame.width,
             'height': frame.height
         });
         jQuery('#photo_frame').css({
-            'left': frame.marginLeft,
-            'top': frame.marginTop
+            'left': frame.left,
+            'top':  frame.top
         });
     },
 }

@@ -62,4 +62,13 @@ function odyssey_body_class($classes) {
     return $classes;
 }
 
+// $defaults = array(
+//     'default-color'          => '000000',
+//     'default-image'          => '',
+//     'wp-head-callback'       => '_custom_background_cb',
+//     'admin-head-callback'    => '',
+//     'admin-preview-callback' => ''
+// );
+// add_theme_support( 'custom-background', $defaults );
+
 ?>

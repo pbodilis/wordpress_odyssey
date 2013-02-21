@@ -19,17 +19,17 @@
             <a class="menu_but_fr"  href="http://www.flickr.com/photos/rataki/"                                     title="Flickr"   target="_blank"></a>
         </div>
         <div class="menu but color">
-            <a class="white"      href="#"></a>
-            <a class="dark_grey"  href="#"></a>
-            <a class="black"      href="#"></a>
+            <a class="white"     href="#"></a>
+            <a class="dark_grey" href="#"></a>
+            <a class="black"     href="#"></a>
         </div>
         <nav class="menu but">
-            {{#next}}
-            <a href="{{url}}" class="prev" title="{{#_i18n}}Previous:{{/_i18n}} {{title}}"><span class="navArrow"></span></a>
-            {{/next}}
             {{#previous}}
-            <a href="{{url}}" class="next" title="{{#_i18n}}Next:{{/_i18n}} {{title}}"><span class="navArrow"></span></a>
+            <a href="{{url}}" class="prev" title="{{#_i18n}}Previous:{{/_i18n}} {{title}}"><span class="navArrow"></span></a>
             {{/previous}}
+            {{#next}}
+            <a href="{{url}}" class="next" title="{{#_i18n}}Next:{{/_i18n}} {{title}}"><span class="navArrow"></span></a>
+            {{/next}}
         </nav>
         <div class="menu but tooltip">
             <a href="#">
