@@ -55,27 +55,27 @@ class ExifManager
     static public function getDefaultExifSettings()
     {
         return array(
-            array('id' => 'Make',             'exif' => 'Manufacturer',     'enabled' => false),
-            array('id' => 'Model',            'exif' => 'Model Name',       'enabled' => true),
-            array('id' => 'DateTimeOriginal', 'exif' => 'Date',             'enabled' => true),
-            array('id' => 'ExposureProgram',  'exif' => 'Exposure Program', 'enabled' => true),
-            array('id' => 'ExposureTime',     'exif' => 'Exposure Time',    'enabled' => true),
-            array('id' => 'FNumber',          'exif' => 'F Number',         'enabled' => true),
-            array('id' => 'ISOSpeedRatings',  'exif' => 'ISO',              'enabled' => true),
-            array('id' => 'FocalLength',      'exif' => 'Focal Length',     'enabled' => true),
-            array('id' => 'MeteringMode',     'exif' => 'Metering Mode',    'enabled' => false),
-            array('id' => 'LightSource',      'exif' => 'Light Source',     'enabled' => true),
-            array('id' => 'SensingMethod',    'exif' => 'Sensing Method',   'enabled' => true),
-            array('id' => 'ExposureMode',     'exif' => 'Exposure Mode',    'enabled' => false),
+            array('enabled' => false, 'id' => 'Make',             'exif' => 'Manufacturer'),
+            array('enabled' => true,  'id' => 'Model',            'exif' => 'Model Name'),
+            array('enabled' => true,  'id' => 'DateTimeOriginal', 'exif' => 'Date'),
+            array('enabled' => true,  'id' => 'ExposureProgram',  'exif' => 'Exposure Program'),
+            array('enabled' => true,  'id' => 'ExposureTime',     'exif' => 'Exposure Time'),
+            array('enabled' => true,  'id' => 'FNumber',          'exif' => 'F Number'),
+            array('enabled' => true,  'id' => 'ISOSpeedRatings',  'exif' => 'ISO'),
+            array('enabled' => true,  'id' => 'FocalLength',      'exif' => 'Focal Length'),
+            array('enabled' => false, 'id' => 'MeteringMode',     'exif' => 'Metering Mode'),
+            array('enabled' => true,  'id' => 'LightSource',      'exif' => 'Light Source'),
+            array('enabled' => true,  'id' => 'SensingMethod',    'exif' => 'Sensing Method'),
+            array('enabled' => false, 'id' => 'ExposureMode',     'exif' => 'Exposure Mode'),
 
-            array('id' => 'FileName',         'exif' => 'File Name',        'enabled' => false),
-            array('id' => 'FileSize',         'exif' => 'File Size',        'enabled' => false),
-            array('id' => 'Software',         'exif' => 'Software',         'enabled' => false),
-            array('id' => 'XResolution',      'exif' => 'X Resolution',     'enabled' => false),
-            array('id' => 'YResolution',      'exif' => 'Y Resolution',     'enabled' => false),
-            array('id' => 'ExifVersion',      'exif' => 'Exif Version',     'enabled' => false),
+            array('enabled' => false, 'id' => 'FileName',         'exif' => 'File Name'),
+            array('enabled' => false, 'id' => 'FileSize',         'exif' => 'File Size'),
+            array('enabled' => false, 'id' => 'Software',         'exif' => 'Software'),
+            array('enabled' => false, 'id' => 'XResolution',      'exif' => 'X Resolution'),
+            array('enabled' => false, 'id' => 'YResolution',      'exif' => 'Y Resolution'),
+            array('enabled' => false, 'id' => 'ExifVersion',      'exif' => 'Exif Version'),
 
-            array('id' => 'Title',            'exif' => 'Title',            'enabled' => false),
+            array('enabled' => false, 'id' => 'Title',            'exif' => 'Title'),
         );
     }
 

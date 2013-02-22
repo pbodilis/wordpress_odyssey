@@ -69,6 +69,8 @@ class Admin
     
     public function getSettingPage()
     {
+        echo '<div id="icon-themes" class="icon32"><br></div>' . PHP_EOL;
+        echo '<h2>Odyssey Theme Settings</h2>' . PHP_EOL;
         foreach($this->managers as $manager) {
             $manager->getSettingPage();
         }

@@ -1,11 +1,13 @@
 <div class=".wrap" style="float: left;">
-    <h3>Display Exif Settings</h3>
-    <form action="" method="post" id="odyssey_exif_form">
+    <h3>Header bar settings</h3>
+    {{#section}}
+    <h4>{{name}}</h4>
+    <form action="" method="post">
         <table class="form-table">
             <tbody>
                 {{#settings}}
                 <tr valign="top">
-                    <th scope="row">{{exif}}</th>
+                    <th scope="row">{{label}}</th>
                     <td>
                         <input id="{{id}}" name="{{id}}" type="checkbox" value="1"
                             {{#enabled}}
@@ -13,6 +15,10 @@
                             {{/enabled}}
                             style="margin-left: 10px;" />
                         <label for="{{id}}" name="{{id}}" style="width: 75px; display: inline-block;">enabled</label>
+                        {{#value}}
+                        <input name="tf-{{id}}" type="text" size="60" value="{{value}}" class="regular-text" />
+                        {{/value}}
+
                     </td>
                 </tr>
                 {{/settings}}
@@ -20,4 +26,5 @@
         </table>
         <p class="submit"><input type="submit" name="{{submitName}}"  class="button button-primary" value="Update options &raquo;" /></p>
     </form>
+    {{/section}}
 </div>
