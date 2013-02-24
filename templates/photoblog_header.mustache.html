@@ -4,20 +4,24 @@
                 {{{name}}}
             </a>
         </h1>
-        {{#pages}}
+        {{#others.0}}
         <div class="menu txt">
             <ul>
-<!--                 <li><a class="item" href="{{homeUri}}" title="Back to the latest picture"> {{{name}}} </a></li> -->
-                <li><a class="item" href="{{url}}" title="{{title}}"> {{name}} </a></li>
+                {{#others}}
+                <li><a href="{{url}}" title="{{title}}"> {{name}} </a></li>
+                {{/others}}
             </ul>
         </div>
-        {{/pages}}
-        <div class="menu but social">
-            <a class="menu_but_rss" href="./index.php?x=rss"                                                        title="RSS Feed"></a>
-            <a class="menu_but_tw"  href="http://twitter.com/home?status=<SITE_URL>/index.php?showimage=<IMAGE_ID>" title="Click to share this post on Twitter" target="_blank"></a>
-            <a class="menu_but_fb"  href="http://www.facebook.com/pages/An-Everyday-Lifes-Odyssey/113318748702527"  title="Facebook" target="_blank"></a>
-            <a class="menu_but_fr"  href="http://www.flickr.com/photos/rataki/"                                     title="Flickr"   target="_blank"></a>
+        {{/others.0}}
+
+        {{#syndication.0}}
+        <div class="menu but syndication">
+            {{#syndication}}
+            <a class="{{class}}" href="{{url}}" title="{{title}}" target="_blank"></a>
+            {{/syndication}}
         </div>
+        {{/syndication.0}}
+        
         <div class="menu but color">
             <a class="white"     href="#"></a>
             <a class="dark_grey" href="#"></a>

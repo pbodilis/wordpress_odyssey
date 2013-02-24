@@ -125,6 +125,9 @@ class Core
                 the_post();
             }
             global $post;
+            if (isset($this->postCache[$post->ID])) { // we already gather info for this post
+                return $this->postCache[$post->ID];   // return the cached data
+            }
         } else {
             if (isset($this->postCache[$postId])) { // we already gather info for this post
                 return $this->postCache[$postId];   // return the cached data
@@ -211,11 +214,50 @@ class Core
         return $ret;
     }
 
+    public function getRandomPost()
+    {
+        if (!isset($this->randomPost)) {
+            $args = array(
+                'posts_per_page'  => 1,
+                'orderby'         => 'rand',
+                'post_type'       => 'post',
+                'post_status'     => 'publish',
+                'suppress_filters' => true,
+            );
+            $posts = get_posts($args);
+            if (empty($posts)) {
+                $this->randomPost = false;
+            } else {
+                $this->randomPost = current($posts);
+            }
+        }
+        return $this->randomPost;
+    }
+
+    public function getRandomPostUrl()
+    {
+        $post = $this->getRandomPost();
+        if ($post !== false) {
+            return $post->guid;
+        } else {
+            return false;
+        }
+    }
+
+    public function getPages()
+    {
+        return get_pages();
+    }
+
     public function getPanelState()
     {
         return array(
             'panelClass' => isset($_COOKIE['odyssey_theme_panelVisibility']) ? $_COOKIE['odyssey_theme_panelVisibility'] : '',
         );
+    }
+
+    public function getRenderedHeaderBar() {
+        return $this->headerbar->getRendering();
     }
 }
 

@@ -8,10 +8,8 @@ session_start();
 //     $_SESSION['odyssey:info'] = $_REQUEST['info'];
 
 
+
 $blog = theCore()->getBlog();
-theCore()->render('photoblog_header', $blog);
-
-
 ?>
 
 
@@ -36,8 +34,9 @@ theCore()->render('photoblog_header', $blog);
 
 <?php
 
+echo theCore()->getRenderedHeaderBar();
 
 //var_dump(get_pages());
-get_sidebar();
+// get_sidebar();
 
 ?>
