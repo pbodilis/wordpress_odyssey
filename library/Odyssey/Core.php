@@ -206,7 +206,7 @@ class Core
                 'author'    => $comment->comment_author,
                 'authorUrl' => $comment->comment_author_url,
                 'date'      => $comment->comment_date,
-                'content'   => $comment->comment_content,
+                'content'   => apply_filters('comment_text', $comment->comment_content),
             );
         }
         
