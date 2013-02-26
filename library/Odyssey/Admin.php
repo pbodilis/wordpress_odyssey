@@ -31,7 +31,7 @@ class Admin
     public function __construct()
     {
         // add the callbacks
-        add_action('admin_menu', array(&$this, 'buildAdminPage'));
+        add_action('admin_menu', array(&$this, 'build_admin_page'));
     }
 
     public function register(&$m)
@@ -39,7 +39,7 @@ class Admin
         $this->managers[] = &$m;
     }
 
-    public function buildAdminPage() {
+    public function build_admin_page() {
 
         add_submenu_page(
             'themes.php',                  // parent_slug
@@ -47,13 +47,13 @@ class Admin
             'Odyssey theme settings',      // menu_title
             'manage_options',              // capability
             'odyssey_theme_settings',      // menu_slug
-            array(&$this, 'getSettingPage')); // renderer
+            array(&$this, 'get_setting_page')); // renderer
 //         add_menu_page(
 //             'Odyssey theme settings',      // page_title
 //             'Odyssey theme settings',      // menu_title
 //             'manage_options',              // capability
 //             'odyssey_settings',            // menu_slug
-//             array(&$this, 'getSettingPage')); // renderer
+//             array(&$this, 'get_setting_page')); // renderer
 // 
 //         foreach($this->managers as $manager) {
 //             add_submenu_page(
@@ -62,17 +62,17 @@ class Admin
 //                 $manager->getMenuTitle(),            // menu_title
 //                 'manage_options',                    // capability
 //                 $manager->getMenuSlug(),             // menu_slug
-//                 array(&$manager, 'getSettingPage')); // renderer
+//                 array(&$manager, 'get_setting_page')); // renderer
 //         }
         
     }
     
-    public function getSettingPage()
+    public function get_setting_page()
     {
         echo '<div id="icon-themes" class="icon32"><br></div>' . PHP_EOL;
         echo '<h2>Odyssey Theme Settings</h2>' . PHP_EOL;
         foreach($this->managers as $manager) {
-            $manager->getSettingPage();
+            $manager->get_setting_page();
         }
     }
 

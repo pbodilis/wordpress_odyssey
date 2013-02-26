@@ -17,10 +17,11 @@ namespace Odyssey;
  */
 class ExifManager
 {
-    const OPTION_NAME = 'odyssey_settings_exif';
-    const SUBMIT_NAME = 'odyssey_submit_exif';
+    const METADATA_NAME = '_wp_odyssey_metadata_exif';
 
-    private $exifCache;
+    const OPTION_NAME = 'odyssey_settings_exif';
+    const SUBMIT      = 'odyssey_submit_exif';
+    const RESET       = 'odyssey_reset_exif';
 
     static private $instance;
     static public function getInstance(array $params = array())
@@ -39,7 +40,7 @@ class ExifManager
 
     public function getPageTitle()
     {
-        return 'Exif sttings';
+        return 'Exif settings';
     }
     
     public function getMenuTitle()
@@ -52,61 +53,96 @@ class ExifManager
         return 'odyssey-settings-exifs';
     }
 
-    static public function getDefaultExifSettings()
+    static public function exif_id2label($exif_id)
+    {
+        $id2label = array(
+            'Make'             => __('Manufacturer: '),
+            'Model'            => __('Model Name: '),
+            'DateTimeOriginal' => __('Date: '),
+            'ExposureProgram'  => __('Exposure Program: '),
+            'ExposureTime'     => __('Exposure Time: '),
+            'FNumber'          => __('F Number: '),
+            'ISOSpeedRatings'  => __('ISO: '),
+            'FocalLength'      => __('Focal Length: '),
+            'MeteringMode'     => __('Metering Mode: '),
+            'LightSource'      => __('Light Source: '),
+            'SensingMethod'    => __('Sensing Method: '),
+            'ExposureMode'     => __('Exposure Mode: '),
+
+            'FileName'         => __('File Name: '),
+            'FileSize'         => __('File Size: '),
+            'Software'         => __('Software: '),
+            'XResolution'      => __('X Resolution: '),
+            'YResolution'      => __('Y Resolution: '),
+            'ExifVersion'      => __('Exif Version: '),
+
+            'Title'            => __('Title: '),
+        );
+        return $id2label[ $exif_id ];
+    }
+
+    static public function get_default_exif_settings()
     {
         return array(
-            array('enabled' => false, 'id' => 'Make',             'exif' => 'Manufacturer'),
-            array('enabled' => true,  'id' => 'Model',            'exif' => 'Model Name'),
-            array('enabled' => true,  'id' => 'DateTimeOriginal', 'exif' => 'Date'),
-            array('enabled' => true,  'id' => 'ExposureProgram',  'exif' => 'Exposure Program'),
-            array('enabled' => true,  'id' => 'ExposureTime',     'exif' => 'Exposure Time'),
-            array('enabled' => true,  'id' => 'FNumber',          'exif' => 'F Number'),
-            array('enabled' => true,  'id' => 'ISOSpeedRatings',  'exif' => 'ISO'),
-            array('enabled' => true,  'id' => 'FocalLength',      'exif' => 'Focal Length'),
-            array('enabled' => false, 'id' => 'MeteringMode',     'exif' => 'Metering Mode'),
-            array('enabled' => true,  'id' => 'LightSource',      'exif' => 'Light Source'),
-            array('enabled' => true,  'id' => 'SensingMethod',    'exif' => 'Sensing Method'),
-            array('enabled' => false, 'id' => 'ExposureMode',     'exif' => 'Exposure Mode'),
+            'Make'             => false,
+            'Model'            => true,
+            'DateTimeOriginal' => true,
+            'ExposureProgram'  => true,
+            'ExposureTime'     => true,
+            'FNumber'          => true,
+            'ISOSpeedRatings'  => true,
+            'FocalLength'      => true,
+            'MeteringMode'     => false,
+            'LightSource'      => false,
+            'SensingMethod'    => false,
+            'ExposureMode'     => true,
 
-            array('enabled' => false, 'id' => 'FileName',         'exif' => 'File Name'),
-            array('enabled' => false, 'id' => 'FileSize',         'exif' => 'File Size'),
-            array('enabled' => false, 'id' => 'Software',         'exif' => 'Software'),
-            array('enabled' => false, 'id' => 'XResolution',      'exif' => 'X Resolution'),
-            array('enabled' => false, 'id' => 'YResolution',      'exif' => 'Y Resolution'),
-            array('enabled' => false, 'id' => 'ExifVersion',      'exif' => 'Exif Version'),
+            'FileName'         => false,
+            'FileSize'         => false,
+            'Software'         => false,
+            'XResolution'      => false,
+            'YResolution'      => false,
+            'ExifVersion'      => false,
 
-            array('enabled' => false, 'id' => 'Title',            'exif' => 'Title'),
+            'Title'            => false,
         );
     }
 
-    public function getExifSettings()
+    public function get_exif_settings()
     {
-        return get_option(self::OPTION_NAME, self::getDefaultExifSettings());
+        return get_option(self::OPTION_NAME, self::get_default_exif_settings());
     }
 
-    function getSettingPage()
+    function get_setting_page()
     {
-        $settings = $this->getExifSettings();
-        if (isset($_POST[self::SUBMIT_NAME])) {
-            unset($_POST[self::SUBMIT_NAME]);
+        if ( isset( $_POST[ self::RESET ] ) ) {
+            delete_option(self::OPTION_NAME);
+        }
+        $settings = $this->get_exif_settings();
+        if (isset($_POST[self::SUBMIT])) {
             $doUpdate = false;
-            foreach ($settings as &$setting) {
+            foreach ($settings as $setting => &$enabled) {
                 // it's enabled now (as it is part of the POST), but wasn't enabled before -> update
-                if (isset($_POST[$setting['id']]) && !$setting['enabled']) {
-                    $setting['enabled'] = true;
+                if (isset($_POST[ $setting ] ) && ! $enabled) {
+                    $enabled = true;
                     $doUpdate = true;
                 // it's unenabled now (as it is not part of the POST), but was enabled before -> update
-                } else if (!isset($_POST[$setting['id']]) && $setting['enabled']) {
-                    $setting['enabled'] = false;
+                } else if (!isset($_POST[ $setting ] ) && $enabled) {
+                    $enabled = false;
                     $doUpdate = true;
                 }
             }
             $doUpdate && update_option(self::OPTION_NAME, $settings);
         }
 
+        $data = array();
+        foreach ($settings as $setting => &$enabled) {
+            $data[] = array('id' => $setting, 'enabled' => $enabled, 'exif' => self::exif_id2label($setting));
+        }
         echo Renderer::getInstance()->render('admin_exif', array(
-            'settings'   => array_values($settings),
-            'submitName' => self::SUBMIT_NAME,
+            'settings' => $data,
+            'submit'   => self::SUBMIT,
+            'reset'    => self::RESET,
         ));
     }
 
@@ -116,38 +152,40 @@ class ExifManager
      *
      * @return array of selected exif, with at least captureDate
      */
-    public function getImageExif($filename)
+    public function get_image_exif($post_id, $filename)
     {
-        $settings = $this->getExifSettings();
-        $exifs = $this->readExif($filename);
+        $settings = $this->get_exif_settings();
+        if (false === $settings) {
+            return false;
+        }
+        $exifs = $this->read_exifs($post_id, $filename);
         $ret = array();
 
-        foreach($settings as $setting) {
-            $exifTagname = $setting['id'];
-            if (!$setting['enabled'] || isset($exifs[$exifTagname]) === false) {
+        foreach ($settings as $exif_tagname => $enabled) {
+            if ( ! $enabled || ! isset( $exifs[ $exif_tagname ] ) ) {
                 continue;
             }
 
-            switch ($exifTagname) {
+            switch ($exif_tagname) {
                 case 'FNumber':
                 case 'FocalLength':
-                    $tagvalue = self::computeMath($exifs[$exifTagname]);
+                    $tagvalue = self::compute_math($exifs[ $exif_tagname ]);
                     break;
                 case 'ExposureProgram':
-                    $tagvalue = self::exposureProgram($exifs[$exifTagname]);
+                    $tagvalue = self::exposure_program($exifs[ $exif_tagname ]);
                     break;
                 default:
-                    $tagvalue = $exifs[$exifTagname];
+                    $tagvalue = $exifs[ $exif_tagname ];
                     break;
             }
-            $ret[] = array('name' => __($setting['exif'].': '), 'value' => $tagvalue);
+            $ret[] = array('name' => self::exif_id2label($exif_tagname), 'value' => $tagvalue);
         }
         return $ret;
     }
 
-    public function getCaptureDate($filename)
+    public function get_capture_date($post_id, $filename)
     {
-        $exifs = $this->readExif($filename);
+        $exifs = $this->read_exifs($post_id, $filename);
         if (isset($exifs['DateTime'])) {
             return date_i18n(get_option('date_format'), strtotime($exifs['DateTime']));
         } else {
@@ -155,31 +193,39 @@ class ExifManager
         }
     }
 
-    private function readExif($filename)
+    /**
+     * first tries to retrieve metadata from curstom wordpress meta data, and if not, read them from the file and then update the db
+     */
+    private function read_exifs($post_id, $filename)
     {
-        if (!isset($this->exifCache[$filename])) {
-            $this->exifCache[$filename] = @exif_read_data($filename, 'EXIF');
+        $exifs = array();
+        $meta = get_post_meta($post_id, self::METADATA_NAME);
+        if (empty($meta)) {
+            $exifs = @exif_read_data($filename, 'EXIF');
+            update_post_meta($post_id, self::METADATA_NAME, $exifs);
+        } else {
+            $exifs = current($meta);
         }
 
-        return $this->exifCache[$filename];
+        return $exifs;
     }
 
     /**
      * compute mathematic string (such as the one contained in an exif field) without the use of eval
      */
-    static private function computeMath($mathString)
+    static private function compute_math($math_string)
     {
-        $mathString = trim($mathString);                                   // trim white spaces
-        $mathString = ereg_replace('[^0-9\+-\*\/\(\) ]', '', $mathString); // remove any non-numbers chars; exception for math operators
+        $math_string = trim($math_string);                                   // trim white spaces
+        $math_string = ereg_replace('[^0-9\+-\*\/\(\) ]', '', $math_string); // remove any non-numbers chars; exception for math operators
 
-        $compute = create_function("", "return (" . $mathString . ");" );
+        $compute = create_function("", "return (" . $math_string . ");" );
         return 0 + $compute();
     }
 
     /**
      *
      */
-    static private function exposureProgram($ep)
+    static private function exposure_program($ep)
     {
         $ep2str = array(
             0 => 'Not defined',

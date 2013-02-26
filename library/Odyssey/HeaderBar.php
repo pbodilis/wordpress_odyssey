@@ -87,7 +87,7 @@ class HeaderBar
         return get_option(self::OTHER_LINKS_OPTION_NAME, self::getDefaultHeaderBarOtherLinksSettings());
     }
 
-    function getSettingPage()
+    function get_setting_page()
     {
         $data = array('configureSetting' => array());
 
@@ -162,7 +162,7 @@ class HeaderBar
             if ($setting['enabled']) {
                 switch ($setting['id']) {
                     case 'random': // get a valid random post id
-                        $randomUrl = Core::getInstance()->getRandomPostUrl();
+                        $randomUrl = Core::getInstance()->get_random_post_url();
                         if ($randomUrl !== false) {
                             $others[] = array(
                                 'url'   => $randomUrl,

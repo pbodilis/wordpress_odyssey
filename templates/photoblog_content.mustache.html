@@ -55,12 +55,12 @@
                             {{{content}}}
                             <br>
                             <span>
-                                {{#authorUrl}}
-                                <a title="Visit Homepage" href="{{authorUrl}}">{{author}}</a> @ {{date}}
-                                {{/authorUrl}}
-                                {{^authorUrl}}
+                                {{#author_url}}
+                                <a title="Visit Homepage" href="{{author_url}}">{{author}}</a> @ {{date}}
+                                {{/author_url}}
+                                {{^author_url}}
                                 {{author}} @ {{date}}
-                                {{/authorUrl}}
+                                {{/author_url}}
                             </span>
                         </li>
                         {{/comments}}

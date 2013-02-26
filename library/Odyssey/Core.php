@@ -95,9 +95,9 @@ class Core
         return $this->blog;
     }
 
-    public function getPostAndAdjacents($postId = NULL)
+    public function getPostAndAdjacents($post_id = NULL)
     {
-        $current = $this->getPost($postId);
+        $current = $this->getPost($post_id);
         $ret = array(
             'currentID'    => $current['ID'],
             $current['ID'] => $current,
@@ -116,11 +116,11 @@ class Core
     /**
      * \returns an array with the following info:
      */
-    public function getPost($postId = NULL)
+    public function getPost($post_id = NULL)
     {
         $ret = array();
 
-        if (is_null($postId)) {
+        if (is_null($post_id)) {
             if (have_posts()) {
                 the_post();
             }
@@ -129,11 +129,11 @@ class Core
                 return $this->postCache[$post->ID];   // return the cached data
             }
         } else {
-            if (isset($this->postCache[$postId])) { // we already gather info for this post
-                return $this->postCache[$postId];   // return the cached data
+            if (isset($this->postCache[$post_id])) { // we already gather info for this post
+                return $this->postCache[$post_id];   // return the cached data
             }
             global $post;
-            $post = get_post($postId);
+            $post = get_post($post_id);
         }
         $ret['image']    = $this->getPostImage($post->ID);
         $ret['comments'] = $this->getPostComments($post->ID);
@@ -162,7 +162,7 @@ class Core
     /**
      * @return the first attached image of a post as the main post image
      */
-    public function getPostImage($postId)
+    public function getPostImage($post_id)
     {
         $ret = array();
 
@@ -170,7 +170,7 @@ class Core
             'numberposts'    => 1,
             'order'          => 'ASC',
             'post_mime_type' => 'image',
-            'post_parent'    => $postId,
+            'post_parent'    => $post_id,
             'post_status'    => null,
             'post_type'      => 'attachment'
         );
@@ -183,30 +183,33 @@ class Core
             $ret['width']  = $data[1];
             $ret['height'] = $data[2];
 
-            $imgFilename = get_attached_file($attachment->ID);
-            $ret['captureDate'] = $this->exifManager->getCaptureDate($imgFilename);
-            $ret['exifs']       = $this->exifManager->getImageExif($imgFilename);
+            $img_filename = get_attached_file($attachment->ID);
+            $ret['capture_date'] = $this->exifManager->get_capture_date($attachment->ID, $img_filename);
+            $ret['exifs']        = $this->exifManager->get_image_exif($attachment->ID, $img_filename);
         }
+
 
         return $ret;
     }
 
-    public function getPostComments($postId)
+    public function getPostComments($post_id)
     {
         $ret = array();
 
         $args = array(
-            'post_id' => $postId,
+            'post_id' => $post_id,
             'status'  => 'approve',
+            'orderby' => 'comment_date',
+            'order'   => 'ASC',
         );
 
         $comments = get_comments($args);
         foreach($comments as $comment) {
             $ret[] = array(
-                'author'    => $comment->comment_author,
-                'authorUrl' => $comment->comment_author_url,
-                'date'      => $comment->comment_date,
-                'content'   => apply_filters('comment_text', $comment->comment_content),
+                'author'     => $comment->comment_author,
+                'author_url' => $comment->comment_author_url,
+                'date'       => $comment->comment_date,
+                'content'    => apply_filters('comment_text', $comment->comment_content),
             );
         }
         
@@ -214,7 +217,7 @@ class Core
         return $ret;
     }
 
-    public function getRandomPost()
+    public function get_random_post()
     {
         if (!isset($this->randomPost)) {
             $args = array(
@@ -234,9 +237,9 @@ class Core
         return $this->randomPost;
     }
 
-    public function getRandomPostUrl()
+    public function get_random_post_url()
     {
-        $post = $this->getRandomPost();
+        $post = $this->get_random_post();
         if ($post !== false) {
             return $post->guid;
         } else {
