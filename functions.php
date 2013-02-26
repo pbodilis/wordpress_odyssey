@@ -55,7 +55,7 @@ add_filter('the_content', 'odyssey_filter_content');
 add_filter('body_class', 'odyssey_body_class');
 function odyssey_body_class($classes) {
     // add 'class-name' to the $classes array
-    $color = isset($_COOKIE['odyssey_theme_color']) ? $_COOKIE['odyssey_theme_color'] : '';
+    $color = isset($_COOKIE['odyssey_theme_color']) ? $_COOKIE['odyssey_theme_color'] : 'white';
     $classes[] = $color;
     // return the $classes array
     return $classes;

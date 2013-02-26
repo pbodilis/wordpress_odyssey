@@ -252,7 +252,6 @@ body.white .menu.but.nav a.prev span {
 /* ******************************* image: Center and photo ******************************* */
 #photo_frame {
     position:fixed;
-    overflow-x:hidden !important;
     z-index:-999;
     display: none;
 }

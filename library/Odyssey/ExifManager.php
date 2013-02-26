@@ -161,24 +161,26 @@ class ExifManager
         $exifs = $this->read_exifs($post_id, $filename);
         $ret = array();
 
-        foreach ($settings as $exif_tagname => $enabled) {
-            if ( ! $enabled || ! isset( $exifs[ $exif_tagname ] ) ) {
+        foreach ($settings as $setting => $enabled) {
+            if ( ! $enabled || ! isset( $exifs[ $setting ] ) || 'a' === $exifs[ $setting ] ) {
                 continue;
             }
 
-            switch ($exif_tagname) {
+            switch ($setting) {
                 case 'FNumber':
                 case 'FocalLength':
-                    $tagvalue = self::compute_math($exifs[ $exif_tagname ]);
+                    $value = self::compute_math($exifs[ $setting ]);
                     break;
                 case 'ExposureProgram':
-                    $tagvalue = self::exposure_program($exifs[ $exif_tagname ]);
+                    $value = self::exposure_program($exifs[ $setting ]);
                     break;
                 default:
-                    $tagvalue = $exifs[ $exif_tagname ];
+                    $value = $exifs[ $setting ];
                     break;
             }
-            $ret[] = array('name' => self::exif_id2label($exif_tagname), 'value' => $tagvalue);
+            if (false !== $value) {
+                $ret[] = array('name' => self::exif_id2label($setting), 'value' => $value);
+            }
         }
         return $ret;
     }
@@ -186,7 +188,7 @@ class ExifManager
     public function get_capture_date($post_id, $filename)
     {
         $exifs = $this->read_exifs($post_id, $filename);
-        if (isset($exifs['DateTime'])) {
+        if (isset($exifs['DateTime']) && 'a' !== $exifs['DateTime']) {
             return date_i18n(get_option('date_format'), strtotime($exifs['DateTime']));
         } else {
             return false;
@@ -217,6 +219,9 @@ class ExifManager
     {
         $math_string = trim($math_string);                                   // trim white spaces
         $math_string = ereg_replace('[^0-9\+-\*\/\(\) ]', '', $math_string); // remove any non-numbers chars; exception for math operators
+        if (empty($math_string)) {
+            return false;
+        }
 
         $compute = create_function("", "return (" . $math_string . ");" );
         return 0 + $compute();
@@ -228,7 +233,7 @@ class ExifManager
     static private function exposure_program($ep)
     {
         $ep2str = array(
-            0 => 'Not defined',
+            0 => false,
             1 => 'Manual',
             2 => 'Normal program',
             3 => 'Aperture priority',
@@ -238,10 +243,10 @@ class ExifManager
             7 => 'Portrait mode',
             8 => 'Landscape mode',
         );
-        if (!isset($ep2str[$ep])) {
+        if ( ! isset($ep2str[ $ep ]) ) {
             $ep = 0;
         }
-        return $ep2str[$ep];
+        return $ep2str[ $ep ];
     }
 
 }
