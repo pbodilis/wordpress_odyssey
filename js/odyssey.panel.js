@@ -8,9 +8,9 @@ odyssey.panel = {
         jQuery(document).on('click', '#panel_handle', odyssey.panel.toggle);
     },
     render: function(e, post) {
-        jQuery('#photoblog_content').Chevron('render', post, function(result) {
-            jQuery('#panel_content').replaceWith(result);
-        });
+//         jQuery('#photoblog_content').Chevron('render', post, function(result) {
+//             jQuery('#panel_content').replaceWith(result);
+//         });
 //         panelOut = odyssey.cookie.read('odyssey_theme_panelVisibility') == '1';
 //         jQuery('#panel').toggleClass('out', panelOut);
 //         alert(panelOut);

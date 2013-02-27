@@ -94,8 +94,9 @@ class Javascript
     {
         $ret = '';
         $tpls = array(
-            'photoblog_image'   => 'photoblog_image.mustache.html',
-            'photoblog_content' => 'photoblog_content.mustache.html',
+            'photoblog_image'    => 'photoblog_image.mustache.html',
+            'photoblog_content'  => 'photoblog_content.mustache.html',
+            'photoblog_comments' => 'photoblog_comments.mustache.html',
         );
         $tplDir = get_template_directory_uri() . '/templates/';
         foreach($tpls as $tplName => $tplFile) {
