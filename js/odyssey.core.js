@@ -17,10 +17,12 @@ odyssey.core = {
      */
     retrievePosts: function(e, id) {
         if (odyssey.core.posts[id]) { // do we have the current post in cache ?
+            if (odyssey.core.posts[id] === 'pending') return;
             odyssey.core.posts.currentID = id; // just set the current cursor to the given id
-
             odyssey.core.postNotifyAll(); // notify all views the current post needs to be displayed
         } else { // retrieve the post
+            odyssey.core.posts[id] = 'pending';
+
             var ajaxArgs = {
                 action:     'odyssey_get_json_post_and_adjacents',
                 post_nonce: odyssey.post_nonce
@@ -33,7 +35,8 @@ odyssey.core = {
                 dataType: 'json',
                 data:     ajaxArgs,
             }).done(function(r) {
-                odyssey.post_nonce = r.nonce;
+                if (!r) return;
+                odyssey.post_nonce = r.post_nonce;
                 odyssey.core.updateCurrentPost(r.posts);
             });
         }
@@ -70,8 +73,9 @@ odyssey.core = {
                 dataType: 'json',
                 data:     ajaxArgs,
             }).done(function(r) {
+                if (!r) return;
                 odyssey.core.posts[id] = r.post;
-                odyssey.core.nonce     = r.nonce;
+                odyssey.post_nonce     = r.post_nonce;
             });
         }
     },

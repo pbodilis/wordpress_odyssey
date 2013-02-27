@@ -95,19 +95,19 @@ class Core
         return $this->blog;
     }
 
-    public function getPostAndAdjacents($post_id = NULL)
+    public function get_post_and_adjacents($post_id = NULL)
     {
-        $current = $this->getPost($post_id);
+        $current = $this->get_post($post_id);
         $ret = array(
             'currentID'    => $current['ID'],
             $current['ID'] => $current,
         );
         if (isset($current['nextID'])) {
-            $next = $this->getPost($current['nextID']);
+            $next = $this->get_post($current['nextID']);
             $ret[$next['ID']] = $next;
         }
         if (isset($current['previousID'])) {
-            $prev = $this->getPost($current['previousID']);
+            $prev = $this->get_post($current['previousID']);
             $ret[$prev['ID']] = $prev;
         }
         return $ret;
@@ -116,7 +116,7 @@ class Core
     /**
      * \returns an array with the following info:
      */
-    public function getPost($post_id = NULL)
+    public function get_post($post_id = NULL)
     {
         $ret = array();
 
@@ -135,9 +135,9 @@ class Core
             global $post;
             $post = get_post($post_id);
         }
-        $ret['image']    = $this->getPostImage($post->ID);
-        $ret['comments'] = $this->getPostComments($post->ID);
-//      $ret = array_merge($ret, $this->getPostImage($post->ID));
+        $ret['image']    = $this->get_post_image($post->ID);
+        $ret['comments'] = $this->get_post_comments($post->ID);
+//      $ret = array_merge($ret, $this->get_post_image($post->ID));
 
         $ret['title']   = $post->post_title;
         $ret['url']     = get_permalink();
@@ -162,7 +162,7 @@ class Core
     /**
      * @return the first attached image of a post as the main post image
      */
-    public function getPostImage($post_id)
+    public function get_post_image($post_id)
     {
         $ret = array();
 
@@ -192,7 +192,7 @@ class Core
         return $ret;
     }
 
-    public function getPostComments($post_id)
+    public function get_post_comments($post_id)
     {
         $ret = array();
 

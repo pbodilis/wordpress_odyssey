@@ -7,7 +7,7 @@ odyssey.keyboard = {
         jQuery('input, textarea').blur(function() {
             txtFocus = false;
         });
-        jQuery(document).keydown(function(e) {
+        jQuery(document).on('keyup', function(e) {
             if (!txtFocus) { // if typing text, do not trigger events !
                 switch(e.which){
                     case 32:

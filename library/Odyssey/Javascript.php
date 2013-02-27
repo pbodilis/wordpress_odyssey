@@ -35,15 +35,13 @@ class Javascript
     public function __construct()
     {
         // add the callbacks
-        add_action('wp_ajax_odyssey_get_json_post_and_adjacents',        array(&$this, 'getJsonPostAndAdjacents'));
-        add_action('wp_ajax_nopriv_odyssey_get_json_post_and_adjacents', array(&$this, 'getJsonPostAndAdjacents'));
-        add_action('wp_ajax_odyssey_get_json_post',                      array(&$this, 'getJsonPost'));
-        add_action('wp_ajax_nopriv_odyssey_get_json_post',               array(&$this, 'getJsonPost'));
-        add_action('wp_ajax_odyssey_get_json_comments',                  array(&$this, 'getJsonComments'));
-        add_action('wp_ajax_nopriv_odyssey_get_json_comments',           array(&$this, 'getJsonComments'));
+        add_action('wp_ajax_odyssey_get_json_post_and_adjacents',        array(&$this, 'get_json_post_and_adjacents'));
+        add_action('wp_ajax_nopriv_odyssey_get_json_post_and_adjacents', array(&$this, 'get_json_post_and_adjacents'));
+        add_action('wp_ajax_odyssey_get_json_post',                      array(&$this, 'get_json_post'));
+        add_action('wp_ajax_nopriv_odyssey_get_json_post',               array(&$this, 'get_json_post'));
 
-        add_action('wp_head',            array(&$this, 'enqueueTemplates'), 0);
-        add_action('wp_enqueue_scripts', array(&$this, 'enqueueJavascript'));
+        add_action('wp_head',            array(&$this, 'enqueue_templates'), 0);
+        add_action('wp_enqueue_scripts', array(&$this, 'enqueue_javascript'));
     }
 
     /**
@@ -51,7 +49,7 @@ class Javascript
      *
      * @since 0.1
      */
-    public function enqueueJavascript()
+    public function enqueue_javascript()
     {
         // template engine
         wp_enqueue_script('mustache',           get_template_directory_uri() . '/js/mustache.js',           array('jquery'));
@@ -78,7 +76,7 @@ class Javascript
         // declare the URL to the file that handles the AJAX request (wp-admin/admin-ajax.php)
         wp_localize_script('odyssey-core', 'odyssey', array(
             'ajaxurl'                  => admin_url('admin-ajax.php'),
-            'posts'                    => json_encode(Core::getInstance()->getPostAndAdjacents()),
+            'posts'                    => json_encode(Core::getInstance()->get_post_and_adjacents()),
             self::POST_NONCE_EMBEDNAME => wp_create_nonce(self::POST_NONCE),
         ));
 //         <script type="text/javascript">
@@ -92,7 +90,7 @@ class Javascript
 //         </script>
     }
 
-    public function enqueueTemplates()
+    public function enqueue_templates()
     {
         $ret = '';
         $tpls = array(
@@ -109,15 +107,15 @@ class Javascript
     /**
      * \returns a JSON array
      */
-    public function getJsonPost() {
+    public function get_json_post() {
         $nonce = isset($_GET[self::POST_NONCE_EMBEDNAME]) ? $_GET[self::POST_NONCE_EMBEDNAME] : null;
         // check to see if the submitted nonce matches with the generated nonce we created earlier
         if (!wp_verify_nonce($nonce, self::POST_NONCE))
-            die ('Busted!');
+            die (json_encode(false));
 
         // find something better than direct access to $_GET/$_POST
         $ret = array(
-            'post'                     => Core::getInstance()->getPost($_GET['id']),
+            'post'                     => Core::getInstance()->get_post($_GET['id']),
             self::POST_NONCE_EMBEDNAME => wp_create_nonce(self::POST_NONCE),
         );
         echo json_encode($ret);
@@ -127,34 +125,16 @@ class Javascript
     /**
      * \returns a JSON array
      */
-    public function getJsonPostAndAdjacents() {
+    public function get_json_post_and_adjacents() {
         $nonce = isset($_GET[self::POST_NONCE_EMBEDNAME]) ? $_GET[self::POST_NONCE_EMBEDNAME] : null;
         // check to see if the submitted nonce matches with the generated nonce we created earlier
         if (!wp_verify_nonce($nonce, self::POST_NONCE))
-            die ('Busted!');
+            die (json_encode(false));
 
         // find something better than direct access to $_GET/$_POST
         $ret = array(
-            'posts'                    => Core::getInstance()->getPostAndAdjacents($_GET['id']),
+            'posts'                    => Core::getInstance()->get_post_and_adjacents($_GET['id']),
             self::POST_NONCE_EMBEDNAME => wp_create_nonce(self::POST_NONCE),
-        );
-        echo json_encode($ret);
-        die();
-    }
-
-    /**
-     * \returns a JSON array
-     */
-    public function getJsonComments() {
-        $nonce = isset($_GET[self::COMMENTS_NONCE_EMBEDNAME]) ? $_GET[self::COMMENTS_NONCE_EMBEDNAME] : null;
-        // check to see if the submitted nonce matches with the generated nonce we created earlier
-        if (!wp_verify_nonce($nonce, self::COMMENTS_NONCE))
-            die ('Busted!');
-
-        // find something better than direct access to $_GET/$_POST
-        $ret = array(
-            'comments'                     => Core::getInstance()->getComments($_GET['id']),
-            self::COMMENTS_NONCE_EMBEDNAME => wp_create_nonce(self::COMMENTS_NONCE),
         );
         echo json_encode($ret);
         die();
