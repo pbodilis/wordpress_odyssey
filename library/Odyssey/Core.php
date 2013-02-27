@@ -252,13 +252,6 @@ class Core
         return get_pages();
     }
 
-    public function getPanelState()
-    {
-        return array(
-            'panelClass' => isset($_COOKIE['odyssey_theme_panelVisibility']) ? $_COOKIE['odyssey_theme_panelVisibility'] : '',
-        );
-    }
-
     public function getRenderedHeaderBar() {
         return $this->headerbar->getRendering();
     }

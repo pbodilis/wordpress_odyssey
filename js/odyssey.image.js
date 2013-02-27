@@ -48,13 +48,16 @@ odyssey.image = {
         };
     },
     render: function(e, post) {
-        odyssey.image.image = post.image;
-        post.frame = odyssey.image.getPhotoFramePosition(post.image);
+        jQuery('#photo_frame').fadeOut(200,
+                function() {
+            odyssey.image.image = post.image;
+            post.frame = odyssey.image.getPhotoFramePosition(post.image);
 
-        // once rendering is done, insert the image
-        jQuery('#photoblog_image').Chevron('render', post, function(result) {
-            jQuery('#photo_frame').replaceWith(result);
-            jQuery('#photo_frame').fadeIn(400);
+            // once rendering is done, insert the image
+            jQuery('#photoblog_image').Chevron('render', post, function(result) {
+                jQuery('#photo_frame').replaceWith(result);
+                jQuery('#photo_frame').fadeIn(400);
+            });
         });
     },
     resize: function(e) {

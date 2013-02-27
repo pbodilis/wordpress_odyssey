@@ -325,11 +325,10 @@ body.white .menu.but.nav a.prev span {
 /* ******************************* image: panel handle ******************************* */
 #panel {
     position: absolute;
-/*     top: 30px; */
-    left: -400px;
-    width: 432px;
+/*     left: 32-400px; */
+    left: -368px;
+    width: 400px;
     min-height: 100%;
-    z-index: 999;
     background-color: rgb(68,68,68);
 
     -webkit-box-shadow: 0px 10px 5px 5px rgba(0,0,0,0.5);
@@ -343,16 +342,17 @@ body.white .menu.but.nav a.prev span {
 }
 
 #panel:hover, #panel.out {
-    left: 0px;
+    left: 32px;
+    border-right: 1px solid rgb(34,34,34);
 }
 
 #panel_handle {
-    position:absolute;
-    top:0;
-    right:0;
+    position:fixed;
+    left:0;
     width:32px;
     min-height: 100%;
     cursor:pointer;
+    z-index: 999;
 
     background-color: rgb(34,34,34);
 }
@@ -402,53 +402,9 @@ body.white .menu.but.nav a.prev span {
     filter: flipv fliph;*/
 }
 
-/* ******************************* image: panel scroll bar ******************************* */
-#panel_scroll {
-/*     height: 100%; */
-    width: 398px;
-}
-.jspContainer {
-    overflow: hidden;
-    position: relative;
-}
-.jspPane {
-    position: absolute;
-}
-.jspVerticalBar {
-    position: absolute;
-    top: 0;
-    right: 0;
-    height: 100%;
-    width: 8px;
-    background: transparent;
-}
-.jspHorizontalBar * {
-    margin: 0;
-    padding: 0;
-}
-.jspTrack {
-    position: relative;
-    background: none;
-}
-.jspDrag {
-    top: 0;
-    left: 0;
-    width:8px;
-    position: relative;
-    background-color:rgb(34,34,34);
-    cursor:row-resize;
-    border-radius: 4px;
-}
-/* Yuk! CSS Hack for IE6 3 pixel bug :( */
-* html .jspCorner {
-    margin: 0 -3px 0 0;
-}
-
 /* ******************************* image: panel content ******************************* */
 #panel_content {
-    position:relative;
-    top:0;
-    width:383px;
+    width:390px;
     margin:35px 0px 5px 5px;
 
     color:rgb(201,201,201);
@@ -518,7 +474,6 @@ body.white .menu.but.nav a.prev span {
 /* ** Comment form ** */
 #commentform {
     margin-top: 5px;
-    position: relative;
 }
 #commentform #name_block {
     width: 26%;
@@ -543,8 +498,9 @@ body.white .menu.but.nav a.prev span {
 }
 #commentform textarea.input_vinfos {
     height: 100px;
-    width: 381px; /* that's 383 -2px for the borders */
+    width: 100%;
     margin-top: 5px;
+    margin-left: -1px;
 }
 #commentform .input_vinfos {
     font-size: 11px;
@@ -581,9 +537,6 @@ body.white .menu.but.nav a.prev span {
 }
 #thank_for_comment.show {
     display:block;
-}
-#image_comments {
-    margin-bottom:25px;
 }
 #image_comments li {
     display:block;

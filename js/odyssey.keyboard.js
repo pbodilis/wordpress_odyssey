@@ -7,20 +7,22 @@ odyssey.keyboard = {
         jQuery('input, textarea').blur(function() {
             txtFocus = false;
         });
-        jQuery(document).on('keyup', function(e) {
+        jQuery(document).on('keydown', function(e) {
             if (!txtFocus) { // if typing text, do not trigger events !
                 switch(e.which){
                     case 32:
                         jQuery.publish('panel.toggle');
                         e.preventDefault();
+                        Event.stop(e);
                         return false;
-                        break;
                     case 37:
                         jQuery.publish('core.previous');
-                        break;
+                        e.preventDefault();
+                        return false;
                     case 39:
                         jQuery.publish('core.next');
-                        break;
+                        e.preventDefault();
+                        return false;
                 }
             }
         });
