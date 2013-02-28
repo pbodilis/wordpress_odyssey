@@ -410,17 +410,17 @@ body.white .menu.but.nav a.prev span {
     color:rgb(201,201,201);
     font-size:11.5px;
 }
-#panel_content h4, h5 {
+#panel_content h1, #panel_content h2, #panel_content h3, #panel_content h4, #panel_content h5 {
     letter-spacing:2px;
     background-color:rgb(34,34,34);
 }
 
-#panel_content h4 {
+#panel_content h2 {
     padding:5px;
     font-size:20px;
     text-align:center;
 }
-#panel_content h5 {
+#panel_content h3 {
     padding: 2px 0px 2px 3px;
     font-size: 14px;
     margin-top: 20px;
@@ -472,53 +472,53 @@ body.white .menu.but.nav a.prev span {
 
 
 /* ** Comment form ** */
-#commentform {
+#comment_form {
     margin-top: 5px;
 }
-#commentform #name_block {
+#comment_form .comment-form-author {
     width: 26%;
 }
-#commentform #email_block {
+#comment_form .comment-form-email {
     margin-left: 2%;
     width: 26%;
 }
-#commentform #url_block {
+#comment_form .comment-form-url {
     margin-left: 2%;
     width: 44%;
 }
-#commentform #name_block,#email_block,#url_block{
+#comment_form .comment-form-author, #comment_form .comment-form-email, #comment_form .comment-form-url {
     float: left;
 }
-#commentform input.input_vinfos {
+#comment_form input {
     width: 99%;
     height: 14px;
     margin-top: 2px;
     line-height: 14px;
     text-indent: 3px;
 }
-#commentform textarea.input_vinfos {
+#comment_form textarea {
     height: 100px;
     width: 100%;
     margin-top: 5px;
     margin-left: -1px;
 }
-#commentform .input_vinfos {
+#comment_form textarea, #comment_form input {
     font-size: 11px;
     color: rgb(201,201,201);
     border: 1px solid rgb(34,34,34);
     background-color:rgb(58,58,58);
 }
-#commentform .input_vinfos.error {
+#comment_form input.error {
     border-color: rgb(151,44,44);
 }
-#commentform #vinfos_save_block {
+#comment_form #vinfos_save_block {
     float: left;
     margin-top: 5px;
 }
-#commentform #vinfos_save_block span {
+#comment_form #vinfos_save_block span {
     margin-left: 5px;
 }
-#commentform input.input_submit {
+#comment_form #comment_submit {
     float:right;
     width:100px;
     height:17px;
@@ -538,7 +538,7 @@ body.white .menu.but.nav a.prev span {
 #thank_for_comment.show {
     display:block;
 }
-#image_comments li {
+ul.commentslist li {
     display:block;
     margin-top:5px;
     padding:7px;

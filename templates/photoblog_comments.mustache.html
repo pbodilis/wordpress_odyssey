@@ -1,0 +1,23 @@
+            <div id="comments">
+                {{#comments.0}}
+                <h3>IMAGE_COMMENTS_NUMBER Comment(s)</h3>
+                <ul class="commentslist">
+                    {{#comments}}
+                    <li>
+                        {{{content}}}
+                        <br>
+                        <span>
+                            {{#author_url}}
+                            <a title="Visit Homepage" href="{{author_url}}">{{author}}</a> @ {{date}}
+                            {{/author_url}}
+                            {{^author_url}}
+                            {{author}} @ {{date}}
+                            {{/author_url}}
+                        </span>
+                    </li>
+                    {{/comments}}
+                </ul>
+                {{/comments.0}}
+            </div>
+<!--                 <div class="panel_blocks powered_template">Powered by <a href="http://pixelpost.org/" title="Pixelpost">Pixelpost</a> - Template: <a href="http://www.pixelpost.org/extend/templates/odyssey/">Rasul v2.6</a></div> -->
+
