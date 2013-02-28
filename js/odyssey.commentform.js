@@ -3,7 +3,10 @@ odyssey.commentform = {
         // update the panel on post update
         jQuery.subscribe('post.update', odyssey.commentform.render);
 
-        jQuery('#comment_form').submit(function() {
+        jQuery(document).on('submit', '#comment_form', function(e) {
+            e.preventDefault();
+//             return false;
+//         jQuery('#comment_form').submit(function() {
             //serialize and store form data in a variable
             var formdata = jQuery('#comment_form').serialize();
             //Add a status message
@@ -11,12 +14,27 @@ odyssey.commentform = {
             //Extract action URL from commentform
             var formurl = jQuery('#comment_form').attr('action');
             //Post Form with data
+
             jQuery.ajax({
                 type: 'post',
                 url: formurl,
                 data: formdata,
-                error: function(XMLHttpRequest, textStatus, errorThrown){
-                    jQuery('#comment_status').html('<p class="wdpajax-error" >You might have left one of the fields blank, or be posting too quickly</p>');
+                dataType: 'json',
+                error: function(xhr, textStatus, errorThrown){
+                    if(xhr.status==500){
+                        var response=xhr.responseText;
+                        var text=response.split('<p>')[1].split('</p>')[0];
+                        jQuery('#comment_status').html('<p class="wdpajax-error" >'+text+'</p>');
+                    }
+                    else if(xhr.status==403){
+                        jQuery('#comment_status').html('<p class="wdpajax-error" >Stop!! You are posting comments too quickly.</p>');
+                    }
+                    else{
+                        if(textStatus=='timeout')
+                            jQuery('#comment_status').html('<p class="wdpajax-error" >Server timeout error. Try again.</p>');
+                        else
+                            jQuery('#comment_status').html('<p class="wdpajax-error" >Unknown error</p>');
+                    }
                 },
                 success: function(data, textStatus){
                     if (data == 'success')
@@ -25,6 +43,8 @@ odyssey.commentform = {
                         jQuery('#comment_status').html('<p class="ajax-error" >Please wait a while before posting your next comment</p>');
                         commentform.find('textarea[name=comment]').val('');
                 }
+            }).done(function(r) {
+                console.log(r);
             });
         });
     },

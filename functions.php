@@ -59,9 +59,10 @@ function odyssey_body_class($classes) {
     return $classes;
 }
 
-add_action('comment_post', 'odyssey_comment');
-function odyssey_comment($comment_ID, $comment_status) {
-echo "COIN\n;";
+add_action('comment_post', 'odyssey_comment_post', 20, 2);
+function odyssey_comment_post($comment_ID, $comment_status) {
+json_encode($_REQUEST);
+die();
 //     if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
 //         //If AJAX Request Then
 //         switch($comment_status){
