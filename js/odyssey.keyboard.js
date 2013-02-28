@@ -13,7 +13,6 @@ odyssey.keyboard = {
                     case 32:
                         jQuery.publish('panel.toggle');
                         e.preventDefault();
-                        Event.stop(e);
                         return false;
                     case 37:
                         jQuery.publish('core.previous');

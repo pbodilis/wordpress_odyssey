@@ -17,7 +17,6 @@ odyssey.panel = {
     },
     toggle: function(e) {
         jQuery('#panel').toggleClass('out');
-        odyssey.cookie.create('odyssey_theme_panelVisibility', (jQuery('#panel').hasClass('out') ? 'out' : ''), 30);
     },
 }
 
