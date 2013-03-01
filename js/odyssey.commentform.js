@@ -16,16 +16,16 @@ odyssey.commentform = {
                 },
                 error: function(xhr, test_status, errorThrown) {
                     if (500 == xhr.status) {
-                        var response=xhr.responseText;
-                        var text=response.split('<p>')[1].split('</p>')[0];
-                        jQuery('#comment_status').html('<p class="wdpajax-error" >'+text+'</p>');
+                        var response = xhr.responseText;
+                        var text = response.split('<p>')[1].split('</p>')[0];
+                        jQuery('#comment_status').html('<p class="ajax-error" >'+text+'</p>');
                     } else if (403 == xhr.status) {
-                        jQuery('#comment_status').html('<p class="wdpajax-error" >Stop!! You are posting comments too quickly.</p>');
+                        jQuery('#comment_status').html('<p class="ajax-error" >Stop!! You are posting comments too quickly.</p>');
                     } else {
                         if ('timeout' == test_status)
-                            jQuery('#comment_status').html('<p class="wdpajax-error" >Server timeout error. Try again.</p>');
+                            jQuery('#comment_status').html('<p class="ajax-error" >Server timeout error. Try again.</p>');
                         else
-                            jQuery('#comment_status').html('<p class="wdpajax-error" >Unknown error</p>');
+                            jQuery('#comment_status').html('<p class="ajax-error" >Unknown error</p>');
                     }
                 },
                 success: function(data, test_status) {
@@ -33,7 +33,6 @@ odyssey.commentform = {
                         jQuery('#comment_status').html('<p class="ajax-success" >Thanks for your comment. We appreciate your response.</p>');
                     else
                         jQuery('#comment_status').html('<p class="ajax-error" >Please wait a while before posting your next comment</p>');
-                        jQuery('#commentform textarea[name=comment]').val('');
                 }
             });
         });
