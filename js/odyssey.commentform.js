@@ -41,7 +41,7 @@ odyssey.commentform = {
                         jQuery('#comment_status').html('<p class="ajax-success" >Thanks for your comment. We appreciate your response.</p>');
                     else
                         jQuery('#comment_status').html('<p class="ajax-error" >Please wait a while before posting your next comment</p>');
-                        commentform.find('textarea[name=comment]').val('');
+                        jQuery('#comment_form textarea[name=comment]').val('');
                 }
             }).done(function(r) {
                 console.log(r);

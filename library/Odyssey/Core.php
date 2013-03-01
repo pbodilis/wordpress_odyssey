@@ -18,9 +18,11 @@ namespace Odyssey;
 class Core
 {
     protected $admin;
-    protected $exifManager;
-    protected $jsHandle;
+    protected $exif_manager;
     protected $renderer;
+    protected $header_bar;
+    protected $comment_manager;
+    protected $js_handle;
 
     protected $postCache;
 
@@ -44,13 +46,12 @@ class Core
 
     public function init(array $params = array())
     {
-        $this->admin       = Admin::getInstance();
-        $this->exifManager = ExifManager::getInstance();
-        $this->renderer    = Renderer::getInstance();
-        $this->headerbar   = HeaderBar::getInstance();
-        if (isset($params['enable_js']) && $params['enable_js']) {
-            $this->jsHandle = Javascript::getInstance();
-        }
+        $this->admin           = Admin::getInstance();
+        $this->exif_manager    = ExifManager::getInstance();
+        $this->renderer        = Renderer::getInstance();
+        $this->header_bar      = HeaderBar::getInstance();
+        $this->comment_manager = CommentManager::getInstance();
+        $this->js_handle       = Javascript::getInstance();
 
         add_action('after_switch_theme', array(&$this, 'install'));
 
@@ -136,7 +137,7 @@ class Core
             $post = get_post($post_id);
         }
         $ret['image']    = $this->get_post_image($post->ID);
-        $ret['comments'] = $this->get_post_comments($post->ID);
+        $ret['comments'] = $this->comment_manager->get_post_comments($post->ID);
 //      $ret = array_merge($ret, $this->get_post_image($post->ID));
 
         $ret['title']   = $post->post_title;
@@ -184,36 +185,11 @@ class Core
             $ret['height'] = $data[2];
 
             $img_filename = get_attached_file($attachment->ID);
-            $ret['capture_date'] = $this->exifManager->get_capture_date($attachment->ID, $img_filename);
-            $ret['exifs']        = $this->exifManager->get_image_exif($attachment->ID, $img_filename);
+            $ret['capture_date'] = $this->exif_manager->get_capture_date($attachment->ID, $img_filename);
+            $ret['exifs']        = $this->exif_manager->get_image_exif($attachment->ID, $img_filename);
         }
 
 
-        return $ret;
-    }
-
-    public function get_post_comments($post_id)
-    {
-        $ret = array();
-
-        $args = array(
-            'post_id' => $post_id,
-            'status'  => 'approve',
-            'orderby' => 'comment_date',
-            'order'   => 'ASC',
-        );
-
-        $comments = get_comments($args);
-        foreach($comments as $comment) {
-            $ret[] = array(
-                'author'     => $comment->comment_author,
-                'author_url' => $comment->comment_author_url,
-                'date'       => $comment->comment_date,
-                'content'    => apply_filters('comment_text', $comment->comment_content),
-            );
-        }
-        
-//         var_dump($ret);
         return $ret;
     }
 
@@ -253,7 +229,10 @@ class Core
     }
 
     public function getRenderedHeaderBar() {
-        return $this->headerbar->getRendering();
+        return $this->header_bar->getRendering();
+    }
+    public function get_comment_form() {
+        return $this->comment_manager->get_comment_form();
     }
 }
 
