@@ -24,37 +24,18 @@ class ExifManager
     const RESET       = 'odyssey_reset_exif';
 
     static private $instance;
-    static public function getInstance(array $params = array())
-    {
+    static public function getInstance(array $params = array()) {
         if (!isset(self::$instance)) {
             self::$instance = new self($params);
         }
         return self::$instance;
     }
 
-    public function __construct(array $params = array())
-    {
+    public function __construct(array $params = array()) {
         Admin::getInstance()->register($this);
-        $this->exifCache = array();
     }
 
-    public function getPageTitle()
-    {
-        return 'Exif settings';
-    }
-    
-    public function getMenuTitle()
-    {
-        return $this->getPageTitle();
-    }
-    
-    public function getMenuSlug()
-    {
-        return 'odyssey-settings-exifs';
-    }
-
-    static public function exif_id2label($exif_id)
-    {
+    static public function setting_id2label($setting_id) {
         $id2label = array(
             'Make'             => __('Manufacturer: '),
             'Model'            => __('Model Name: '),
@@ -78,10 +59,10 @@ class ExifManager
 
             'Title'            => __('Title: '),
         );
-        return $id2label[ $exif_id ];
+        return $id2label[ $setting_id ];
     }
 
-    static public function get_default_exif_settings()
+    static public function get_default_settings()
     {
         return array(
             'Make'             => false,
@@ -108,9 +89,9 @@ class ExifManager
         );
     }
 
-    public function get_exif_settings()
+    public function get_settings()
     {
-        return get_option(self::OPTION_NAME, self::get_default_exif_settings());
+        return get_option(self::OPTION_NAME, self::get_default_settings());
     }
 
     function get_setting_page()
@@ -118,7 +99,7 @@ class ExifManager
         if ( isset( $_POST[ self::RESET ] ) ) {
             delete_option(self::OPTION_NAME);
         }
-        $settings = $this->get_exif_settings();
+        $settings = $this->get_settings();
         if (isset($_POST[self::SUBMIT])) {
             $doUpdate = false;
             foreach ($settings as $setting => &$enabled) {
@@ -137,7 +118,7 @@ class ExifManager
 
         $data = array();
         foreach ($settings as $setting => &$enabled) {
-            $data[] = array('id' => $setting, 'enabled' => $enabled, 'exif' => self::exif_id2label($setting));
+            $data[] = array('id' => $setting, 'enabled' => $enabled, 'exif' => self::setting_id2label($setting));
         }
         echo Renderer::getInstance()->render('admin_exif', array(
             'settings' => $data,
@@ -154,7 +135,7 @@ class ExifManager
      */
     public function get_image_exif($post_id, $filename)
     {
-        $settings = $this->get_exif_settings();
+        $settings = $this->get_settings();
         if (false === $settings) {
             return false;
         }
@@ -179,7 +160,7 @@ class ExifManager
                     break;
             }
             if (false !== $value) {
-                $ret[] = array('name' => self::exif_id2label($setting), 'value' => $value);
+                $ret[] = array('name' => self::setting_id2label($setting), 'value' => $value);
             }
         }
         return $ret;

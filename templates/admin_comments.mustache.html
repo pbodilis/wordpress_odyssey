@@ -1,0 +1,25 @@
+<div class=".wrap" style="float: left;">
+    <h3>Comments Settings</h3>
+    <form action="" method="post" id="odyssey_exif_form">
+        <table class="form-table">
+            <tbody>
+                {{#settings}}
+                <tr valign="top">
+                    <th scope="row">{{setting}}</th>
+                    <td>
+                        <input id="{{id}}" name="{{id}}" type="checkbox" value="1"
+                            {{#enabled}}
+                            checked="checked"
+                            {{/enabled}}
+                            style="margin-left: 10px;" />
+                        <label for="{{id}}" name="{{id}}" style="width: 75px; display: inline-block;">enabled</label>
+                    </td>
+                </tr>
+                {{/settings}}
+            </tbody>
+        </table>
+        <p class="submit">
+            <input type="submit" name="{{submit}}"  class="button button-primary" value="Update options &raquo;" />
+        </p>
+    </form>
+</div>

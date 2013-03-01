@@ -432,7 +432,7 @@ body.white .menu.but.nav a.prev span {
 #panel_content a:hover {
     color: rgb(230,230,230);
 }
-#panel_content .image_notes, .panel_blocks {
+#panel_content .image_notes, #panel_content .panel_blocks {
     padding: 5px;
     line-height: 160%;
     background-color:rgb(34,34,34);
@@ -472,53 +472,53 @@ body.white .menu.but.nav a.prev span {
 
 
 /* ** Comment form ** */
-#comment_form {
+#commentform {
     margin-top: 5px;
 }
-#comment_form .comment-form-author {
+#commentform .comment-form-author {
     width: 26%;
 }
-#comment_form .comment-form-email {
+#commentform .comment-form-email {
     margin-left: 2%;
     width: 26%;
 }
-#comment_form .comment-form-url {
+#commentform .comment-form-url {
     margin-left: 2%;
     width: 44%;
 }
-#comment_form .comment-form-author, #comment_form .comment-form-email, #comment_form .comment-form-url {
+#commentform .comment-form-author, #commentform .comment-form-email, #commentform .comment-form-url {
     float: left;
 }
-#comment_form input {
+#commentform input {
     width: 99%;
     height: 14px;
     margin-top: 2px;
     line-height: 14px;
     text-indent: 3px;
 }
-#comment_form textarea {
+#commentform textarea {
     height: 100px;
     width: 100%;
     margin-top: 5px;
     margin-left: -1px;
 }
-#comment_form textarea, #comment_form input {
+#commentform textarea, #commentform input {
     font-size: 11px;
     color: rgb(201,201,201);
     border: 1px solid rgb(34,34,34);
     background-color:rgb(58,58,58);
 }
-#comment_form input.error {
+#commentform input.error {
     border-color: rgb(151,44,44);
 }
-#comment_form #vinfos_save_block {
+#commentform #vinfos_save_block {
     float: left;
     margin-top: 5px;
 }
-#comment_form #vinfos_save_block span {
+#commentform #vinfos_save_block span {
     margin-left: 5px;
 }
-#comment_form #comment_submit {
+#commentform #comment_submit {
     float:right;
     width:100px;
     height:17px;
