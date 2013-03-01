@@ -20,7 +20,7 @@ class Renderer
     protected $mustache;
 
     static private $instance;
-    static public function getInstance(array $params = array())
+    static public function get_instance(array $params = array())
     {
         if (!isset(self::$instance)) {
             self::$instance = new self($params);

@@ -21,7 +21,7 @@ class CommentManager
     const SUBMIT      = 'odyssey_submit_comment';
 
     static private $instance;
-    static public function getInstance(array $params = array()) {
+    static public function get_instance(array $params = array()) {
         if (!isset(self::$instance)) {
             self::$instance = new self($params);
         }
@@ -29,7 +29,7 @@ class CommentManager
     }
 
     public function __construct(array $params = array()) {
-        Admin::getInstance()->register($this);
+        Admin::get_instance()->register($this);
 
         add_action('comment_post', array(&$this, 'post'), 20, 2);
     }
@@ -51,8 +51,12 @@ class CommentManager
         return get_option(self::OPTION_NAME, self::get_default_settings());
     }
 
-    function get_setting_page()
-    {
+    public function get_setting($s) {
+        $settings = $this->get_settings();
+        return $settings[ $s ];
+    }
+
+    function get_setting_page() {
         $settings = $this->get_settings();
         if (isset($_POST[self::SUBMIT])) {
             $doUpdate = false;
@@ -74,7 +78,7 @@ class CommentManager
         foreach ($settings as $setting => &$enabled) {
             $data[] = array('id' => $setting, 'enabled' => $enabled, 'setting' => self::setting_id2label($setting));
         }
-        echo Renderer::getInstance()->render('admin_comments', array(
+        return Renderer::get_instance()->render('admin_comments', array(
             'settings' => $data,
             'submit'   => self::SUBMIT,
         ));
@@ -130,7 +134,8 @@ class CommentManager
     }
 
     function post($comment_ID, $comment_status) {
-        
+        if ( ! $this->get_setting( 'comment_form_ajax_enabled' ) ) return;
+
         if ( ! empty( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && 'xmlhttprequest' == strtolower($_SERVER['HTTP_X_REQUESTED_WITH'])) {
             switch( $comment_status ) {
                 case '0':

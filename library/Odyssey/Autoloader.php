@@ -23,8 +23,7 @@ class Autoloader
      *
      * @param string $baseDir Odyssey library base directory (default: dirname(__FILE__).'/..')
      */
-    public function __construct($baseDir = null)
-    {
+    public function __construct($baseDir = null) {
         if ($baseDir === null) {
             $this->baseDir = dirname(__FILE__).'/..';
         } else {
@@ -39,8 +38,7 @@ class Autoloader
      *
      * @return Odyssey_Autoloader Registered Autoloader instance
      */
-    public static function register($baseDir = null)
-    {
+    public static function register($baseDir = null) {
         $loader = new self($baseDir);
         spl_autoload_register(array($loader, 'autoload'));
 
@@ -52,8 +50,7 @@ class Autoloader
      *
      * @param string $class
      */
-    public function autoload($class)
-    {
+    public function autoload($class) {
         if ($class[0] === '\\') {
             $class = substr($class, 1);
         }

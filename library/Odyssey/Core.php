@@ -29,7 +29,7 @@ class Core
     protected $blog;
 
     static private $instance;
-    static public function getInstance(array $params = array())
+    static public function get_instance(array $params = array())
     {
         if (!isset(self::$instance)) {
             self::$instance = new self($params);
@@ -46,12 +46,12 @@ class Core
 
     public function init(array $params = array())
     {
-        $this->admin           = Admin::getInstance();
-        $this->exif_manager    = ExifManager::getInstance();
-        $this->renderer        = Renderer::getInstance();
-        $this->header_bar      = HeaderBar::getInstance();
-        $this->comment_manager = CommentManager::getInstance();
-        $this->js_handle       = Javascript::getInstance();
+        $this->admin           = Admin::get_instance();
+        $this->exif_manager    = ExifManager::get_instance();
+        $this->renderer        = Renderer::get_instance();
+        $this->header_bar      = HeaderBar::get_instance();
+        $this->comment_manager = CommentManager::get_instance();
+        $this->js_handle       = Javascript::get_instance();
 
         add_action('after_switch_theme', array(&$this, 'install'));
 
@@ -140,9 +140,9 @@ class Core
         $ret['comments'] = $this->comment_manager->get_post_comments($post->ID);
 //      $ret = array_merge($ret, $this->get_post_image($post->ID));
 
-        $ret['title']   = $post->post_title;
-        $ret['url']     = get_permalink();
         $ret['ID']      = $post->ID;
+        $ret['title']   = $post->post_title;
+        $ret['url']     = get_permalink($post->ID);
         $ret['content'] = apply_filters('the_content', $post->post_content);
 
         $nextPost = get_next_post();
@@ -193,9 +193,8 @@ class Core
         return $ret;
     }
 
-    public function get_random_post()
-    {
-        if (!isset($this->randomPost)) {
+    public function get_random_post() {
+        if (!isset($this->random_post)) {
             $args = array(
                 'posts_per_page'  => 1,
                 'orderby'         => 'rand',
@@ -205,31 +204,42 @@ class Core
             );
             $posts = get_posts($args);
             if (empty($posts)) {
-                $this->randomPost = false;
+                $this->random_post = false;
             } else {
-                $this->randomPost = current($posts);
+                $this->random_post = current($posts);
             }
         }
-        return $this->randomPost;
+        return $this->random_post;
     }
 
-    public function get_random_post_url()
-    {
+    public function get_random_post_url() {
         $post = $this->get_random_post();
-        if ($post !== false) {
-            return $post->guid;
+        if (false !== $post) {
+            return array(
+                'url'   => get_permalink($post->ID),
+                'title' => __('Random post'),
+                'name'  => __('Random'),
+            );
         } else {
             return false;
         }
     }
 
-    public function getPages()
-    {
-        return get_pages();
+    public function get_pages_url() {
+        $ret = array();
+        $pages = get_pages();
+        foreach ($pages as $page) {
+            $ret[] = array(
+                'url'   => get_permalink($page->ID),
+                'title' => $page->post_excerpt,
+                'name'  => $page->post_title,
+            );
+        }
+        return $ret;
     }
 
-    public function getRenderedHeaderBar() {
-        return $this->header_bar->getRendering();
+    public function get_rendered_header_bar() {
+        return $this->header_bar->get_rendering();
     }
     public function get_comment_form() {
         return $this->comment_manager->get_comment_form();

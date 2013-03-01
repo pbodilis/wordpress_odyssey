@@ -24,7 +24,7 @@ class ExifManager
     const RESET       = 'odyssey_reset_exif';
 
     static private $instance;
-    static public function getInstance(array $params = array()) {
+    static public function get_instance(array $params = array()) {
         if (!isset(self::$instance)) {
             self::$instance = new self($params);
         }
@@ -32,7 +32,7 @@ class ExifManager
     }
 
     public function __construct(array $params = array()) {
-        Admin::getInstance()->register($this);
+        Admin::get_instance()->register($this);
     }
 
     static public function setting_id2label($setting_id) {
@@ -62,8 +62,7 @@ class ExifManager
         return $id2label[ $setting_id ];
     }
 
-    static public function get_default_settings()
-    {
+    static public function get_default_settings() {
         return array(
             'Make'             => false,
             'Model'            => true,
@@ -89,13 +88,11 @@ class ExifManager
         );
     }
 
-    public function get_settings()
-    {
+    public function get_settings() {
         return get_option(self::OPTION_NAME, self::get_default_settings());
     }
 
-    function get_setting_page()
-    {
+    function get_setting_page() {
         if ( isset( $_POST[ self::RESET ] ) ) {
             delete_option(self::OPTION_NAME);
         }
@@ -120,7 +117,7 @@ class ExifManager
         foreach ($settings as $setting => &$enabled) {
             $data[] = array('id' => $setting, 'enabled' => $enabled, 'exif' => self::setting_id2label($setting));
         }
-        echo Renderer::getInstance()->render('admin_exif', array(
+        return Renderer::get_instance()->render('admin_exif', array(
             'settings' => $data,
             'submit'   => self::SUBMIT,
             'reset'    => self::RESET,
@@ -133,8 +130,7 @@ class ExifManager
      *
      * @return array of selected exif, with at least captureDate
      */
-    public function get_image_exif($post_id, $filename)
-    {
+    public function get_image_exif($post_id, $filename) {
         $settings = $this->get_settings();
         if (false === $settings) {
             return false;
@@ -166,8 +162,7 @@ class ExifManager
         return $ret;
     }
 
-    public function get_capture_date($post_id, $filename)
-    {
+    public function get_capture_date($post_id, $filename) {
         $exifs = $this->read_exifs($post_id, $filename);
         if (isset($exifs['DateTime']) && 'a' !== $exifs['DateTime']) {
             return date_i18n(get_option('date_format'), strtotime($exifs['DateTime']));
@@ -179,8 +174,7 @@ class ExifManager
     /**
      * first tries to retrieve metadata from curstom wordpress meta data, and if not, read them from the file and then update the db
      */
-    private function read_exifs($post_id, $filename)
-    {
+    private function read_exifs($post_id, $filename) {
         $exifs = array();
         $meta = get_post_meta($post_id, self::METADATA_NAME);
         if (empty($meta)) {
@@ -196,8 +190,7 @@ class ExifManager
     /**
      * compute mathematic string (such as the one contained in an exif field) without the use of eval
      */
-    static private function compute_math($math_string)
-    {
+    static private function compute_math($math_string) {
         $math_string = trim($math_string);                                   // trim white spaces
         $math_string = ereg_replace('[^0-9\+-\*\/\(\) ]', '', $math_string); // remove any non-numbers chars; exception for math operators
         if (empty($math_string)) {
@@ -211,8 +204,7 @@ class ExifManager
     /**
      *
      */
-    static private function exposure_program($ep)
-    {
+    static private function exposure_program($ep) {
         $ep2str = array(
             0 => false,
             1 => 'Manual',

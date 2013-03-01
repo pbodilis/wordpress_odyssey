@@ -16,10 +16,7 @@ require dirname(__FILE__) . '/library/Odyssey/Autoloader.php';
 function theCore() {
     static $core;
     if (!isset($core)) {
-
-        $core = \Odyssey\Core::getInstance(array(
-            'enable_js' => true,
-        ));
+        $core = \Odyssey\Core::get_instance();
     }
     return $core;
 }

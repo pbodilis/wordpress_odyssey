@@ -518,9 +518,14 @@ body.white .menu.but.nav a.prev span {
 #commentform #vinfos_save_block span {
     margin-left: 5px;
 }
+
+#commentform #comment_status {
+    float:left;
+    width:70%;
+}
 #commentform #comment_submit {
     float:right;
-    width:100px;
+    width:30%;
     height:17px;
     font-size:10px;
     border:none;

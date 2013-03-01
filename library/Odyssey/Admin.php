@@ -20,7 +20,7 @@ class Admin
     private $managers = array();
 
     static private $instance;
-    static public function getInstance(array $params = array())
+    static public function get_instance(array $params = array())
     {
         if (!isset(self::$instance)) {
             self::$instance = new self($params);
@@ -72,7 +72,7 @@ class Admin
         echo '<div id="icon-themes" class="icon32"><br></div>' . PHP_EOL;
         echo '<h2>Odyssey Theme Settings</h2>' . PHP_EOL;
         foreach($this->managers as $manager) {
-            $manager->get_setting_page();
+            echo $manager->get_setting_page();
         }
     }
 

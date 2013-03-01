@@ -24,16 +24,14 @@ class Javascript
     const COMMENTS_NONCE           = 'oddyssey-ajax-comments-nonce';
 
     static private $instance;
-    static public function getInstance(array $params = array())
-    {
+    static public function get_instance(array $params = array()) {
         if (!isset(self::$instance)) {
             self::$instance = new self($params);
         }
         return self::$instance;
     }
 
-    public function __construct()
-    {
+    public function __construct() {
         // add the callbacks
         add_action('wp_ajax_odyssey_get_json_post_and_adjacents',        array(&$this, 'get_json_post_and_adjacents'));
         add_action('wp_ajax_nopriv_odyssey_get_json_post_and_adjacents', array(&$this, 'get_json_post_and_adjacents'));
@@ -49,8 +47,7 @@ class Javascript
      *
      * @since 0.1
      */
-    public function enqueue_javascript()
-    {
+    public function enqueue_javascript() {
         // template engine
         wp_enqueue_script('mustache',            get_template_directory_uri() . '/js/mustache.js',            array('jquery'));
         wp_enqueue_script('chevron',             get_template_directory_uri() . '/js/chevron.js',             array('jquery'));
@@ -76,9 +73,10 @@ class Javascript
 
         // declare the URL to the file that handles the AJAX request (wp-admin/admin-ajax.php)
         wp_localize_script('odyssey-core', 'odyssey', array(
-            'ajaxurl'                  => admin_url('admin-ajax.php'),
-            'posts'                    => json_encode(Core::getInstance()->get_post_and_adjacents()),
-            self::POST_NONCE_EMBEDNAME => wp_create_nonce(self::POST_NONCE),
+            'ajaxurl'                   => admin_url('admin-ajax.php'),
+            'posts'                     => json_encode(Core::get_instance()->get_post_and_adjacents()),
+            'comment_form_ajax_enabled' => json_encode(CommentManager::get_instance()->get_setting('comment_form_ajax_enabled')),
+            self::POST_NONCE_EMBEDNAME  => wp_create_nonce(self::POST_NONCE),
         ));
 //         <script type="text/javascript">
 //             var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
@@ -91,8 +89,7 @@ class Javascript
 //         </script>
     }
 
-    public function enqueue_templates()
-    {
+    public function enqueue_templates() {
         $ret = '';
         $tpls = array(
             'photoblog_image'    => 'photoblog_image.mustache.html',
@@ -117,7 +114,7 @@ class Javascript
 
         // find something better than direct access to $_GET/$_POST
         $ret = array(
-            'post'                     => Core::getInstance()->get_post($_GET['id']),
+            'post'                     => Core::get_instance()->get_post($_GET['id']),
             self::POST_NONCE_EMBEDNAME => wp_create_nonce(self::POST_NONCE),
         );
         echo json_encode($ret);
@@ -135,7 +132,7 @@ class Javascript
 
         // find something better than direct access to $_GET/$_POST
         $ret = array(
-            'posts'                    => Core::getInstance()->get_post_and_adjacents($_GET['id']),
+            'posts'                    => Core::get_instance()->get_post_and_adjacents($_GET['id']),
             self::POST_NONCE_EMBEDNAME => wp_create_nonce(self::POST_NONCE),
         );
         echo json_encode($ret);

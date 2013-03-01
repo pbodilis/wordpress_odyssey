@@ -34,7 +34,7 @@ $blog = theCore()->getBlog();
 
 <?php
 
-echo theCore()->getRenderedHeaderBar();
+echo theCore()->get_rendered_header_bar();
 
 //var_dump(get_pages());
 // get_sidebar();
