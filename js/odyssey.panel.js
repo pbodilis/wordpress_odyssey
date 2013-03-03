@@ -11,9 +11,6 @@ odyssey.panel = {
         jQuery('#photoblog_content').Chevron('render', post, function(result) {
             jQuery('#content').replaceWith(result);
         });
-        jQuery('#photoblog_comments').Chevron('render', post, function(result) {
-            jQuery('#comments').replaceWith(result);
-        });
     },
     toggle: function(e) {
         jQuery('#panel').toggleClass('out');

@@ -15,8 +15,7 @@ namespace Odyssey;
  *  @package Odyssey Theme for WordPress
  *  @subpackage Core
  */
-class Core
-{
+class Core {
     protected $admin;
     protected $exif_manager;
     protected $renderer;
@@ -24,28 +23,21 @@ class Core
     protected $comment_manager;
     protected $js_handle;
 
-    protected $postCache;
-
     protected $blog;
 
     static private $instance;
-    static public function get_instance(array $params = array())
-    {
+    static public function get_instance(array $params = array()) {
         if (!isset(self::$instance)) {
             self::$instance = new self($params);
         }
         return self::$instance;
     }
 
-    public function __construct(array $params = array())
-    {
+    public function __construct(array $params = array()) {
         $this->init($params);
-
-        $this->postCache = array();
     }
 
-    public function init(array $params = array())
-    {
+    public function init(array $params = array()) {
         $this->admin           = Admin::get_instance();
         $this->exif_manager    = ExifManager::get_instance();
         $this->renderer        = Renderer::get_instance();
@@ -54,20 +46,45 @@ class Core
         $this->js_handle       = Javascript::get_instance();
 
         add_action('after_switch_theme', array(&$this, 'install'));
+        
+        add_filter('body_class',  array(&$this, 'body_class'));
+        add_filter('the_content', array(&$this, 'filter_content'));
 
         add_theme_support('post-formats', array('image', 'video'));
     }
 
 
-    public function install()
-    {
+    public function install() {
         update_option('default_post_format', 'image');
     }
 
-    public function render($template, $data)
-    {
+    public function render($template, $data) {
         echo $this->renderer->render($template, $data);
     }
+
+    function body_class($classes) {
+        // apend the current color chosen for the theme, to the $classes array
+        $classes[] = isset($_COOKIE['odyssey_theme_color']) ? $_COOKIE['odyssey_theme_color'] : 'white';
+        return $classes;
+    }
+
+    public function filter_content($content) {
+        switch (get_post_format()) {
+            case 'image':
+                $content = strip_shortcodes($content);
+                // ouch, now, that's a ugly hack :/
+                // remove the image, the link and the paragraph in which the image is.
+                $content = preg_replace('/<img[^>]+\>/', __('Download image'), $content, 1);
+                $content = preg_replace('/<p[^>]*>[\s|&nbsp;]*<\/p>/', '', $content);
+    //            $content = preg_replace('/(width|height)="\d*"\s/', '', $content);
+                break;
+            default:
+                break;
+        }
+        
+        return $content;
+    }
+
 
     /**
      * \returns various information about the blog, including:
@@ -75,8 +92,7 @@ class Core
      *  - uri
      *  - description
      */
-    public function getBlog()
-    {
+    public function get_blog() {
         if (!isset($this->blog)) {
             $this->blog = array(
                 'title'             => wp_title('&raquo;', false),
@@ -96,8 +112,7 @@ class Core
         return $this->blog;
     }
 
-    public function get_post_and_adjacents($post_id = NULL)
-    {
+    public function get_post_and_adjacents($post_id = NULL) {
         $current = $this->get_post($post_id);
         $ret = array(
             'currentID'    => $current['ID'],
@@ -117,22 +132,17 @@ class Core
     /**
      * \returns an array with the following info:
      */
-    public function get_post($post_id = NULL)
-    {
+    public function get_post($post_id = NULL) {
         $ret = array();
-
         if (is_null($post_id)) {
             if (have_posts()) {
                 the_post();
             }
             global $post;
-            if (isset($this->postCache[$post->ID])) { // we already gather info for this post
-                return $this->postCache[$post->ID];   // return the cached data
-            }
+        } else if ('random' == $post_id) {
+            global $post;
+            $post = $this->get_random_post();
         } else {
-            if (isset($this->postCache[$post_id])) { // we already gather info for this post
-                return $this->postCache[$post_id];   // return the cached data
-            }
             global $post;
             $post = get_post($post_id);
         }
@@ -148,7 +158,6 @@ class Core
         $nextPost = get_next_post();
         if (!empty($nextPost)) {
             $ret['nextID'] = $nextPost->ID;
-        $this->postCache[$post->ID] = $ret;
         }
 
         $prevPost = get_previous_post();
@@ -156,15 +165,13 @@ class Core
             $ret['previousID'] = $prevPost->ID;
         }
 
-        $this->postCache[$post->ID] = $ret;
         return $ret;
     }
 
     /**
      * @return the first attached image of a post as the main post image
      */
-    public function get_post_image($post_id)
-    {
+    public function get_post_image($post_id) {
         $ret = array();
 
         $args = array(
@@ -216,9 +223,10 @@ class Core
         $post = $this->get_random_post();
         if (false !== $post) {
             return array(
-                'url'   => get_permalink($post->ID),
-                'title' => __('Random post'),
-                'name'  => __('Random'),
+                'url'    => get_permalink($post->ID),
+                'title'  => __('Random post'),
+                'name'   => __('Random'),
+                'linkid' => 'random',
             );
         } else {
             return false;
@@ -230,9 +238,10 @@ class Core
         $pages = get_pages();
         foreach ($pages as $page) {
             $ret[] = array(
-                'url'   => get_permalink($page->ID),
-                'title' => $page->post_excerpt,
-                'name'  => $page->post_title,
+                'url'    => get_permalink($page->ID),
+                'title'  => $page->post_excerpt,
+                'name'   => $page->post_title,
+                'linkid' => 'page_' . $page->ID,
             );
         }
         return $ret;

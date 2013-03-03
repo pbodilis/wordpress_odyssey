@@ -13,14 +13,14 @@ require dirname(__FILE__) . '/library/Odyssey/Autoloader.php';
 \Odyssey\Autoloader::register();
 
 // launch odyssey engine
-function theCore() {
+function the_core() {
     static $core;
     if (!isset($core)) {
         $core = \Odyssey\Core::get_instance();
     }
     return $core;
 }
-theCore();
+the_core();
 
 // meh, no idea what do with that
 if (!isset($content_width)) {
@@ -28,35 +28,25 @@ if (!isset($content_width)) {
 }
 
 
-function odyssey_filter_content($content) {
-    switch (get_post_format()) {
-        case 'image':
-            $content = strip_shortcodes($content);
-            // ouch, now, that's a ugly hack :/
-            // remove the image, the link and the paragraph in which the image is.
-            $content = preg_replace('/<img[^>]+\>/', __('Download image'), $content, 1);
-            $content = preg_replace('/<p[^>]*>[\s|&nbsp;]*<\/p>/', '', $content);
-            $content = preg_replace('/(width|height)="\d*"\s/', '', $content);
-            break;
-        default:
-            break;
-    }
-    
-    return $content;
-}
-add_filter('the_content', 'odyssey_filter_content');
 // remove_filter('the_content', 'wpautop');
 
-add_filter('body_class', 'odyssey_body_class');
-function odyssey_body_class($classes) {
-    // add 'class-name' to the $classes array
-    $color = isset($_COOKIE['odyssey_theme_color']) ? $_COOKIE['odyssey_theme_color'] : 'white';
-    $classes[] = $color;
-    // return the $classes array
-    return $classes;
-}
 
 remove_filter('check_comment_flood', 'check_comment_flood_db');
+
+
+//add_action( 'template_redirect', 'redirect' );
+function redirect() {
+    $args = array(
+        'numberposts' => 1,
+        'post_status' => 'publish'
+    );
+    $last = wp_get_recent_posts($args);
+    $last_id = $last['0']['ID'];
+    if ( is_home() && ! is_paged() && ! is_archive() && ! is_tag() && !isset($_GET['ptype'])  ) :
+        wp_redirect( get_permalink($last_id) , 301 ); 
+        exit;
+    endif;
+}
 
 
 // $defaults = array(

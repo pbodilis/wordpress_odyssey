@@ -55,7 +55,7 @@ class HeaderBar
         return $id2label[ $setting_id ];
     }
     static public function get_default_header_bar_syndication_settings() {
-        $blog = Core::get_instance()->getBlog();
+        $blog = Core::get_instance()->get_blog();
         
         return array(
             'rss'         => array('enabled' => true,  'value' => $blog['rss2_url']),
@@ -159,7 +159,7 @@ class HeaderBar
     }
 
     function get_rendering() {
-        $blog = Core::get_instance()->getBlog();
+        $blog = Core::get_instance()->get_blog();
         
         $settings = $this->get_header_bar_syndication_settings();
         $syndication = array();

@@ -8,7 +8,18 @@
         <div class="menu txt">
             <ul>
                 {{#others}}
-                <li><a href="{{url}}" title="{{title}}"> {{name}} </a></li>
+                <li>
+                    <a href="{{url}}"
+                        {{#title}}
+                        title="{{title}}"
+                        {{/title}}
+                        {{#linkid}}
+                        id="{{linkid}}"
+                        {{/linkid}}
+                        >
+                        {{name}}
+                    </a>
+                </li>
                 {{/others}}
             </ul>
         </div>
@@ -51,4 +62,5 @@
                 </ul>
             </div>
         </div>
+        <div class="menu loading"></div>
     </header>

@@ -4,12 +4,8 @@
  */
 
 session_start();
-// if (isset($_REQUEST['info']) && !empty($_REQUEST['info']))
-//     $_SESSION['odyssey:info'] = $_REQUEST['info'];
 
-
-
-$blog = theCore()->getBlog();
+$blog = the_core()->get_blog();
 ?>
 
 
@@ -34,9 +30,6 @@ $blog = theCore()->getBlog();
 
 <?php
 
-echo theCore()->get_rendered_header_bar();
-
-//var_dump(get_pages());
-// get_sidebar();
+echo the_core()->get_rendered_header_bar();
 
 ?>

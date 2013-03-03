@@ -12,33 +12,38 @@ odyssey.commentform = {
                 data:       jQuery('#commentform').serialize(),
                 dataType:  'json',
                 beforeSend: function(xhr, settings) {
-                    jQuery('#comment_status').html('<p>Processing...</p>');
+                    jQuery('#comment_status').html('Processing...');
                 },
-                error: function(xhr, test_status, errorThrown) {
+                error: function(xhr, test_status, error_thrown) {
                     if (500 == xhr.status) {
                         var response = xhr.responseText;
                         var text = response.split('<p>')[1].split('</p>')[0];
-                        jQuery('#comment_status').html('<p class="ajax-error" >'+text+'</p>');
+                        jQuery('#comment_status').html(text);
                     } else if (403 == xhr.status) {
-                        jQuery('#comment_status').html('<p class="ajax-error" >Stop!! You are posting comments too quickly.</p>');
+                        jQuery('#comment_status').html('Stop! You are posting comments too quickly.');
                     } else {
                         if ('timeout' == test_status)
-                            jQuery('#comment_status').html('<p class="ajax-error" >Server timeout error. Try again.</p>');
+                            jQuery('#comment_status').html('Server timeout error. Try again.');
                         else
-                            jQuery('#comment_status').html('<p class="ajax-error" >Unknown error</p>');
+                            jQuery('#comment_status').html('Unknown error');
                     }
                 },
-                success: function(data, test_status) {
-                    if ('success' == data)
-                        jQuery('#comment_status').html('<p class="ajax-success" >Thanks for your comment. We appreciate your response.</p>');
-                    else
-                        jQuery('#comment_status').html('<p class="ajax-error" >Please wait a while before posting your next comment</p>');
+                success: function(data, test_status, xhr) {
+                    jQuery('#comment_status').html('Comment posted!');
+                    jQuery('#photoblog_comments').Chevron('render', data, function(result) {
+console.log(result);
+                        jQuery('#comments').append(result);
+                    });
                 }
             });
         });
     },
     render: function(e, post) {
         jQuery('#comment_post_ID').val(post.ID);
+
+        jQuery('#photoblog_comments').Chevron('render', post, function(result) {
+            jQuery('#comments').replaceWith(result);
+        });
     },
 }
 

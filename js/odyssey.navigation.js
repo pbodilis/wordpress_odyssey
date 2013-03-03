@@ -10,6 +10,11 @@ odyssey.navigation = {
             e.preventDefault();
             return false;
         });
+        jQuery(document).on('click', '#random', function(e) {
+            jQuery.publish('core.random');
+            e.preventDefault();
+            return false;
+        });
     }
 };
 

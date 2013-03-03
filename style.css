@@ -221,7 +221,6 @@ body.white .menu.but.nav a.prev span {
 .menu.but.tooltip a {
     text-align: center;
     line-height: 20px;
-    color: rgb(255,255,255);
     cursor: help;
     position: relative;
 }
@@ -246,6 +245,14 @@ body.white .menu.but.nav a.prev span {
 .help ul li {
     padding-left: 15px;
     display: list-item;
+}
+
+.menu.loading {
+    background: url(./images/odyssey_loading.gif) no-repeat;
+    width: 16px;
+    height: 16px;
+    margin: 7px;
+    display: none;
 }
 
 
@@ -441,7 +448,7 @@ body.white .menu.but.nav a.prev span {
     font-size: 12.5px;
 /*     text-indent: 20px; */
 }
-#panel_content .image_notes p img {
+#panel_content .image_notes p img:not(.wp-smiley) {
     width: 100%;
 }
 #panel_content .panel_blocks {

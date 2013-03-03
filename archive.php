@@ -1,59 +1,44 @@
 <?php
 /*
-Template Name: Archive Pages
+Template Name: Archives
 */
+get_header(); ?>
 
-/*
-Remember to edit search.php - it's similar except for the headline
-*/
-/*
-get_header();
 
-monolit_print_container('b');
-
-if (have_posts()) :
-	// Hack. Set $post so that the_date() works.
-	$post = $posts[0]; 
-
-	// build and output title
-	$headline = MSG_ARCHIVE_HEADLINE . " &#8216;";
-		
-	if (is_category()) : // If this is a category archive
-		$headline .= single_cat_title(null, false);
-	elseif (is_day()) : // If this is a daily archive
-		$headline .= get_the_time('F jS, Y');
-	elseif (is_month()) : // If this is a monthly archive
-		$headline .= get_the_time('F, Y');
-	elseif (is_year()) : // If this is a yearly archive
-		$headline .= get_the_time('Y');
-	elseif (is_author()) :  // If this is an author archive
-		$headline .= MSG_AUTHOR;
-	elseif (isset($_GET['paged']) && !empty($_GET['paged'])) :  // If this is a paged archive
-		$headline .= "blog";
-	endif;
-
-	$headline .= "&#8217;";
-	headline(2, $headline);
-
-	monolit_print_archivenavigation();
-
-	print "<div class=\"archives\">\n";
-	$number_of_thumbs = 0;
-	while (have_posts()) : the_post();
-		monolit_print_thumb();
-		$number_of_thumbs++;
-		if ($number_of_thumbs % MONOLIT_SET_THUMBS_PER_LINE == 0) 
-			print "<br />\n";
-	endwhile;
-	print "</div>\n";
-
-	monolit_print_archivenavigation();
-else :
-	headline(2, MSG_PAGE_NOT_FOUND);
-	include (TEMPLATEPATH . '/searchform.php');
-endif;
-
-monolit_print_container('e');
-
-get_footer();*/
-?>
+    <div id="archives_block">
+        <ul class="accordion">
+            <li class="general">
+                <h3>General</h3>
+                <div class="content">
+                    <ul>
+                        <li><a href="index.php?x=browse&amp;filter=all"             title="All (<SITE_PHOTONUMBER> Photos)"> All&nbsp;(<SITE_PHOTONUMBER>) </a></li>
+                        <li><a href="index.php?x=browse&amp;filter=most_commented"  title="Most commented pictures">         Most Commented                </a></li>
+                        <li><a href="index.php?x=browse&amp;filter=least_commented" title="Least commented pictures">        Least Commented               </a></li>
+                        <li><a href="index.php?x=browse&amp;filter=top_rated"       title="Top rated pictures">              Top Rated                     </a></li>
+                        <li><a href="index.php?x=browse&amp;filter=worst_rated"     title="Worst rated pictures">            Worst Rated                   </a></li>
+                    </ul>
+                </div>
+            </li>
+            <li class="category">
+                <h3>By Category</h3>
+                <div class="content">
+                    <CATEGORY_LINKS_AS_LIST_PAGED>
+                </div>
+            </li>
+            <li class="archivedate">
+                <h3>By Date</h3>
+                <div class="content">
+                    <BROWSE_MONTHLY_ARCHIVE_AS_LINK_PAGED>
+                </div>
+            </li>
+        </ul>
+        <div id="copyright">All images &copy; Pierre Bodilis</div>
+    </div>
+    <div id="photolist_block">
+        <ul><ODYSSEY_THUMBNAILS></ul>
+        <div class="clr"></div>
+    </div>
+    <div class="clr"></div>
+<?php wp_get_archives(); ?>
+<?php get_sidebar(); ?>
+<?php get_footer(); ?>
