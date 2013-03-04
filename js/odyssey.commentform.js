@@ -3,6 +3,10 @@ odyssey.commentform = {
         // update the panel on post update
         jQuery.subscribe('post.update', odyssey.commentform.render);
 
+        if (odyssey.comment_form_ajax_enabled == 'false') {
+            return;
+        }
+        
         jQuery(document).on('submit', '#commentform', function(e) {
             e.preventDefault();
 
