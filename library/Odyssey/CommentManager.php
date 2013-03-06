@@ -113,9 +113,19 @@ class CommentManager
         return sprintf( _n( 'One comment ', '%1$s comments', get_comments_number($post_id), 'odyssey' ), number_format_i18n( get_comments_number() ) );
     }
 
+    /**
+     * build a tree of comments
+     *  - 'id'
+     *  - 'author'
+     *  - 'author_url'
+     *  - 'date'
+     *  - 'content'
+     *  - 'children'
+     */
     public function get_post_comments($post_id) {
-        $ret = array();
-
+        $list = array();
+        $tree = array();
+        
         $args = array(
             'post_id' => $post_id,
             'status'  => 'approve',
@@ -125,15 +135,24 @@ class CommentManager
 
         $comments = get_comments($args);
         foreach($comments as $comment) {
-            $ret[] = array(
-                'comment_id' => $comment->comment_ID,
+            $c = array(
+                'id'         => $comment->comment_ID,
                 'author'     => $comment->comment_author,
                 'author_url' => $comment->comment_author_url,
                 'date'       => $comment->comment_date,
-                'content'    => apply_filters('comment_text', $comment->comment_content)
+                'content'    => apply_filters('comment_text', $comment->comment_content),
+                'children'   => array(),
             );
+            if (0 == $comment->comment_parent) {
+                $i = array_push($tree, $c);
+                $list[$comment->comment_ID] =& $tree[$i - 1];
+            } else {
+                $parent =& $list[$comment->comment_parent];
+                $i = array_push($parent['children'], $c);
+                $list[$comment->comment_ID] =& $parent['children'][$i - 1];
+            }
         }
-        return $ret;
+        return array_values($tree);
     }
 
     function comment_post($comment_ID, $comment_status) {
