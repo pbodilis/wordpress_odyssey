@@ -44,11 +44,31 @@ console.log(result);
     },
     render: function(e, post) {
         jQuery('#comment_post_ID').val(post.ID);
+        jQuery('#comment_title').html(post.comment_title);
 
-        jQuery('#photoblog_comments').Chevron('render', post, function(result) {
-console.log(result);
-            jQuery('#comments').replaceWith(result);
-        });
+        html = '<ul class="commentslist">' +
+                    '{{#comments}}' +
+                    '<li>' +
+                        '{{{content}}}' +
+                        '<p>' +
+                            '{{#author_url}}' +
+                            '<a title="Visit Homepage" href="{{author_url}}">{{author}}</a> @ {{date}}' +
+                            '{{/author_url}}' +
+                            '{{^author_url}}' +
+                            '{{author}} @ {{date}}' +
+                            '{{/author_url}}' +
+                            '{{^leaf}}' +
+                            '{{>comments}}' +
+                            '{{/leaf}}' +
+                        '</p>' +
+                    '</li>' +
+                    '{{/comments}}' +
+                '</ul>';
+
+        jQuery('#comments').html(Mustache.render(html, {comments: post.comments}, {comments: html}));
+//         jQuery('#photoblog_comments').Chevron('render', post, function(result) {
+//             jQuery('#comments').replaceWith(result);
+//         });
     },
 }
 

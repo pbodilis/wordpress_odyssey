@@ -141,15 +141,17 @@ class CommentManager
                 'author_url' => $comment->comment_author_url,
                 'date'       => $comment->comment_date,
                 'content'    => apply_filters('comment_text', $comment->comment_content),
-                'children'   => array(),
+                'leaf'       => true,
+                'comments'   => array(),
             );
             if (0 == $comment->comment_parent) {
                 $i = array_push($tree, $c);
                 $list[$comment->comment_ID] =& $tree[$i - 1];
             } else {
                 $parent =& $list[$comment->comment_parent];
-                $i = array_push($parent['children'], $c);
-                $list[$comment->comment_ID] =& $parent['children'][$i - 1];
+                $parent['leaf'] = false;
+                $i = array_push($parent['comments'], $c);
+                $list[$comment->comment_ID] =& $parent['comments'][$i - 1];
             }
         }
         return array_values($tree);

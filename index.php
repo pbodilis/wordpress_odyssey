@@ -21,7 +21,10 @@ get_header();
         <div class="clr"></div>
 <?php the_core()->get_comment_form(); ?>
         <div class="clr"></div>
-        <div id="comments"></div>
+        <div id="comments_area">
+            <h3 id="comment_title"></h3>
+            <div id="comments"></div>
+        </div>
         <div class="clr"></div>
     </div>
 </div>
