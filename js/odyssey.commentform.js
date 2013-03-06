@@ -46,6 +46,7 @@ console.log(result);
         jQuery('#comment_post_ID').val(post.ID);
 
         jQuery('#photoblog_comments').Chevron('render', post, function(result) {
+console.log(result);
             jQuery('#comments').replaceWith(result);
         });
     },

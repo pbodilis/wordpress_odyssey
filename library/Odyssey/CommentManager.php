@@ -110,8 +110,9 @@ class CommentManager
     }
     
     public function get_post_comments($post_id) {
-        $ret = array();
-
+        $list = array();
+        $tree = array();
+        
         $args = array(
             'post_id' => $post_id,
             'status'  => 'approve',
@@ -121,14 +122,23 @@ class CommentManager
 
         $comments = get_comments($args);
         foreach($comments as $comment) {
-            $ret[] = array(
+            $c = array(
                 'author'     => $comment->comment_author,
                 'author_url' => $comment->comment_author_url,
                 'date'       => $comment->comment_date,
                 'content'    => apply_filters('comment_text', $comment->comment_content),
+                'children'   => array(),
             );
+            if (0 == $comment->comment_parent) {
+                $tree[$comment->comment_ID] = $c;
+                $list[$comment->comment_ID] =& $tree[$comment->comment_ID];
+            } else {
+                $parent =& $list[$comment->comment_parent];
+                $parent['children'][$comment->comment_ID] = $c;
+                $list[$comment->comment_ID] =& $parent['children'][$comment->comment_ID];
+            }
         }
-        return $ret;
+        return array_values($tree);
     }
 
     function comment_post($comment_ID, $comment_status) {
