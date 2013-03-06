@@ -68,7 +68,7 @@ class Javascript
         wp_enqueue_script('odyssey-keyboard',    get_template_directory_uri() . '/js/odyssey.keyboard.js',    array('jquery'), false, true);
         wp_enqueue_script('odyssey-history',     get_template_directory_uri() . '/js/odyssey.history.js',     array('history', 'history-adapter'), false, true);
         wp_enqueue_script('odyssey-navigation',  get_template_directory_uri() . '/js/odyssey.navigation.js',  array('jquery'), false, true);
-        wp_enqueue_script('odyssey-commentform', get_template_directory_uri() . '/js/odyssey.commentform.js', array('jquery'), false, true);
+        wp_enqueue_script('odyssey-commentform', get_template_directory_uri() . '/js/odyssey.commentform.js', array('jquery', 'comment-reply'), false, true);
         wp_enqueue_script('odyssey',             get_template_directory_uri() . '/js/odyssey.js',             array('jquery'), false, true);
 
         // declare the URL to the file that handles the AJAX request (wp-admin/admin-ajax.php)

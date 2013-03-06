@@ -108,7 +108,11 @@ class CommentManager
         );
         comment_form($args);
     }
-    
+
+    public function get_post_comments_title($post_id) {
+        return sprintf( _n( 'One comment ', '%1$s comments', get_comments_number($post_id), 'odyssey' ), number_format_i18n( get_comments_number() ) );
+    }
+
     public function get_post_comments($post_id) {
         $ret = array();
 
@@ -122,10 +126,11 @@ class CommentManager
         $comments = get_comments($args);
         foreach($comments as $comment) {
             $ret[] = array(
+                'comment_id' => $comment->comment_ID,
                 'author'     => $comment->comment_author,
                 'author_url' => $comment->comment_author_url,
                 'date'       => $comment->comment_date,
-                'content'    => apply_filters('comment_text', $comment->comment_content),
+                'content'    => apply_filters('comment_text', $comment->comment_content)
             );
         }
         return $ret;

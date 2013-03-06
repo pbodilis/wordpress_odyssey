@@ -147,7 +147,8 @@ class Core {
             $post = get_post($post_id);
         }
         $ret['image']    = $this->get_post_image($post->ID);
-        $ret['comments'] = $this->comment_manager->get_post_comments($post->ID);
+        $ret['comment_title'] = $this->comment_manager->get_post_comments_title($post->ID);
+        $ret['comments']      = $this->comment_manager->get_post_comments($post->ID);
 //      $ret = array_merge($ret, $this->get_post_image($post->ID));
 
         $ret['ID']      = $post->ID;
