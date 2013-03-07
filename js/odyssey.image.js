@@ -48,16 +48,14 @@ odyssey.image = {
         };
     },
     render: function(e, post) {
-        jQuery('#photo_frame').fadeOut(200,
-                function() {
-            odyssey.image.image = post.image;
-            post.frame = odyssey.image.getPhotoFramePosition(post.image);
-
-            // once rendering is done, insert the image
-            jQuery('#photoblog_image').Chevron('render', post, function(result) {
-                jQuery('#photo_frame').replaceWith(result);
-                jQuery('#photo_frame').fadeIn(400);
-            });
+        odyssey.image.image = post.image;
+        post.frame = odyssey.image.getPhotoFramePosition(post.image);
+        var rendering = ich.render_image(post);
+        // fadeout the image, and make the replacement appear in the callback
+        jQuery('#photo_frame').fadeOut(200, function() {
+            // insert image
+            jQuery('#photo_frame').replaceWith(rendering);
+            jQuery('#photo_frame').fadeIn(400);
         });
     },
     resize: function(e) {
@@ -74,5 +72,5 @@ odyssey.image = {
     },
 }
 
-//jQuery.subscribe('post.update', odyssey.image.render);
+jQuery.subscribe('post.update', odyssey.image.render);
 jQuery(window).resize(odyssey.image.resize);

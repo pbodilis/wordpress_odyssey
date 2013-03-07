@@ -51,7 +51,7 @@ class Javascript
         // template engine
 //        wp_enqueue_script('mustache',            get_template_directory_uri() . '/js/mustache.js',            array('jquery'));
 //        wp_enqueue_script('chevron',             get_template_directory_uri() . '/js/chevron.js',             array('jquery'));
-        wp_enqueue_script('ICanHaz',             get_template_directory_uri() . '/js/ICanHaz.js',             array('jquery'));
+        wp_enqueue_script('ICanHaz',             get_template_directory_uri() . '/js/ICanHaz.js',             array('jquery'), false, true);
 
         // pub sub implementation
         wp_enqueue_script('pubsub',              get_template_directory_uri() . '/js/ba-tiny-pubsub.js',      array('jquery'));
@@ -95,14 +95,26 @@ class Javascript
         $tpls = array(
             'photoblog_image'    => 'photoblog_image.mustache.html',
             'photoblog_content'  => 'photoblog_content.mustache.html',
-            'photoblog_comments' => 'photoblog_comments.mustache.html',
+            'render_comments' => 'photoblog_comments.mustache.html',
         );
-        $tplDir = get_template_directory_uri() . '/templates/';
-        foreach($tpls as $tplName => $tplFile) {
-            $ret .= '<link href="' . $tplDir . $tplFile . '" rel="template" id="' . $tplName . '"/>' . PHP_EOL;
+        $tpl_dir = get_template_directory_uri() . '/templates/';
+        foreach($this->templates as $tpl_name => $tpl_file) {
+            echo '<link href="' . $tpl_dir . $tpl_file . '" rel="template" id="' . $tpl_name . '"/>' . PHP_EOL;
         }
-        echo $ret;
+
+//         foreach($this->template_callbacks as $template_name => $template_callback) {
+//             echo '<script id="' . $template_name . '" type="text/html">' . PHP_EOL;
+//             echo call_user_func($template_callback);
+//             echo '</script>' . PHP_EOL;
+//         }
+ 
+//        echo $ret;
     }
+
+    public function add_template($template_name, $template_file) {
+        $this->templates[ $template_name ] = $template_file;
+    }
+
         
     /**
      * \returns a JSON array

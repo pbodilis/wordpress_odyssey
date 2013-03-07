@@ -45,11 +45,18 @@ class Core {
         $this->comment_manager = CommentManager::get_instance();
         $this->js_handle       = Javascript::get_instance();
 
+        // add the templates related to the image and the content
+        $this->js_handle->add_template('render_image',   'photoblog_image.mustache.html');
+        $this->js_handle->add_template('render_content', 'photoblog_content.mustache.html');
+
+        // set default stuff on this theme installation
         add_action('after_switch_theme', array(&$this, 'install'));
         
+        // add couple of filters on body_class, and content
         add_filter('body_class',  array(&$this, 'body_class'));
         add_filter('the_content', array(&$this, 'filter_content'));
 
+        // the list of format support by the theme
         add_theme_support('post-formats', array('image', 'video'));
     }
 

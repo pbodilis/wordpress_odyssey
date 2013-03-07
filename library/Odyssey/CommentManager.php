@@ -31,6 +31,8 @@ class CommentManager
     public function __construct(array $params = array()) {
         Admin::get_instance()->register($this);
 
+        Javascript::get_instance()->add_template('render_comments', 'photoblog_comments.mustache.html');
+
         add_action('comment_post', array(&$this, 'comment_post'), 20, 2);
     }
 
@@ -56,7 +58,7 @@ class CommentManager
         return $settings[ $s ];
     }
 
-    function get_setting_page() {
+    public function get_setting_page() {
         $settings = $this->get_settings();
         if (isset($_POST[self::SUBMIT])) {
             $doUpdate = false;
@@ -157,7 +159,7 @@ class CommentManager
         return array_values($tree);
     }
 
-    function comment_post($comment_ID, $comment_status) {
+    public function comment_post($comment_ID, $comment_status) {
         if ( ! $this->get_setting( 'comment_form_ajax_enabled' ) ) return;
 
         if ( ! empty( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && 'xmlhttprequest' == strtolower($_SERVER['HTTP_X_REQUESTED_WITH'])) {
@@ -182,7 +184,6 @@ class CommentManager
             die();
         }
     }
-   
 }
 
 ?>

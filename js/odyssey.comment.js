@@ -46,7 +46,7 @@ console.log(result);
         jQuery('#comment_post_ID').val(post.ID);
         jQuery('#comment_title').html(post.comment_title);
 
-                jQuery('#comments').html(odyssey.ich.render_comments({'comments': post.comments}));
+        jQuery('#comments').html(ich.render_comments({'comments': post.comments}));
 
 
 
