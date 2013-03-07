@@ -446,7 +446,6 @@ body.white .menu.but.nav a.prev span {
 }
 #panel_content .image_notes {
     font-size: 12.5px;
-/*     text-indent: 20px; */
 }
 #panel_content .image_notes p img:not(.wp-smiley) {
     width: 100%;
@@ -496,6 +495,10 @@ body.white .menu.but.nav a.prev span {
 #commentform .comment-form-author, #commentform .comment-form-email, #commentform .comment-form-url {
     float: left;
 }
+#commentform .comment-form-author:hover, #commentform .comment-form-email:hover, #commentform .comment-form-url:hover {
+    cursor: pointer;
+    color: rgba(255,255,255,1);
+}
 #commentform input {
     width: 100%;
     height: 14px;
@@ -506,13 +509,13 @@ body.white .menu.but.nav a.prev span {
     height: 100px;
     width: 100%;
     margin: 5px 0px;
-    margin-left: -1px;
 }
 #commentform textarea, #commentform input {
     font-size: 11px;
     color: rgb(201,201,201);
     border: 1px solid rgb(34,34,34);
     background-color:rgb(58,58,58);
+    margin-left: -1px;
 }
 #commentform input.error {
     border-color: rgb(151,44,44);
@@ -558,12 +561,19 @@ ul.commentslist li {
     padding:7px;
 }
 ul.commentslist li .replyto:hover, ul.commentslist li .replying{
-    color: rgb(255,255,255);
-    background-color: rgba(255,255,255,0.2);
+    color:rgba(255,255,255,1);
+    background-color:rgba(255,255,255,0.2);
+    cursor:pointer;
+
+    -webkit-transition: background 0.5s ease-in-out;
+    -moz-transition: background 0.5s ease-in-out;
+    -o-transition: background 0.5s ease-in-out;
+    -ms-transition: background 0.5s ease-in-out;
+    transition: background 0.5s ease-in-out;
 }
 
 #image_comments li span {
-    font-size: 10px;
+    font-size:10px;
 }
 
 
