@@ -1,72 +1,70 @@
-odyssey.commentform = {
+odyssey.comments = {
+    status: {},
+    
     init: function() {
         // update the panel on post update
-        jQuery.subscribe('post.update', odyssey.commentform.render);
+        jQuery.subscribe('post.update', odyssey.comments.render);
 
         if (odyssey.comment_form_ajax_enabled == 'false') {
             return;
         }
+        odyssey.comments.status = jQuery('#comment_status');
         
+        jQuery(document).on('click', 'a.replyto_cancel', odyssey.comments.replyto_cancel);
+
         jQuery(document).on('submit', '#commentform', function(e) {
             e.preventDefault();
 
             jQuery.ajax({
-                type: 'post',
+//                 type: 'post',
                 url:        jQuery('#commentform').attr('action'),
                 data:       jQuery('#commentform').serialize(),
                 dataType:  'json',
                 beforeSend: function(xhr, settings) {
-                    jQuery('#comment_status').html('Processing...');
+                    odyssey.comments.status.html('Processing...');
                 },
                 error: function(xhr, test_status, error_thrown) {
                     if (500 == xhr.status) {
                         var response = xhr.responseText;
                         var text = response.split('<p>')[1].split('</p>')[0];
-                        jQuery('#comment_status').html(text);
+                        odyssey.comments.status.html(text);
                     } else if (403 == xhr.status) {
-                        jQuery('#comment_status').html('Stop! You are posting comments too quickly.');
+                        odyssey.comments.status.html('Stop! You are posting comments too quickly.');
                     } else {
                         if ('timeout' == test_status)
-                            jQuery('#comment_status').html('Server timeout error. Try again.');
+                            odyssey.comments.status.html('Server timeout error. Try again.');
                         else
-                            jQuery('#comment_status').html('Unknown error');
+                            odyssey.comments.status.html('Unknown error');
                     }
                 },
                 success: function(data, test_status, xhr) {
-                    jQuery('#comment_status').html('Comment posted!');
-                    jQuery('#photoblog_comments').Chevron('render', data, function(result) {
-console.log(result);
-                        jQuery('#comments').append(result);
-                    });
+console.log(jQuery('#comment_post_ID').val());
+console.log(jQuery('#comment_parent').val());
+                    odyssey.comments.status.html('Comment posted!');
+console.log(ich.render_comments({'comments': data}));
                 }
             });
         });
+    },
+    replyto: function(jthis, comment_id, author) {
+        jQuery('.replying').toggleClass('replying', false);
+        jthis.toggleClass('replying', true);
+
+        jQuery('#comment_parent').val(comment_id);
+        odyssey.comments.status.html('Replying to: ' + author + ' <a href="#" class="replyto_cancel">(cancel)</a>');
+    },
+    replyto_cancel: function() {
+        jQuery('.replying').toggleClass('replying', false);
+        jQuery('#comment_parent').val(0);
+        odyssey.comments.status.html('');
     },
     render: function(e, post) {
         jQuery('#comment_post_ID').val(post.ID);
         jQuery('#comment_title').html(post.comment_title);
 
         jQuery('#comments').html(ich.render_comments({'comments': post.comments}));
-
-
-
-
-//         jQuery('#photoblog_comments').Chevron('render', post, function(result) {
-//             jQuery('#comments').replaceWith(result);
-//         });
     },
 }
 
-
-
-odyssey.commentform.init();
-
-// jQuery.subscribe('post.update', odyssey.panel.refresh);
-// jQuery(window).load(function() {
-//     panelOut = odyssey.cookie.read('odyssey_theme_panelVisibility') == '1';
-//     jQuery('#panel').toggleClass('out', panelOut);
-// });
-
-
-
+odyssey.comments.init();
 

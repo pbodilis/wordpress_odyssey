@@ -171,10 +171,13 @@ class CommentManager
                     $post    = &get_post($comment->comment_post_ID);
                     wp_notify_postauthor($comment_ID, $comment->comment_type);
                     $ret = array(
+                        'id'         => $comment->comment_ID,
                         'author'     => $comment->comment_author,
                         'author_url' => $comment->comment_author_url,
                         'date'       => $comment->comment_date,
                         'content'    => apply_filters('comment_text', $comment->comment_content),
+                        'leaf'       => true,
+                        'comments'   => array(),
                     );
                     echo json_encode(array($ret));
                     break;
