@@ -46,15 +46,9 @@ console.log(result);
         jQuery('#comment_post_ID').val(post.ID);
         jQuery('#comment_title').html(post.comment_title);
 
-        var tpl = jQuery('#photoblog_comments');
-        jQuery.ajax({
-            type: 'GET',
-            url: tpl.attr('href'),
-            success: function(response, status, request){
-                ich.addTemplate('render_comments', response);
-                jQuery('#comments').html(ich.render_comments({'comments': post.comments}));
-            }
-        });
+                jQuery('#comments').html(odyssey.ich.render_comments({'comments': post.comments}));
+
+
 
 
 //         jQuery('#photoblog_comments').Chevron('render', post, function(result) {
