@@ -1,7 +1,7 @@
 odyssey.panel = {
     init: function() {
         // update the panel on post update
-        jQuery.subscribe('post.update', odyssey.panel.render);
+//        jQuery.subscribe('post.update', odyssey.panel.render);
 
         // click on the panel handle, or a "panel.toggle" event toggles the panel
         jQuery.subscribe('panel.toggle', odyssey.panel.toggle);
@@ -16,7 +16,6 @@ odyssey.panel = {
         jQuery('#panel').toggleClass('out');
     },
 }
-
 
 odyssey.panel.init();
 

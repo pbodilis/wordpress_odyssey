@@ -73,6 +73,6 @@ odyssey.image = {
         });
     },
 }
-            
-jQuery.subscribe('post.update', odyssey.image.render);
+
+//jQuery.subscribe('post.update', odyssey.image.render);
 jQuery(window).resize(odyssey.image.resize);

@@ -46,31 +46,24 @@ console.log(result);
         jQuery('#comment_post_ID').val(post.ID);
         jQuery('#comment_title').html(post.comment_title);
 
-        html = '<ul class="commentslist">' +
-                    '{{#comments}}' +
-                    '<li>' +
-                        '{{{content}}}' +
-                        '<p>' +
-                            '{{#author_url}}' +
-                            '<a title="Visit Homepage" href="{{author_url}}">{{author}}</a> @ {{date}}' +
-                            '{{/author_url}}' +
-                            '{{^author_url}}' +
-                            '{{author}} @ {{date}}' +
-                            '{{/author_url}}' +
-                            '{{^leaf}}' +
-                            '{{>comments}}' +
-                            '{{/leaf}}' +
-                        '</p>' +
-                    '</li>' +
-                    '{{/comments}}' +
-                '</ul>';
+        var tpl = jQuery('#photoblog_comments');
+        jQuery.ajax({
+            type: 'GET',
+            url: tpl.attr('href'),
+            success: function(response, status, request){
+                ich.addTemplate('render_comments', response);
+                jQuery('#comments').html(ich.render_comments({'comments': post.comments}));
+            }
+        });
 
-        jQuery('#comments').html(Mustache.render(html, {comments: post.comments}, {comments: html}));
+
 //         jQuery('#photoblog_comments').Chevron('render', post, function(result) {
 //             jQuery('#comments').replaceWith(result);
 //         });
     },
 }
+
+
 
 odyssey.commentform.init();
 

@@ -49,8 +49,9 @@ class Javascript
      */
     public function enqueue_javascript() {
         // template engine
-        wp_enqueue_script('mustache',            get_template_directory_uri() . '/js/mustache.js',            array('jquery'));
-        wp_enqueue_script('chevron',             get_template_directory_uri() . '/js/chevron.js',             array('jquery'));
+//        wp_enqueue_script('mustache',            get_template_directory_uri() . '/js/mustache.js',            array('jquery'));
+//        wp_enqueue_script('chevron',             get_template_directory_uri() . '/js/chevron.js',             array('jquery'));
+        wp_enqueue_script('ICanHaz',             get_template_directory_uri() . '/js/ICanHaz.js',             array('jquery'));
 
         // pub sub implementation
         wp_enqueue_script('pubsub',              get_template_directory_uri() . '/js/ba-tiny-pubsub.js',      array('jquery'));
