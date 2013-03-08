@@ -560,16 +560,23 @@ ul.commentslist li {
 #comments>ul.commentslist>li {
     padding:7px;
 }
-ul.commentslist li .replyto:hover, ul.commentslist li .replying{
+ul.commentslist li .replyto {
+    -webkit-transition: background 1s ease-in-out 0.2s;
+    -moz-transition: background 1s ease-in-out 0.2s;
+    -o-transition: background 1s ease-in-out 0.2s;
+    -ms-transition: background 1s ease-in-out 0.2s;
+    transition: background 1s ease-in-out 0.2s;
+}
+ul.commentslist li .replyto:hover, ul.commentslist li .replying {
     color:rgba(255,255,255,1);
     background-color:rgba(255,255,255,0.2);
     cursor:pointer;
 
-    -webkit-transition: background 0.5s ease-in-out;
-    -moz-transition: background 0.5s ease-in-out;
-    -o-transition: background 0.5s ease-in-out;
-    -ms-transition: background 0.5s ease-in-out;
-    transition: background 0.5s ease-in-out;
+    -webkit-transition: background 0.3s ease-in-out;
+    -moz-transition: background 0.3s ease-in-out;
+    -o-transition: background 0.3s ease-in-out;
+    -ms-transition: background 0.3s ease-in-out;
+    transition: background 0.3s ease-in-out;
 }
 
 #image_comments li span {

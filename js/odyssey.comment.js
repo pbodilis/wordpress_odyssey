@@ -16,7 +16,7 @@ odyssey.comments = {
             e.preventDefault();
 
             jQuery.ajax({
-//                 type: 'post',
+                type: 'post',
                 url:        jQuery('#commentform').attr('action'),
                 data:       jQuery('#commentform').serialize(),
                 dataType:  'json',
@@ -38,10 +38,21 @@ odyssey.comments = {
                     }
                 },
                 success: function(data, test_status, xhr) {
-console.log(jQuery('#comment_post_ID').val());
-console.log(jQuery('#comment_parent').val());
+                    // update status
                     odyssey.comments.status.html('Comment posted!');
-console.log(ich.render_comments({'comments': data}));
+
+                    // display newly added comment
+                    var comment = ich.render_comments({'comments': data});
+                    comment.hide();
+                    jQuery('#comment_list_item_' + jQuery('#comment_parent').val() + '>ul.commentslist').append(comment);
+                    comment.slideDown();
+
+                    // clear form
+                    odyssey.comments.replyto_cancel();
+                    jQuery('#comment').val('');
+
+                    // reload post comment
+                    jQuery.publish('core.comments.reload');
                 }
             });
         });
@@ -59,10 +70,11 @@ console.log(ich.render_comments({'comments': data}));
         odyssey.comments.status.html('');
     },
     render: function(e, post) {
+        odyssey.comments.replyto_cancel();
         jQuery('#comment_post_ID').val(post.ID);
         jQuery('#comment_title').html(post.comment_title);
 
-        jQuery('#comments').html(ich.render_comments({'comments': post.comments}));
+        jQuery('#comment_list_item_0').html(ich.render_comments({'comments': post.comments}));
     },
 }
 

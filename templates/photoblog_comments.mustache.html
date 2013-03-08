@@ -1,6 +1,6 @@
                 <ul class="commentslist">
                     {{#comments}}
-                    <li>
+                    <li id="comment_list_item_{{id}}">
                         {{! maybe find a better way than this onClick}}
                         <div class="replyto" onClick="odyssey.comments.replyto(jQuery(this), {{id}}, '{{author}}');">
                             {{{content}}}

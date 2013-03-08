@@ -37,6 +37,8 @@ class Javascript
         add_action('wp_ajax_nopriv_odyssey_get_json_post_and_adjacents', array(&$this, 'get_json_post_and_adjacents'));
         add_action('wp_ajax_odyssey_get_json_post',                      array(&$this, 'get_json_post'));
         add_action('wp_ajax_nopriv_odyssey_get_json_post',               array(&$this, 'get_json_post'));
+        add_action('wp_ajax_odyssey_get_json_post_comments',             array(&$this, 'get_json_post_comments'));
+        add_action('wp_ajax_nopriv_odyssey_get_json_post_comments',      array(&$this, 'get_json_post_comments'));
 
         add_action('wp_head',            array(&$this, 'enqueue_templates'), 0);
         add_action('wp_enqueue_scripts', array(&$this, 'enqueue_javascript'));
@@ -119,6 +121,24 @@ class Javascript
     /**
      * \returns a JSON array
      */
+    public function get_json_post_and_adjacents() {
+        $nonce = isset($_GET[self::POST_NONCE_EMBEDNAME]) ? $_GET[self::POST_NONCE_EMBEDNAME] : null;
+        // check to see if the submitted nonce matches with the generated nonce we created earlier
+        if (!wp_verify_nonce($nonce, self::POST_NONCE))
+            die (json_encode(false));
+
+        // find something better than direct access to $_GET/$_POST
+        $ret = array(
+            'posts'                    => Core::get_instance()->get_post_and_adjacents($_GET['id']),
+            self::POST_NONCE_EMBEDNAME => wp_create_nonce(self::POST_NONCE),
+        );
+        echo json_encode($ret);
+        die();
+    }
+
+    /**
+     * \returns a JSON array
+     */
     public function get_json_post() {
         $nonce = isset($_GET[self::POST_NONCE_EMBEDNAME]) ? $_GET[self::POST_NONCE_EMBEDNAME] : null;
         // check to see if the submitted nonce matches with the generated nonce we created earlier
@@ -137,7 +157,7 @@ class Javascript
     /**
      * \returns a JSON array
      */
-    public function get_json_post_and_adjacents() {
+    public function get_json_post_comments() {
         $nonce = isset($_GET[self::POST_NONCE_EMBEDNAME]) ? $_GET[self::POST_NONCE_EMBEDNAME] : null;
         // check to see if the submitted nonce matches with the generated nonce we created earlier
         if (!wp_verify_nonce($nonce, self::POST_NONCE))
@@ -145,7 +165,8 @@ class Javascript
 
         // find something better than direct access to $_GET/$_POST
         $ret = array(
-            'posts'                    => Core::get_instance()->get_post_and_adjacents($_GET['id']),
+            'comment_title'            => CommentManager::get_instance()->get_post_comments_title($_GET['id']),
+            'comments'                 => CommentManager::get_instance()->get_post_comments($_GET['id']),
             self::POST_NONCE_EMBEDNAME => wp_create_nonce(self::POST_NONCE),
         );
         echo json_encode($ret);

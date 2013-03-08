@@ -111,8 +111,24 @@ class CommentManager
         comment_form($args);
     }
 
+    static private $cache;
+    static private function cache_post_comments($post_id) {
+        if (! isset(self::$cache[ $post_id ])) {
+            $args = array(
+                'post_id' => $post_id,
+                'status'  => 'approve',
+                'orderby' => 'comment_date',
+                'order'   => 'ASC',
+            );
+    
+            self::$cache[ $post_id ] = get_comments($args);
+        }
+        return self::$cache[ $post_id ];
+    }
+
     public function get_post_comments_title($post_id) {
-        return sprintf( _n( 'One comment ', '%1$s comments', get_comments_number($post_id), 'odyssey' ), number_format_i18n( get_comments_number() ) );
+        $comment_number = count(self::cache_post_comments($post_id));
+        return sprintf( _n( 'One comment ', '%1$s comments', $comment_number, 'odyssey' ), number_format_i18n( $comment_number ) );
     }
 
     /**
@@ -128,15 +144,7 @@ class CommentManager
         $list = array();
         $tree = array();
         
-        $args = array(
-            'post_id' => $post_id,
-            'status'  => 'approve',
-            'orderby' => 'comment_date',
-            'order'   => 'ASC',
-        );
-
-        $comments = get_comments($args);
-        foreach($comments as $comment) {
+        foreach(self::cache_post_comments($post_id) as $comment) {
             $c = array(
                 'id'         => $comment->comment_ID,
                 'author'     => $comment->comment_author,

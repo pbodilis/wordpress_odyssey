@@ -1,6 +1,14 @@
 odyssey.core = {
     posts: {},
 
+    init: function() {
+        jQuery.subscribe('core.get',             odyssey.core.retrievePosts);
+        jQuery.subscribe('core.previous',        odyssey.core.previous);
+        jQuery.subscribe('core.next',            odyssey.core.next);
+        jQuery.subscribe('core.random',          odyssey.core.random);
+        jQuery.subscribe('core.comments.reload', odyssey.core.reload_comments);
+    },
+
     getCurrentPostId: function() {
         return odyssey.core.posts.currentID;
     },
@@ -87,7 +95,25 @@ odyssey.core = {
             });
         }
     },
-
+    
+    reload_comments: function(e) {
+        var id = odyssey.core.posts.currentID;
+        var ajaxArgs = {
+            action:     'odyssey_get_json_post_comments',
+            id:         id,
+            post_nonce: odyssey.post_nonce
+        }
+        jQuery.ajax({
+            url:      odyssey.ajaxurl,
+            dataType: 'json',
+            data:     ajaxArgs,
+        }).done(function(r) {
+            if (!r) return;
+            odyssey.core.posts[id].comment_title = r.comment_title;
+            odyssey.core.posts[id].comments      = r.comments;
+            odyssey.post_nonce                   = r.post_nonce;
+        });
+    },
     previous: function(e) {
         var current = odyssey.core.posts[odyssey.core.posts.currentID];
         if (current.previousID) {
@@ -105,10 +131,4 @@ odyssey.core = {
     }
 };
 
-jQuery.subscribe('core.get',      odyssey.core.retrievePosts);
-jQuery.subscribe('core.previous', odyssey.core.previous);
-jQuery.subscribe('core.next',     odyssey.core.next);
-jQuery.subscribe('core.random',   odyssey.core.random);
-
-
-
+odyssey.core.init();
