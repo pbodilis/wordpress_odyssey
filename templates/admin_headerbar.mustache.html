@@ -1,12 +1,12 @@
 <div class=".wrap" style="float: left;">
-    <h3>Header bar settings</h3>
+    <h3>Header bar options</h3>
     {{#section}}
     <h4>{{name}}</h4>
     <p>{{description}}</p>
     <form action="" method="post">
         <table class="form-table">
             <tbody>
-                {{#settings}}
+                {{#options}}
                 <tr valign="top">
                     <th scope="row">{{label}}</th>
                     <td>
@@ -22,7 +22,7 @@
 
                     </td>
                 </tr>
-                {{/settings}}
+                {{/options}}
             </tbody>
         </table>
         <p class="submit">

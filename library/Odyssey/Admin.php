@@ -41,38 +41,20 @@ class Admin
 
     public function build_admin_page() {
 
-        add_submenu_page(
-            'themes.php',                  // parent_slug
-            'Odyssey theme settings',      // page_title
-            'Odyssey theme settings',      // menu_title
-            'manage_options',              // capability
-            'odyssey_theme_settings',      // menu_slug
-            array(&$this, 'get_setting_page')); // renderer
-//         add_menu_page(
-//             'Odyssey theme settings',      // page_title
-//             'Odyssey theme settings',      // menu_title
-//             'manage_options',              // capability
-//             'odyssey_settings',            // menu_slug
-//             array(&$this, 'get_setting_page')); // renderer
-// 
-//         foreach($this->managers as $manager) {
-//             add_submenu_page(
-//                 'odyssey_settings',                  // parent_slug
-//                 $manager->getPageTitle(),            // page_title
-//                 $manager->getMenuTitle(),            // menu_title
-//                 'manage_options',                    // capability
-//                 $manager->getMenuSlug(),             // menu_slug
-//                 array(&$manager, 'get_setting_page')); // renderer
-//         }
-        
+        add_theme_page(
+            __('Odyssey theme options', 'odyssey'),      // page_title
+            __('Odyssey theme options', 'odyssey'),      // menu_title
+            'manage_options',                            // capability
+            'odyssey_theme_options',                     // menu_slug
+            array(&$this, 'get_option_page'));           // renderer
     }
     
-    public function get_setting_page()
+    public function get_option_page()
     {
         echo '<div id="icon-themes" class="icon32"><br></div>' . PHP_EOL;
-        echo '<h2>Odyssey Theme Settings</h2>' . PHP_EOL;
+        echo '<h2>' . __('Odyssey Theme Settings', 'odyssey') . '</h2>' . PHP_EOL;
         foreach($this->managers as $manager) {
-            echo $manager->get_setting_page();
+            echo $manager->get_option_page();
         }
     }
 

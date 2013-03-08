@@ -81,7 +81,7 @@ class Core {
                 $content = strip_shortcodes($content);
                 // ouch, now, that's a ugly hack :/
                 // remove the image, the link and the paragraph in which the image is.
-                $content = preg_replace('/<img[^>]+\>/', __('Download image'), $content, 1);
+                $content = preg_replace('/<img[^>]+\>/', __( 'Download image', 'odyssey' ), $content, 1);
                 $content = preg_replace('/<p[^>]*>[\s|&nbsp;]*<\/p>/', '', $content);
     //            $content = preg_replace('/(width|height)="\d*"\s/', '', $content);
                 break;
@@ -153,15 +153,16 @@ class Core {
             global $post;
             $post = get_post($post_id);
         }
-        $ret['image']    = $this->get_post_image($post->ID);
-        $ret['comment_title'] = $this->comment_manager->get_post_comments_title($post->ID);
-        $ret['comments']      = $this->comment_manager->get_post_comments($post->ID);
+        $ret['image']           = $this->get_post_image($post->ID);
+        $ret['comments_number'] = $this->comment_manager->get_post_comments_number($post->ID);
+        $ret['comments']        = $this->comment_manager->get_post_comments($post->ID);
 //      $ret = array_merge($ret, $this->get_post_image($post->ID));
 
         $ret['ID']      = $post->ID;
         $ret['title']   = $post->post_title;
         $ret['url']     = get_permalink($post->ID);
         $ret['content'] = apply_filters('the_content', $post->post_content);
+        $ret['class']   = get_post_class();
 
         $nextPost = get_next_post();
         if (!empty($nextPost)) {
@@ -232,8 +233,8 @@ class Core {
         if (false !== $post) {
             return array(
                 'url'    => get_permalink($post->ID),
-                'title'  => __('Random post'),
-                'name'   => __('Random'),
+                'title'  => __( 'Random post', 'odyssey' ),
+                'name'   => __( 'Random', 'odyssey' ),
                 'linkid' => 'random',
             );
         } else {

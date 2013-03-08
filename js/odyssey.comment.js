@@ -1,5 +1,6 @@
 odyssey.comments = {
     status: {},
+    post_comments_number: 0,
     
     init: function() {
         // update the panel on post update
@@ -45,7 +46,8 @@ odyssey.comments = {
                     var comment = ich.render_comments({'comments': data});
                     comment.hide();
                     jQuery('#comment_list_item_' + jQuery('#comment_parent').val() + '>ul.commentslist').append(comment);
-                    comment.slideDown();
+                    comment.slideToggle();
+                    jQuery('#comment_title').html(++(odyssey.comments.post_comments_number) + ' Comment(s)');
 
                     // clear form
                     odyssey.comments.replyto_cancel();
@@ -72,7 +74,8 @@ odyssey.comments = {
     render: function(e, post) {
         odyssey.comments.replyto_cancel();
         jQuery('#comment_post_ID').val(post.ID);
-        jQuery('#comment_title').html(post.comment_title);
+        odyssey.comments.post_comments_number = post.comments_number;
+        jQuery('#comment_title').html(odyssey.comments.post_comments_number + ' Comment(s)');
 
         jQuery('#comment_list_item_0').html(ich.render_comments({'comments': post.comments}));
     },

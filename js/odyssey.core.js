@@ -109,9 +109,9 @@ odyssey.core = {
             data:     ajaxArgs,
         }).done(function(r) {
             if (!r) return;
-            odyssey.core.posts[id].comment_title = r.comment_title;
-            odyssey.core.posts[id].comments      = r.comments;
-            odyssey.post_nonce                   = r.post_nonce;
+            odyssey.core.posts[id].comments_number = r.comments_number;
+            odyssey.core.posts[id].comments        = r.comments;
+            odyssey.post_nonce                     = r.post_nonce;
         });
     },
     previous: function(e) {

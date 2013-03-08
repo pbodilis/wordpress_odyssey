@@ -1,18 +1,21 @@
-                <ul class="commentslist">
+                <ul class="comments_list">
                     {{#comments}}
-                    <li id="comment_list_item_{{id}}">
+                    <li id="comment_list_item_{{id}}" class="comment_list_item">
                         {{! maybe find a better way than this onClick}}
                         <div class="replyto" onClick="odyssey.comments.replyto(jQuery(this), {{id}}, '{{author}}');">
+                            {{! {avatar} }}
                             {{{content}}}
-                            <p>
+                            <p class="comment_author">
                                 {{#author_url}}
-                                <a title="Visit Homepage" href="{{author_url}}">{{author}}</a> @ {{date}}
+                                <a title="Visit Homepage" href="{{author_url}}">{{author}}</a>
                                 {{/author_url}}
                                 {{^author_url}}
-                                {{author}} @ {{date}}
+                                {{author}}
                                 {{/author_url}}
+                                <span class="comment_datetime"> {{date}} @ {{time}} </span>
                             </p>
                         </div>
+                        <div class="clr"></div>
                         {{>render_comments}}
                     </li>
                     {{/comments}}

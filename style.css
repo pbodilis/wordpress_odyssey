@@ -333,8 +333,8 @@ body.white .menu.but.nav a.prev span {
 #panel {
     position: absolute;
 /*     left: 32-400px; */
-    left: -368px;
-    width: 400px;
+    left: -398px;
+    width: 430px;
     min-height: 100%;
     background-color: rgb(68,68,68);
 
@@ -411,11 +411,11 @@ body.white .menu.but.nav a.prev span {
 
 /* ******************************* image: panel content ******************************* */
 #panel_content {
-    width:390px;
+    width:420px;
     margin:35px 0px 5px 5px;
 
     color:rgb(201,201,201);
-    font-size:11.5px;
+    font-size:12.5px;
 }
 #panel_content h1, #panel_content h2, #panel_content h3, #panel_content h4, #panel_content h5 {
     letter-spacing:2px;
@@ -429,7 +429,7 @@ body.white .menu.but.nav a.prev span {
 }
 #panel_content h3 {
     padding: 2px 0px 2px 3px;
-    font-size: 14px;
+    font-size: 16px;
     margin-top: 20px;
 }
 #panel_content a {
@@ -445,7 +445,7 @@ body.white .menu.but.nav a.prev span {
     background-color:rgb(34,34,34);
 }
 #panel_content .image_notes {
-    font-size: 12.5px;
+    font-size: 13.5px;
 }
 #panel_content .image_notes p img:not(.wp-smiley) {
     width: 100%;
@@ -536,38 +536,31 @@ body.white .menu.but.nav a.prev span {
     float:right;
     width:30%;
     height:17px;
-    font-size:10px;
+    font-size:12px;
     border:none;
     color:rgb(201,201,201);
     background-color:rgb(58,58,58);
 }
-#thank_for_comment {
-    display:none;
-    margin-top:5px;
-    padding:5px 0px;
-    text-align:center;
-    color:rgb(201,135,80);
-}
-#thank_for_comment.show {
-    display:block;
-}
-ul.commentslist li {
+ul.comments_list li {
     display:block;
     margin-top:5px;
-    padding:0px 7px;
+    padding-left:10px;
     background-color:rgb(58,58,58);
 }
-#comments>ul.commentslist>li {
+#comment_list_item_0>ul.comments_list>li {
     padding:7px;
 }
-ul.commentslist li .replyto {
+ul.comments_list li p {
+/*     margin-bottom: 3px; */
+}
+ul.comments_list li .replyto {
     -webkit-transition: background 1s ease-in-out 0.2s;
     -moz-transition: background 1s ease-in-out 0.2s;
     -o-transition: background 1s ease-in-out 0.2s;
     -ms-transition: background 1s ease-in-out 0.2s;
     transition: background 1s ease-in-out 0.2s;
 }
-ul.commentslist li .replyto:hover, ul.commentslist li .replying {
+ul.comments_list li .replyto:hover, ul.comments_list li .replying {
     color:rgba(255,255,255,1);
     background-color:rgba(255,255,255,0.2);
     cursor:pointer;
@@ -579,6 +572,16 @@ ul.commentslist li .replyto:hover, ul.commentslist li .replying {
     transition: background 0.3s ease-in-out;
 }
 
+.comment_author {
+/*     float: left; */
+/*     width: 50px; */
+}
+.comment_datetime {
+    font-size:11px;
+}
+.comment_datetime:before {
+    content:'\2022';
+}
 #image_comments li span {
     font-size:10px;
 }

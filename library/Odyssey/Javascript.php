@@ -78,7 +78,7 @@ class Javascript
         wp_localize_script('odyssey-core', 'odyssey', array(
             'ajaxurl'                   => admin_url('admin-ajax.php'),
             'posts'                     => json_encode(Core::get_instance()->get_post_and_adjacents()),
-            'comment_form_ajax_enabled' => json_encode(CommentManager::get_instance()->get_setting('comment_form_ajax_enabled')),
+            'comment_form_ajax_enabled' => json_encode(CommentManager::get_instance()->get_option('comment_form_ajax_enabled')),
             self::POST_NONCE_EMBEDNAME  => wp_create_nonce(self::POST_NONCE),
         ));
 //         <script type="text/javascript">
@@ -94,11 +94,6 @@ class Javascript
 
     public function enqueue_templates() {
         $ret = '';
-        $tpls = array(
-            'photoblog_image'    => 'photoblog_image.mustache.html',
-            'photoblog_content'  => 'photoblog_content.mustache.html',
-            'render_comments' => 'photoblog_comments.mustache.html',
-        );
         $tpl_dir = get_template_directory_uri() . '/templates/';
         foreach($this->templates as $tpl_name => $tpl_file) {
             echo '<link href="' . $tpl_dir . $tpl_file . '" rel="template" id="' . $tpl_name . '"/>' . PHP_EOL;
@@ -165,7 +160,7 @@ class Javascript
 
         // find something better than direct access to $_GET/$_POST
         $ret = array(
-            'comment_title'            => CommentManager::get_instance()->get_post_comments_title($_GET['id']),
+            'comments_number'          => CommentManager::get_instance()->get_post_comments_number($_GET['id']),
             'comments'                 => CommentManager::get_instance()->get_post_comments($_GET['id']),
             self::POST_NONCE_EMBEDNAME => wp_create_nonce(self::POST_NONCE),
         );

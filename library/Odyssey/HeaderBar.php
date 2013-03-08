@@ -19,11 +19,11 @@ class HeaderBar
 {
     const TEMPLATE_FILE = 'photoblog_header';
 
-    const SYNDICATION_OPTION_NAME = 'odyssey_settings_headerbar_syndication';
+    const SYNDICATION_OPTION_NAME = 'odyssey_options_headerbar_syndication';
     const SYNDICATION_SUBMIT_NAME = 'odyssey_submit_headerbar_syndication';
     const SYNDICATION_RESET_NAME  = 'odyssey_reset_headerbar_syndication';
 
-    const OTHER_LINKS_OPTION_NAME = 'odyssey_settings_headerbar_other_links';
+    const OTHER_LINKS_OPTION_NAME = 'odyssey_options_headerbar_other_links';
     const OTHER_LINKS_SUBMIT_NAME = 'odyssey_submit_headerbar_other_links';
     const OTHER_LINKS_RESET_NAME  = 'odyssey_reset_headerbar_other_links';
 
@@ -39,40 +39,40 @@ class HeaderBar
         Admin::get_instance()->register($this);
     }
 
-    static public function setting_id2label($setting_id) {
+    static public function option_id2label($option_id) {
         $id2label = array(
-            'rss'         => 'RSS Feed',
-            'com_rss'     => 'Comments RSS Feed',
-            'atom'        => 'Atom Feed',
-            'facebook'    => 'Facebook',
-            'twitter'     => 'Twitter',
-            'flickr'      => 'Flickr',
-            'google_plus' => 'Google +',
+            'rss'         => __( 'RSS Feed', 'odyssey' ),
+            'com_rss'     => __( 'Comments RSS Feed', 'odyssey' ),
+            'atom'        => __( 'Atom Feed', 'odyssey' ),
+            'facebook'    => __( 'Facebook', 'odyssey' ),
+            'twitter'     => __( 'Twitter', 'odyssey' ),
+            'flickr'      => __( 'Flickr', 'odyssey' ),
+            'google_plus' => __( 'Google +', 'odyssey' ),
 
-            'random'      => 'Random post',
-            'pages'       => 'Pages',
+            'random'      => __( 'Random post', 'odyssey' ),
+            'pages'       => __( 'Pages', 'odyssey' ),
         );
-        return $id2label[ $setting_id ];
+        return $id2label[ $option_id ];
     }
-    static public function get_default_header_bar_syndication_settings() {
+    static public function get_default_header_bar_syndication_options() {
         $blog = Core::get_instance()->get_blog();
         
         return array(
             'rss'         => array('enabled' => true,  'value' => $blog['rss2_url']),
             'com_rss'     => array('enabled' => false, 'value' => $blog['comments_rss2_url']),
             'atom'        => array('enabled' => false, 'value' => $blog['atom_url']),
-            'facebook'    => array('enabled' => false, 'value' => __('Facebook page url')),
-            'twitter'     => array('enabled' => false, 'value' => __('Twitter page url')),
-            'flickr'      => array('enabled' => false, 'value' => __('Flickr page url')),
-            'google_plus' => array('enabled' => false, 'value' => __('Google+ page url')),
+            'facebook'    => array('enabled' => false, 'value' => __('Facebook page url', 'odyssey' )),
+            'twitter'     => array('enabled' => false, 'value' => __('Twitter page url', 'odyssey' )),
+            'flickr'      => array('enabled' => false, 'value' => __('Flickr page url', 'odyssey' )),
+            'google_plus' => array('enabled' => false, 'value' => __('Google+ page url', 'odyssey' )),
         );
     }
 
-    public function get_header_bar_syndication_settings() {
-        return get_option(self::SYNDICATION_OPTION_NAME, self::get_default_header_bar_syndication_settings());
+    public function get_header_bar_syndication_options() {
+        return get_option(self::SYNDICATION_OPTION_NAME, self::get_default_header_bar_syndication_options());
     }
 
-    static public function get_default_header_bar_other_links_settings() {
+    static public function get_default_header_bar_other_links_options() {
         return array(
             'random' => true,
             'pages'  => true,
@@ -80,45 +80,45 @@ class HeaderBar
     }
 
     public function getHeaderBarOtherLinksSettings() {
-        return get_option(self::OTHER_LINKS_OPTION_NAME, self::get_default_header_bar_other_links_settings());
+        return get_option(self::OTHER_LINKS_OPTION_NAME, self::get_default_header_bar_other_links_options());
     }
 
-    function get_setting_page() {
+    function get_option_page() {
         $data = array('configureSetting' => array());
 
         if (isset($_POST[self::SYNDICATION_RESET_NAME])) {
             delete_option(self::SYNDICATION_OPTION_NAME);
         }
-        $settings = $this->get_header_bar_syndication_settings();
+        $options = $this->get_header_bar_syndication_options();
         if (isset($_POST[self::SYNDICATION_SUBMIT_NAME])) {
             unset($_POST[self::SYNDICATION_SUBMIT_NAME]);
-            foreach ($settings as $setting => &$value) {
+            foreach ($options as $option => &$value) {
                 // it's enabled now (as it is part of the POST), but wasn't enabled before -> update
-                if (isset($_POST[$setting]) && !$value['enabled']) {
+                if (isset($_POST[$option]) && !$value['enabled']) {
                     $value['enabled'] = true;
                 // it's unenabled now (as it is not part of the POST), but was enabled before -> update
-                } else if (!isset($_POST[$setting]) && $value['enabled']) {
+                } else if (!isset($_POST[$option]) && $value['enabled']) {
                     $value['enabled'] = false;
                 }
-                if (isset($_POST['tf-' . $setting])) {
-                    $value['value'] = $_POST['tf-' . $setting];
+                if (isset($_POST['tf-' . $option])) {
+                    $value['value'] = $_POST['tf-' . $option];
                 }
             }
-            update_option(self::SYNDICATION_OPTION_NAME, $settings);
+            update_option(self::SYNDICATION_OPTION_NAME, $options);
         }
-        $data_settings = array();
-        foreach ($settings as $setting => &$value) {
-            $data_settings[] = array(
-                'id'      => $setting,
-                'label'   => self::setting_id2label($setting),
+        $data_options = array();
+        foreach ($options as $option => &$value) {
+            $data_options[] = array(
+                'id'      => $option,
+                'label'   => self::option_id2label($option),
                 'enabled' => $value['enabled'],
                 'value'   => $value['value'],
             );
         }
         $data['section'][] = array(
-            'name'        => __('Syndication links'),
-            'description' => __('Links to the platforms on which this blog can be followed:'),
-            'settings'    => $data_settings,
+            'name'        => __('Syndication links', 'odyssey' ),
+            'description' => __('Links to the platforms on which this blog can be followed:', 'odyssey' ),
+            'options'    => $data_options,
             'submit'      => self::SYNDICATION_SUBMIT_NAME,
             'reset'       => self::SYNDICATION_RESET_NAME,
         );
@@ -126,32 +126,32 @@ class HeaderBar
         if (isset($_POST[self::OTHER_LINKS_RESET_NAME])) {
             delete_option(self::OTHER_LINKS_OPTION_NAME);
         }
-        $settings = $this->getHeaderBarOtherLinksSettings();
+        $options = $this->getHeaderBarOtherLinksSettings();
         if (isset($_POST[self::OTHER_LINKS_SUBMIT_NAME])) {
             unset($_POST[self::OTHER_LINKS_SUBMIT_NAME]);
-            foreach ($settings as $setting => &$enabled) {
+            foreach ($options as $option => &$enabled) {
                 // it's enabled now (as it is part of the POST), but wasn't enabled before -> update
-                if (isset($_POST[$setting]) && !$enabled) {
+                if (isset($_POST[$option]) && !$enabled) {
                     $enabled = true;
                 // it's unenabled now (as it is not part of the POST), but was enabled before -> update
-                } else if (!isset($_POST[$setting]) && $enabled) {
+                } else if (!isset($_POST[$option]) && $enabled) {
                     $enabled = false;
                 }
             }
-            update_option(self::OTHER_LINKS_OPTION_NAME, $settings);
+            update_option(self::OTHER_LINKS_OPTION_NAME, $options);
         }
-        $data_settings = array();
-        foreach ($settings as $setting => &$enabled) {
-            $data_settings[] = array(
-                'id'      => $setting,
-                'label'   => self::setting_id2label($setting),
+        $data_options = array();
+        foreach ($options as $option => &$enabled) {
+            $data_options[] = array(
+                'id'      => $option,
+                'label'   => self::option_id2label($option),
                 'enabled' => $enabled,
             );
         }
         $data['section'][] = array(
-            'name'        => __('Other links'),
-            'description' => __('Enable other links:'),
-            'settings'    => $data_settings,
+            'name'        => __('Other links', 'odyssey' ),
+            'description' => __('Enable other links:', 'odyssey' ),
+            'options'    => $data_options,
             'submit'      => self::OTHER_LINKS_SUBMIT_NAME,
             'reset'       => self::OTHER_LINKS_RESET_NAME,
         );
@@ -161,26 +161,26 @@ class HeaderBar
     function get_rendering() {
         $blog = Core::get_instance()->get_blog();
         
-        $settings = $this->get_header_bar_syndication_settings();
+        $options = $this->get_header_bar_syndication_options();
         $syndication = array();
-        foreach ($settings as $setting => &$value) {
+        foreach ($options as $option => &$value) {
             if ($value['enabled']) {
                 $syndication[] = array(
-                    'class' => self::setting_id2css_class($setting),
-                    'title' => self::setting_id2label($setting),
+                    'class' => self::option_id2css_class($option),
+                    'title' => self::option_id2label($option),
                     'url'   => $value['value'],
                 );
             }
         }
         $blog['syndication'] = $syndication;
         
-        $settings = $this->getHeaderBarOtherLinksSettings();
+        $options = $this->getHeaderBarOtherLinksSettings();
         $others = array();
-        foreach ($settings as $setting => $enabled) {
+        foreach ($options as $option => $enabled) {
             if ( ! $enabled) {
                 continue;
             }
-            switch ($setting) {
+            switch ($option) {
                 case 'random': // get a valid random post id
                     $others[] = Core::get_instance()->get_random_post_url();
                     break;
@@ -196,7 +196,7 @@ class HeaderBar
         return Renderer::get_instance()->render(self::TEMPLATE_FILE, $blog);
     }
 
-    static function setting_id2css_class($id) {
+    static function option_id2css_class($id) {
         $id2Class = array(
             'rss'         => 'menu_but_rss',
             'com_rss'     => 'menu_but_rss',

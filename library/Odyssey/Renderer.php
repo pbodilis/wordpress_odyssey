@@ -52,7 +52,7 @@ class Renderer
         );
 
         // add i18n localization
-        $this->mustache->addHelper('_i18n', function($text) {return __($text);});
+        $this->mustache->addHelper('_i18n', function($text) {return __( $text, 'odyssey' );});
     }
 
     public function render($template, $data)

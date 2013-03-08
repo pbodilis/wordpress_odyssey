@@ -3,9 +3,9 @@
     <form action="" method="post" id="odyssey_exif_form">
         <table class="form-table">
             <tbody>
-                {{#settings}}
+                {{#options}}
                 <tr valign="top">
-                    <th scope="row">{{setting}}</th>
+                    <th scope="row">{{option}}</th>
                     <td>
                         <input id="{{id}}" name="{{id}}" type="checkbox" value="1"
                             {{#enabled}}
@@ -15,7 +15,7 @@
                         <label for="{{id}}" name="{{id}}" style="width: 75px; display: inline-block;">enabled</label>
                     </td>
                 </tr>
-                {{/settings}}
+                {{/options}}
             </tbody>
         </table>
         <p class="submit">

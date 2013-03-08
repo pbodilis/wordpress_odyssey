@@ -17,7 +17,7 @@ namespace Odyssey;
  */
 class CommentManager
 {
-    const OPTION_NAME = 'odyssey_settings_comment';
+    const OPTION_NAME = 'odyssey_options_comment';
     const SUBMIT      = 'odyssey_submit_comment';
 
     static private $instance;
@@ -36,52 +36,52 @@ class CommentManager
         add_action('comment_post', array(&$this, 'comment_post'), 20, 2);
     }
 
-    static public function setting_id2label($setting_id) {
+    static public function option_id2label($option_id) {
         $id2label = array(
-            'comment_form_ajax_enabled' => __('Ajax comments: '),
+            'comment_form_ajax_enabled' => __( 'Ajax comments: ', 'odyssey' ),
        );
-        return $id2label[ $setting_id ];
+        return $id2label[ $option_id ];
     }
 
-    static public function get_default_settings() {
+    static public function get_default_options() {
         return array(
             'comment_form_ajax_enabled' => true,
         );
     }
 
-    public function get_settings() {
-        return get_option(self::OPTION_NAME, self::get_default_settings());
+    public function get_options() {
+        return get_option(self::OPTION_NAME, self::get_default_options());
     }
 
-    public function get_setting($s) {
-        $settings = $this->get_settings();
-        return $settings[ $s ];
+    public function get_option($s) {
+        $options = $this->get_options();
+        return $options[ $s ];
     }
 
-    public function get_setting_page() {
-        $settings = $this->get_settings();
+    public function get_option_page() {
+        $options = $this->get_options();
         if (isset($_POST[self::SUBMIT])) {
             $doUpdate = false;
-            foreach ($settings as $setting => &$enabled) {
+            foreach ($options as $option => &$enabled) {
                 // it's enabled now (as it is part of the POST), but wasn't enabled before -> update
-                if (isset($_POST[ $setting ] ) && ! $enabled) {
+                if (isset($_POST[ $option ] ) && ! $enabled) {
                     $enabled = true;
                     $doUpdate = true;
                 // it's unenabled now (as it is not part of the POST), but was enabled before -> update
-                } else if (!isset($_POST[ $setting ] ) && $enabled) {
+                } else if (!isset($_POST[ $option ] ) && $enabled) {
                     $enabled = false;
                     $doUpdate = true;
                 }
             }
-            $doUpdate && update_option(self::OPTION_NAME, $settings);
+            $doUpdate && update_option(self::OPTION_NAME, $options);
         }
 
         $data = array();
-        foreach ($settings as $setting => &$enabled) {
-            $data[] = array('id' => $setting, 'enabled' => $enabled, 'setting' => self::setting_id2label($setting));
+        foreach ($options as $option => &$enabled) {
+            $data[] = array('id' => $option, 'enabled' => $enabled, 'option' => self::option_id2label($option));
         }
         return Renderer::get_instance()->render('admin_comments', array(
-            'settings' => $data,
+            'options' => $data,
             'submit'   => self::SUBMIT,
         ));
     }
@@ -94,14 +94,14 @@ class CommentManager
         $args = array(
             'id_form'   => 'commentform',
             'id_submit' => 'comment_submit',
-            'title_reply' => __( 'Leave a comment' ),
+            'title_reply' => __( 'Leave a comment', 'odyssey' ),
         //     'title_reply_to' => __( 'Leave a Reply to %s' ),
         //     'cancel_reply_link' => __( 'Cancel Reply' ),
-            'label_submit' => __( 'Post Comment' ),
+            'label_submit' => __( 'Post Comment', 'odyssey' ),
             'comment_field' => '<p class="comment-form-comment"><textarea id="comment" name="comment" aria-required="true"></textarea></p>',
         //     'must_log_in' => '<p class="must-log-in">' .  sprintf( __( 'You must be <a href="%s">logged in</a> to post a comment.' ), wp_login_url( apply_filters( 'the_permalink', get_permalink( ) ) ) ) . '</p>',
         //     'logged_in_as' => '<p class="logged-in-as">' . sprintf( __( 'Logged in as <a href="%1$s">%2$s</a>. <a href="%3$s" title="Log out of this account">Log out?</a>' ), admin_url( 'profile.php' ), $user_identity, wp_logout_url( apply_filters( 'the_permalink', get_permalink( ) ) ) ) . '</p>',
-            'comment_notes_before' => '<p class="comment-notes">' . __( 'Your email address will not be published.' ) . '</p>',
+            'comment_notes_before' => '<p class="comment-notes">' . __( 'Your email address will not be published.', 'odyssey' ) . '</p>',
             'comment_notes_after' => '<p id="comment_status" ></p>',
         //     'fields' => apply_filters( 'comment_form_default_fields', array(
         //         'author' => '<p class="comment-form-author">' . '<label for="author">' . __( 'Name', 'domainreference' ) . '</label> ' . ( $req ? '<span class="required">*</span>' : '' ) . '<input id="author" name="author" type="text" value="' . esc_attr( $commenter['comment_author'] ) . '" size="30"' . $aria_req . ' /></p>',
@@ -126,9 +126,8 @@ class CommentManager
         return self::$cache[ $post_id ];
     }
 
-    public function get_post_comments_title($post_id) {
-        $comment_number = count(self::cache_post_comments($post_id));
-        return sprintf( _n( 'One comment ', '%1$s comments', $comment_number, 'odyssey' ), number_format_i18n( $comment_number ) );
+    public function get_post_comments_number($post_id) {
+        return count(self::cache_post_comments($post_id));
     }
 
     /**
@@ -149,10 +148,12 @@ class CommentManager
                 'id'         => $comment->comment_ID,
                 'author'     => $comment->comment_author,
                 'author_url' => $comment->comment_author_url,
-                'date'       => $comment->comment_date,
+                'date'       => date_i18n(get_option('date_format'), strtotime($comment->comment_date)),
+                'time'       => date_i18n(get_option('time_format'), strtotime($comment->comment_date)),
                 'content'    => apply_filters('comment_text', $comment->comment_content),
                 'leaf'       => true,
                 'comments'   => array(),
+                'avatar'     => get_avatar( $comment, 30 ),
             );
             if (0 == $comment->comment_parent) {
                 $i = array_push($tree, $c);
@@ -168,29 +169,36 @@ class CommentManager
     }
 
     public function comment_post($comment_ID, $comment_status) {
-        if ( ! $this->get_setting( 'comment_form_ajax_enabled' ) ) return;
+        if ( ! $this->get_option( 'comment_form_ajax_enabled' ) ) return;
 
         if ( ! empty( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && 'xmlhttprequest' == strtolower($_SERVER['HTTP_X_REQUESTED_WITH'])) {
             switch( $comment_status ) {
                 case '0': //notify moderator of unapproved comment
                     wp_notify_moderator($comment_ID);
+                    echo json_encode(false);
                 case '1': //Approved comment
                     $comment = &get_comment($comment_ID);
                     $post    = &get_post($comment->comment_post_ID);
                     wp_notify_postauthor($comment_ID, $comment->comment_type);
-                    $ret = array(
-                        'id'         => $comment->comment_ID,
-                        'author'     => $comment->comment_author,
-                        'author_url' => $comment->comment_author_url,
-                        'date'       => $comment->comment_date,
-                        'content'    => apply_filters('comment_text', $comment->comment_content),
-                        'leaf'       => true,
-                        'comments'   => array(),
-                    );
-                    echo json_encode(array($ret));
+
+                    if ($comment->comment_approved) {
+                        $ret = array(
+                            'id'         => $comment->comment_ID,
+                            'author'     => $comment->comment_author,
+                            'author_url' => $comment->comment_author_url,
+                            'date'       => date_i18n(get_option('date_format'), strtotime($comment->comment_date)),
+                            'time'       => date_i18n(get_option('time_format'), strtotime($comment->comment_date)),
+                            'content'    => apply_filters('comment_text', $comment->comment_content),
+                            'leaf'       => true,
+                            'comments'   => array(),
+                            'avatar'     => get_avatar( $comment, 30 ),
+// 'approved' => $comment->comment_approved,
+                        );
+                        echo json_encode(array($ret));
+                    }
                     break;
                 default:
-                    echo "error";
+                    echo json_encode(false);
             }
             die();
         }

@@ -19,7 +19,7 @@ class ExifManager
 {
     const METADATA_NAME = '_wp_odyssey_metadata_exif';
 
-    const OPTION_NAME = 'odyssey_settings_exif';
+    const OPTION_NAME = 'odyssey_options_exif';
     const SUBMIT      = 'odyssey_submit_exif';
     const RESET       = 'odyssey_reset_exif';
 
@@ -35,34 +35,34 @@ class ExifManager
         Admin::get_instance()->register($this);
     }
 
-    static public function setting_id2label($setting_id) {
+    static public function option_id2label($option_id) {
         $id2label = array(
-            'Make'             => __('Manufacturer: '),
-            'Model'            => __('Model Name: '),
-            'DateTimeOriginal' => __('Date: '),
-            'ExposureProgram'  => __('Exposure Program: '),
-            'ExposureTime'     => __('Exposure Time: '),
-            'FNumber'          => __('F Number: '),
-            'ISOSpeedRatings'  => __('ISO: '),
-            'FocalLength'      => __('Focal Length: '),
-            'MeteringMode'     => __('Metering Mode: '),
-            'LightSource'      => __('Light Source: '),
-            'SensingMethod'    => __('Sensing Method: '),
-            'ExposureMode'     => __('Exposure Mode: '),
+            'Make'             => __('Manufacturer: ', 'odyssey' ),
+            'Model'            => __('Model Name: ', 'odyssey' ),
+            'DateTimeOriginal' => __('Date: ', 'odyssey' ),
+            'ExposureProgram'  => __('Exposure Program: ', 'odyssey' ),
+            'ExposureTime'     => __('Exposure Time: ', 'odyssey' ),
+            'FNumber'          => __('F Number: ', 'odyssey' ),
+            'ISOSpeedRatings'  => __('ISO: ', 'odyssey' ),
+            'FocalLength'      => __('Focal Length: ', 'odyssey' ),
+            'MeteringMode'     => __('Metering Mode: ', 'odyssey' ),
+            'LightSource'      => __('Light Source: ', 'odyssey' ),
+            'SensingMethod'    => __('Sensing Method: ', 'odyssey' ),
+            'ExposureMode'     => __('Exposure Mode: ', 'odyssey' ),
 
-            'FileName'         => __('File Name: '),
-            'FileSize'         => __('File Size: '),
-            'Software'         => __('Software: '),
-            'XResolution'      => __('X Resolution: '),
-            'YResolution'      => __('Y Resolution: '),
-            'ExifVersion'      => __('Exif Version: '),
+            'FileName'         => __('File Name: ', 'odyssey' ),
+            'FileSize'         => __('File Size: ', 'odyssey' ),
+            'Software'         => __('Software: ', 'odyssey' ),
+            'XResolution'      => __('X Resolution: ', 'odyssey' ),
+            'YResolution'      => __('Y Resolution: ', 'odyssey' ),
+            'ExifVersion'      => __('Exif Version: ', 'odyssey' ),
 
-            'Title'            => __('Title: '),
+            'Title'            => __('Title: ', 'odyssey' ),
         );
-        return $id2label[ $setting_id ];
+        return $id2label[ $option_id ];
     }
 
-    static public function get_default_settings() {
+    static public function get_default_options() {
         return array(
             'Make'             => false,
             'Model'            => true,
@@ -88,37 +88,37 @@ class ExifManager
         );
     }
 
-    public function get_settings() {
-        return get_option(self::OPTION_NAME, self::get_default_settings());
+    public function get_options() {
+        return get_option(self::OPTION_NAME, self::get_default_options());
     }
 
-    function get_setting_page() {
+    function get_option_page() {
         if ( isset( $_POST[ self::RESET ] ) ) {
             delete_option(self::OPTION_NAME);
         }
-        $settings = $this->get_settings();
+        $options = $this->get_options();
         if (isset($_POST[self::SUBMIT])) {
             $doUpdate = false;
-            foreach ($settings as $setting => &$enabled) {
+            foreach ($options as $option => &$enabled) {
                 // it's enabled now (as it is part of the POST), but wasn't enabled before -> update
-                if (isset($_POST[ $setting ] ) && ! $enabled) {
+                if (isset($_POST[ $option ] ) && ! $enabled) {
                     $enabled = true;
                     $doUpdate = true;
                 // it's unenabled now (as it is not part of the POST), but was enabled before -> update
-                } else if (!isset($_POST[ $setting ] ) && $enabled) {
+                } else if (!isset($_POST[ $option ] ) && $enabled) {
                     $enabled = false;
                     $doUpdate = true;
                 }
             }
-            $doUpdate && update_option(self::OPTION_NAME, $settings);
+            $doUpdate && update_option(self::OPTION_NAME, $options);
         }
 
         $data = array();
-        foreach ($settings as $setting => &$enabled) {
-            $data[] = array('id' => $setting, 'enabled' => $enabled, 'exif' => self::setting_id2label($setting));
+        foreach ($options as $option => &$enabled) {
+            $data[] = array('id' => $option, 'enabled' => $enabled, 'exif' => self::option_id2label($option));
         }
         return Renderer::get_instance()->render('admin_exif', array(
-            'settings' => $data,
+            'options' => $data,
             'submit'   => self::SUBMIT,
             'reset'    => self::RESET,
         ));
@@ -131,32 +131,32 @@ class ExifManager
      * @return array of selected exif, with at least captureDate
      */
     public function get_image_exif($post_id, $filename) {
-        $settings = $this->get_settings();
-        if (false === $settings) {
+        $options = $this->get_options();
+        if (false === $options) {
             return false;
         }
         $exifs = $this->read_exifs($post_id, $filename);
         $ret = array();
 
-        foreach ($settings as $setting => $enabled) {
-            if ( ! $enabled || ! isset( $exifs[ $setting ] ) || 'a' === $exifs[ $setting ] ) {
+        foreach ($options as $option => $enabled) {
+            if ( ! $enabled || ! isset( $exifs[ $option ] ) || 'a' === $exifs[ $option ] ) {
                 continue;
             }
 
-            switch ($setting) {
+            switch ($option) {
                 case 'FNumber':
                 case 'FocalLength':
-                    $value = self::compute_math($exifs[ $setting ]);
+                    $value = self::compute_math($exifs[ $option ]);
                     break;
                 case 'ExposureProgram':
-                    $value = self::exposure_program($exifs[ $setting ]);
+                    $value = self::exposure_program($exifs[ $option ]);
                     break;
                 default:
-                    $value = $exifs[ $setting ];
+                    $value = $exifs[ $option ];
                     break;
             }
             if (false !== $value) {
-                $ret[] = array('name' => self::setting_id2label($setting), 'value' => $value);
+                $ret[] = array('name' => self::option_id2label($option), 'value' => $value);
             }
         }
         return $ret;
@@ -207,14 +207,14 @@ class ExifManager
     static private function exposure_program($ep) {
         $ep2str = array(
             0 => false,
-            1 => 'Manual',
-            2 => 'Normal program',
-            3 => 'Aperture priority',
-            4 => 'Shutter priority',
-            5 => 'Creative program',
-            6 => 'Action program',
-            7 => 'Portrait mode',
-            8 => 'Landscape mode',
+            1 => __( 'Manual',            'odyssey' ),
+            2 => __( 'Normal program',    'odyssey' ),
+            3 => __( 'Aperture priority', 'odyssey' ),
+            4 => __( 'Shutter priority',  'odyssey' ),
+            5 => __( 'Creative program',  'odyssey' ),
+            6 => __( 'Action program',    'odyssey' ),
+            7 => __( 'Portrait mode',     'odyssey' ),
+            8 => __( 'Landscape mode',    'odyssey' ),
         );
         if ( ! isset($ep2str[ $ep ]) ) {
             $ep = 0;
