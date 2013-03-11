@@ -45,8 +45,8 @@ odyssey.comments = {
                     // display newly added comment
                     var comment = ich.render_comments({'comments': data});
                     comment.hide();
-                    jQuery('#comment_list_item_' + jQuery('#comment_parent').val() + '>ul.commentslist').append(comment);
-                    comment.slideToggle();
+                    jQuery('#comment_list_item_' + jQuery('#comment_parent').val() + '>ul.comments_list').append(comment);
+                    comment.slideDown();
                     jQuery('#comment_title').html(++(odyssey.comments.post_comments_number) + ' Comment(s)');
 
                     // clear form

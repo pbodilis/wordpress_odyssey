@@ -162,6 +162,11 @@ class Core {
         $ret['title']   = $post->post_title;
         $ret['url']     = get_permalink($post->ID);
         $ret['content'] = apply_filters('the_content', $post->post_content);
+        
+        if(function_exists('the_ratings')) {
+            $ret['ratings'] = the_ratings('div', 0, false);
+        }
+
         $ret['class']   = implode(' ', get_post_class());
 
         $nextPost = get_next_post();
