@@ -119,17 +119,17 @@ class Core {
         return $this->blog;
     }
 
-    public function get_post_and_adjacents($post_id = NULL) {
+    public function get_post_and_adjacents($post_id = NULL, $adjacent = 'both') {
         $current = $this->get_post($post_id);
         $ret = array(
             'current_ID'    => $current['ID'],
             $current['ID'] => $current,
         );
-        if (isset($current['next_ID'])) {
+        if (('both' == $adjacent || 'next' == $adjacent) && isset($current['next_ID'])) {
             $next = $this->get_post($current['next_ID']);
             $ret[$next['ID']] = $next;
         }
-        if (isset($current['previous_ID'])) {
+        if (('both' == $adjacent || 'previous' == $adjacent) && isset($current['previous_ID'])) {
             $prev = $this->get_post($current['previous_ID']);
             $ret[$prev['ID']] = $prev;
         }
@@ -156,6 +156,7 @@ class Core {
         $ret['image']           = $this->get_post_image($post->ID);
         $ret['comments_number'] = $this->comment_manager->get_post_comments_number($post->ID);
         $ret['comments']        = $this->comment_manager->get_post_comments($post->ID);
+        $ret['categories']      = $this->get_post_categories($post->ID);
 //      $ret = array_merge($ret, $this->get_post_image($post->ID));
 
         $ret['ID']      = $post->ID;
@@ -215,6 +216,18 @@ class Core {
         }
 
 
+        return $ret;
+    }
+
+    public function get_post_categories($post_id) {
+        $ret = array();
+        $categories = get_the_category();
+        foreach($categories as $category) {
+            $ret[] = array(
+                'url'  => get_category_link( $category->term_id ),
+                'name' => $category->cat_name,
+            );
+        }
         return $ret;
     }
 

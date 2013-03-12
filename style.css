@@ -443,29 +443,29 @@ body.white .menu.but.nav a.prev span {
 #panel_content a:hover {
     color: rgb(230,230,230);
 }
-.image_notes, .image_exifs {
+.post_content, .post_categories, .image_exifs {
     padding: 5px;
     line-height: 160%;
     background-color: rgb(34,34,34);
 }
-.image_notes {
+.post_content {
     font-size: 13.5px;
 }
-.image_notes p {
+.post_content p {
     margin-top: 0;
     margin-bottom: 10px;
 }
-.image_notes p img:not(.wp-smiley) {
+.post_content p img:not(.wp-smiley) {
     width: 100%;
 }
-.image_exifs {
+.post_categories, .image_exifs {
     font-size: 10.5px;
 }
-.image_exifs>ul>li:before {
+.post_categories>ul>li:before, .image_exifs>ul>li:before {
     content: '\2022';
     margin: 0px 5px;
 }
-.image_exifs>ul>li:first-child:before {
+.post_categories>ul>li:first-child:before, .image_exifs>ul>li:first-child:before {
     content: none;
 }
 
@@ -575,8 +575,22 @@ ul.comments_list li .replyto:hover, ul.comments_list li .replying {
     content: '\2022';
 }
 
+/* ******************************* archives ******************************* */
 
+#archives_block {
+    top: 30px
+    left: 5px;
+    position: absolute;
+    top: 40px;
+    width: 250px;
+}
 
+#archives_block ul {
+    width: 100%;
+}
 
-
-
+#archives_block ul li {
+    display: block;
+    overflow: hidden;
+    padding-left: 5px
+}

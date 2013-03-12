@@ -1,8 +1,17 @@
             <section id="content" class="{{class}}">
-                <article class="image_notes">{{{content}}}</article>
+                <article class="post_content">{{{content}}}</article>
+                {{#categories.0}}
+                <article class="post_categories">
+                    <ul>
+                        {{#categories}}
+                        <li><a href="{{url}}">&#91;{{name}}&#93;</a></li>
+                        {{/categories}}
+                    </ul>
+                </article>
+                {{/categories.0}}
                 {{#image.exifs.0}}
                 <article class="image_exifs">
-                    <ul>  
+                    <ul>
                         {{#image.exifs}}
                         <li>{{name}}{{value}}</li>
                         {{/image.exifs}}
