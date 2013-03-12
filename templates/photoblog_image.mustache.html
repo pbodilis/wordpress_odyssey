@@ -10,18 +10,18 @@
             >
             <img src="{{image.url}}" alt="{{title}}"/>
             <nav>
-            {{#previous}}
-            <a href="{{url}}" class="navLink prev"><span class="navArrow" title="Previous: {{title}}"></span></a>
-            {{/previous}}
-            {{#next}}
-            <a href="{{url}}" class="navLink next"><span class="navArrow" title="Next: {{title}}">    </span></a>
-            {{/next}}
+                {{#previous_ID}}
+                <a href="{{previous_url}}" class="navLink prev"><span class="navArrow" title="Previous: {{previous_title}}"></span></a>
+                {{/previous_ID}}
+                {{#next_ID}}
+                <a href="{{next_url}}" class="navLink next"><span class="navArrow" title="Next: {{next_title}}"></span></a>
+                {{/next_ID}}
             </nav>
         </div>
         <div id="photo_infos">
             <h2>{{title}}</h2>
             {{#image.capture_date}}
-            <p>&#149; {{image.capture_date}} &#149;</p>
+            <p>{{image.capture_date}}</p>
             {{/image.capture_date}}
         </div>
     </div>

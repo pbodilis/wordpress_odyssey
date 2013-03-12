@@ -1,44 +1,44 @@
-<?php
-/*
-Template Name: Archives
-*/
 get_header(); ?>
 
+    <section id="primary" class="site-content">
+        <div id="content" role="main">
 
-    <div id="archives_block">
-        <ul class="accordion">
-            <li class="general">
-                <h3>General</h3>
-                <div class="content">
-                    <ul>
-                        <li><a href="index.php?x=browse&amp;filter=all"             title="All (<SITE_PHOTONUMBER> Photos)"> All&nbsp;(<SITE_PHOTONUMBER>) </a></li>
-                        <li><a href="index.php?x=browse&amp;filter=most_commented"  title="Most commented pictures">         Most Commented                </a></li>
-                        <li><a href="index.php?x=browse&amp;filter=least_commented" title="Least commented pictures">        Least Commented               </a></li>
-                        <li><a href="index.php?x=browse&amp;filter=top_rated"       title="Top rated pictures">              Top Rated                     </a></li>
-                        <li><a href="index.php?x=browse&amp;filter=worst_rated"     title="Worst rated pictures">            Worst Rated                   </a></li>
-                    </ul>
-                </div>
-            </li>
-            <li class="category">
-                <h3>By Category</h3>
-                <div class="content">
-                    <CATEGORY_LINKS_AS_LIST_PAGED>
-                </div>
-            </li>
-            <li class="archivedate">
-                <h3>By Date</h3>
-                <div class="content">
-                    <BROWSE_MONTHLY_ARCHIVE_AS_LINK_PAGED>
-                </div>
-            </li>
-        </ul>
-        <div id="copyright">All images &copy; Pierre Bodilis</div>
-    </div>
-    <div id="photolist_block">
-        <ul><ODYSSEY_THUMBNAILS></ul>
-        <div class="clr"></div>
-    </div>
-    <div class="clr"></div>
-<?php wp_get_archives(); ?>
+        <?php if ( have_posts() ) : ?>
+            <header class="archive-header">
+                <h1 class="archive-title"><?php
+                    if ( is_day() ) :
+                        printf( __( 'Daily Archives: %s', 'twentytwelve' ), '<span>' . get_the_date() . '</span>' );
+                    elseif ( is_month() ) :
+                        printf( __( 'Monthly Archives: %s', 'twentytwelve' ), '<span>' . get_the_date( _x( 'F Y', 'monthly archives date format', 'twentytwelve' ) ) . '</span>' );
+                    elseif ( is_year() ) :
+                        printf( __( 'Yearly Archives: %s', 'twentytwelve' ), '<span>' . get_the_date( _x( 'Y', 'yearly archives date format', 'twentytwelve' ) ) . '</span>' );
+                    else :
+                        _e( 'Archives', 'twentytwelve' );
+                    endif;
+                ?></h1>
+            </header><!-- .archive-header -->
+
+            <?php
+            /* Start the Loop */
+            while ( have_posts() ) : the_post();
+
+                /* Include the post format-specific template for the content. If you want to
+                 * this in a child theme then include a file called called content-___.php
+                 * (where ___ is the post format) and that will be used instead.
+                 */
+                get_template_part( 'content', get_post_format() );
+
+            endwhile;
+
+//             twentytwelve_content_nav( 'nav-below' );
+            ?>
+
+        <?php else : ?>
+            <?php get_template_part( 'content', 'none' ); ?>
+        <?php endif; ?>
+
+        </div><!-- #content -->
+    </section><!-- #primary -->
+
 <?php get_sidebar(); ?>
 <?php get_footer(); ?>

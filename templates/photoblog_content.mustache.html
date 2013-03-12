@@ -1,14 +1,13 @@
-            <div id="content" class="{{class}}">
-                <h2 class="image_title">{{title}}</h2>
+            <section id="content" class="{{class}}">
                 <article class="image_notes">{{{content}}}</article>
                 {{#image.exifs.0}}
-                <div class="panel_blocks">
+                <article class="image_exifs">
                     <ul>  
                         {{#image.exifs}}
                         <li>{{name}}{{value}}</li>
                         {{/image.exifs}}
                     </ul>
-                </div>
+                </article>
                 {{/image.exifs.0}}
                 {{{ratings}}}
-            </div>
+            </section>

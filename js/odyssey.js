@@ -12,9 +12,10 @@ jQuery('link[rel=template]').each(function(index, element) {
 });
 
 
-// jQuery(window).load(function() {
-    odyssey.core.updateCurrentPost(jQuery.parseJSON(odyssey.posts));
-// });
+// wait for the document to be ready
+jQuery(document).ready(function() {
+    odyssey.core.update_current_post(jQuery.parseJSON(odyssey.posts));
+});
 
 
 

@@ -122,15 +122,15 @@ class Core {
     public function get_post_and_adjacents($post_id = NULL) {
         $current = $this->get_post($post_id);
         $ret = array(
-            'currentID'    => $current['ID'],
+            'current_ID'    => $current['ID'],
             $current['ID'] => $current,
         );
-        if (isset($current['nextID'])) {
-            $next = $this->get_post($current['nextID']);
+        if (isset($current['next_ID'])) {
+            $next = $this->get_post($current['next_ID']);
             $ret[$next['ID']] = $next;
         }
-        if (isset($current['previousID'])) {
-            $prev = $this->get_post($current['previousID']);
+        if (isset($current['previous_ID'])) {
+            $prev = $this->get_post($current['previous_ID']);
             $ret[$prev['ID']] = $prev;
         }
         return $ret;
@@ -169,14 +169,18 @@ class Core {
 
         $ret['class']   = implode(' ', get_post_class());
 
-        $nextPost = get_next_post();
-        if (!empty($nextPost)) {
-            $ret['nextID'] = $nextPost->ID;
+        $next_post = get_next_post();
+        if (!empty($next_post)) {
+            $ret['next_ID']    = $next_post->ID;
+            $ret['next_title'] = $next_post->post_title;
+            $ret['next_url']   = get_permalink($next_post->ID);
         }
 
-        $prevPost = get_previous_post();
-        if (!empty($prevPost)) {
-            $ret['previousID'] = $prevPost->ID;
+        $prev_post = get_previous_post();
+        if (!empty($prev_post)) {
+            $ret['previous_ID']    = $prev_post->ID;
+            $ret['previous_title'] = $prev_post->post_title;
+            $ret['previous_url']   = get_permalink($prev_post->ID);
         }
 
         return $ret;

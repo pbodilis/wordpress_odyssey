@@ -2,32 +2,29 @@ odyssey.core = {
     posts: {},
 
     init: function() {
-        jQuery.subscribe('core.get',             odyssey.core.retrievePosts);
+        jQuery.subscribe('core.get',             odyssey.core.go_to_post);
         jQuery.subscribe('core.previous',        odyssey.core.previous);
         jQuery.subscribe('core.next',            odyssey.core.next);
         jQuery.subscribe('core.random',          odyssey.core.random);
         jQuery.subscribe('core.comments.reload', odyssey.core.reload_comments);
     },
 
-    getCurrentPostId: function() {
-        return odyssey.core.posts.currentID;
+    get_current_post_id: function() {
+        return odyssey.core.posts.current_ID;
     },
-    getCurrentPost: function() {
-        var current = odyssey.core.posts[odyssey.core.posts.currentID];
-        if (current.previousID) { current.previous = odyssey.core.posts[current.previousID]; }
-        if (current.nextID)     { current.next     = odyssey.core.posts[current.nextID];     }
-        return current;
+    get_current_post: function() {
+        return odyssey.core.posts[odyssey.core.posts.current_ID];
     },
 
     /**
      * retrieves the post with the current id, or the latest one if none was given
      * along with the adjacent posts
      */
-    retrievePosts: function(e, id) {
+    go_to_post: function(e, id) {
         if (odyssey.core.posts[id]) { // do we have the current post in cache ?
             if (odyssey.core.posts[id] === 'pending') return;
-            odyssey.core.posts.currentID = id; // just set the current cursor to the given id
-            odyssey.core.postNotifyAll(); // notify all views the current post needs to be displayed
+            odyssey.core.posts.current_ID = id; // just set the current cursor to the given id
+            odyssey.core.publish_update(); // notify all views the current post needs to be displayed
         } else { // retrieve the post
             if ('random' != id) {
                 odyssey.core.posts[id] = 'pending';
@@ -53,51 +50,21 @@ odyssey.core = {
             }).done(function(r) {
                 if (!r) return;
                 odyssey.post_nonce = r.post_nonce;
-                odyssey.core.updateCurrentPost(r.posts);
+                odyssey.core.update_current_post(r.posts);
             });
         }
     },
-    updateCurrentPost: function(p) {
+    update_current_post: function(p) {
         for (var i in p) {
             odyssey.core.posts[i] = p[i];
         }
-        odyssey.core.postNotifyAll();
+        odyssey.core.publish_update();
     },
-    postNotifyAll: function() {
-        jQuery.publish('post.update', odyssey.core.getCurrentPost());
-        
-        // now, while the current post is loaded by the rest of the application
-        // get the post beyond the current adjacent's post.
-        var current = odyssey.core.getCurrentPost();
-        if (current.previous && current.previous.previousID) { odyssey.core.cachePost(current.previous.previousID); }
-        if (current.next     && current.next.nextID)         { odyssey.core.cachePost(current.next.nextID); }
+    publish_update: function() {
+        jQuery.publish('post.update', odyssey.core.get_current_post());
     },
-
-    /**
-     * retrieves the post with the given id
-     */
-    cachePost: function(id) {
-        if (odyssey.core.posts[id]) {
-        } else {
-            var ajaxArgs = {
-                action:     'odyssey_get_json_post',
-                id:         id,
-                post_nonce: odyssey.post_nonce
-            }
-            jQuery.ajax({
-                url:      odyssey.ajaxurl,
-                dataType: 'json',
-                data:     ajaxArgs,
-            }).done(function(r) {
-                if (!r) return;
-                odyssey.core.posts[id] = r.post;
-                odyssey.post_nonce     = r.post_nonce;
-            });
-        }
-    },
-    
     reload_comments: function(e) {
-        var id = odyssey.core.posts.currentID;
+        var id = odyssey.core.posts.current_ID;
         var ajaxArgs = {
             action:     'odyssey_get_json_post_comments',
             id:         id,
@@ -115,19 +82,19 @@ odyssey.core = {
         });
     },
     previous: function(e) {
-        var current = odyssey.core.posts[odyssey.core.posts.currentID];
-        if (current.previousID) {
-            odyssey.core.retrievePosts(e, current.previousID);
+        var current = odyssey.core.posts[odyssey.core.posts.current_ID];
+        if (current.previous_ID) {
+            odyssey.core.go_to_post(e, current.previous_ID);
         }
     },
     next: function(e) {
-        var current = odyssey.core.posts[odyssey.core.posts.currentID];
-        if (current.nextID) {
-            odyssey.core.retrievePosts(e, current.nextID);
+        var current = odyssey.core.posts[odyssey.core.posts.current_ID];
+        if (current.next_ID) {
+            odyssey.core.go_to_post(e, current.next_ID);
         }
     },
     random: function(e) {
-        odyssey.core.retrievePosts(e, 'random');
+        odyssey.core.go_to_post(e, 'random');
     }
 };
 
