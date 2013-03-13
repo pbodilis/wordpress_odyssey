@@ -1,7 +1,7 @@
 <?php get_header(); ?>
 
 
-    <div id="archives_block">
+    <div id="archives_menu">
         <?php get_search_form(); ?>
 
         <ul>
@@ -15,6 +15,16 @@
             </li>
             <?php wp_list_categories('title_li=<h3>' . __( 'Categories:', 'odyssey' ) . '</h3>'); ?>
         </ul>
+    </div>
+
+    <div id="archives_block">
+        <?php
+        /* Start the Loop */
+        while ( have_posts() ) : the_post();
+
+            the_title();
+        endwhile;
+        ?>
     </div>
 
 <?php get_footer(); ?>

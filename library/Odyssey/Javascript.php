@@ -50,39 +50,41 @@ class Javascript
      * @since 0.1
      */
     public function enqueue_javascript() {
+        // template engine
+        wp_enqueue_script('ICanHaz',             get_template_directory_uri() . '/js/ICanHaz.js',             array('jquery'), false, true);
+
+        // pub sub implementation
+        wp_enqueue_script('pubsub',              get_template_directory_uri() . '/js/ba-tiny-pubsub.js',      array('jquery'));
+
+        // js hsitory management
+        wp_enqueue_script('history',             get_template_directory_uri() . '/js/history.js');
+        wp_enqueue_script('history-adapter',     get_template_directory_uri() . '/js/history.adapter.native.js');
+
+        // embed the javascript file that makes the AJAX request
+        wp_enqueue_script('odyssey-core',        get_template_directory_uri() . '/js/odyssey.core.js',        array('jquery'), false, true);
+        wp_enqueue_script('odyssey-cookie',      get_template_directory_uri() . '/js/odyssey.cookie.js',      array('jquery'), false, true);
+        wp_enqueue_script('odyssey-image',       get_template_directory_uri() . '/js/odyssey.image.js',       array('jquery'), false, true);
+        wp_enqueue_script('odyssey-header',      get_template_directory_uri() . '/js/odyssey.header.js',      array('jquery'), false, true);
+        wp_enqueue_script('odyssey-panel',       get_template_directory_uri() . '/js/odyssey.panel.js',       array('jquery'), false, true);
+        wp_enqueue_script('odyssey-keyboard',    get_template_directory_uri() . '/js/odyssey.keyboard.js',    array('jquery'), false, true);
+        wp_enqueue_script('odyssey-history',     get_template_directory_uri() . '/js/odyssey.history.js',     array('history', 'history-adapter'), false, true);
+        wp_enqueue_script('odyssey-navigation',  get_template_directory_uri() . '/js/odyssey.navigation.js',  array('jquery'), false, true);
+        wp_enqueue_script('odyssey-commentform', get_template_directory_uri() . '/js/odyssey.comment.js',     array('jquery', 'comment-reply'), false, true);
+        wp_enqueue_script('odyssey',             get_template_directory_uri() . '/js/odyssey.js',             array('jquery'), false, true);
+
+        $locale_script = array(
+            'ajaxurl'                   => admin_url('admin-ajax.php'),
+        );
         if (is_home() || is_single()) {
-            // template engine
-            wp_enqueue_script('ICanHaz',             get_template_directory_uri() . '/js/ICanHaz.js',             array('jquery'), false, true);
-
-            // pub sub implementation
-            wp_enqueue_script('pubsub',              get_template_directory_uri() . '/js/ba-tiny-pubsub.js',      array('jquery'));
-
-            // js hsitory management
-            wp_enqueue_script('history',             get_template_directory_uri() . '/js/history.js');
-            wp_enqueue_script('history-adapter',     get_template_directory_uri() . '/js/history.adapter.native.js');
-
-            // embed the javascript file that makes the AJAX request
-            wp_enqueue_script('odyssey-core',        get_template_directory_uri() . '/js/odyssey.core.js',        array('jquery'), false, true);
-            wp_enqueue_script('odyssey-cookie',      get_template_directory_uri() . '/js/odyssey.cookie.js',      array('jquery'), false, true);
-            wp_enqueue_script('odyssey-image',       get_template_directory_uri() . '/js/odyssey.image.js',       array('jquery'), false, true);
-            wp_enqueue_script('odyssey-header',      get_template_directory_uri() . '/js/odyssey.header.js',      array('jquery'), false, true);
-            wp_enqueue_script('odyssey-panel',       get_template_directory_uri() . '/js/odyssey.panel.js',       array('jquery'), false, true);
-            wp_enqueue_script('odyssey-keyboard',    get_template_directory_uri() . '/js/odyssey.keyboard.js',    array('jquery'), false, true);
-            wp_enqueue_script('odyssey-history',     get_template_directory_uri() . '/js/odyssey.history.js',     array('history', 'history-adapter'), false, true);
-            wp_enqueue_script('odyssey-navigation',  get_template_directory_uri() . '/js/odyssey.navigation.js',  array('jquery'), false, true);
-            wp_enqueue_script('odyssey-commentform', get_template_directory_uri() . '/js/odyssey.comment.js',     array('jquery', 'comment-reply'), false, true);
-            wp_enqueue_script('odyssey',             get_template_directory_uri() . '/js/odyssey.js',             array('jquery'), false, true);
+            $locale_script['posts']                     = json_encode(Core::get_instance()->get_post_and_adjacents());
+            $locale_script['comment_form_ajax_enabled'] = json_encode(CommentManager::get_instance()->get_option('comment_form_ajax_enabled'));
+            $locale_script[self::POST_NONCE_EMBEDNAME]  = wp_create_nonce(self::POST_NONCE);
 
             // declare the URL to the file that handles the AJAX request (wp-admin/admin-ajax.php)
-            wp_localize_script('odyssey-core', 'odyssey', array(
-                'ajaxurl'                   => admin_url('admin-ajax.php'),
-                'posts'                     => json_encode(Core::get_instance()->get_post_and_adjacents()),
-                'comment_form_ajax_enabled' => json_encode(CommentManager::get_instance()->get_option('comment_form_ajax_enabled')),
-                self::POST_NONCE_EMBEDNAME  => wp_create_nonce(self::POST_NONCE),
-            ));
         } else if (is_archive()) {
         } else {
         }
+        wp_localize_script('odyssey-core', 'odyssey', $locale_script);
 //         <script type="text/javascript">
 //             var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
 //             document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
