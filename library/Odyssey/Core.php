@@ -21,6 +21,7 @@ class Core {
     protected $renderer;
     protected $header_bar;
     protected $comment_manager;
+    protected $archive_manager;
     protected $js_handle;
 
     protected $blog;
