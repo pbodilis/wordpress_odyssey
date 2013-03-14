@@ -2,8 +2,10 @@ odyssey.image = {
     image: null,
 
     init: function() {
-        jQuery.subscribe('post.update', odyssey.image.render);
-        jQuery(window).resize(odyssey.image.resize);
+        if (odyssey.is_post()) {
+            jQuery.subscribe('post.update', odyssey.image.render);
+            jQuery(window).resize(odyssey.image.resize);
+        }
     },
 
     get_photo_frame_position: function(image) {

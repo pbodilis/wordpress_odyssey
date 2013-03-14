@@ -33,7 +33,6 @@ if (!isset($content_width)) {
 
 remove_filter('check_comment_flood', 'check_comment_flood_db');
 
-
 //add_action( 'template_redirect', 'redirect' );
 function redirect() {
     $args = array(
@@ -47,6 +46,7 @@ function redirect() {
         exit;
     endif;
 }
+
 
 
 // $defaults = array(

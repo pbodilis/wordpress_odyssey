@@ -647,3 +647,30 @@ body.black #archives_menu a:hover {
     position: absolute;
     margin-top: 40px;
 }
+
+#archives_block li {
+    width:160px;
+    height:160px;
+    float:left;
+    margin:3px;
+}
+#archives_block li a.thumbnail {
+    display:block;
+    width:160px;
+    height:160px;
+    background-color: rgb(0,0,0);
+    background-position: center center;
+    background-repeat: no-repeat;
+    border:1px solid transparent;
+}
+body.black #archives_block li a.thumbnail {
+    background-color:rgb(34,34,34);
+}
+body.white #archives_block li a.thumbnail {
+    background-color:rgb(230,230,230);
+}
+#archives_block li a.thumbnail:hover {
+    border:1px solid #999;
+}
+
+

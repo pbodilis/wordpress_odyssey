@@ -43,6 +43,9 @@ class Core {
         $this->renderer        = Renderer::get_instance();
         $this->header_bar      = HeaderBar::get_instance();
         $this->comment_manager = CommentManager::get_instance();
+
+        $this->archive_manager = ArchiveManager::get_instance();
+
         $this->js_handle       = Javascript::get_instance();
 
         // add the templates related to the image and the content
@@ -57,7 +60,8 @@ class Core {
         add_filter('the_content', array(&$this, 'filter_content'));
 
         // the list of format support by the theme
-        add_theme_support('post-formats', array('image', 'video'));
+        add_theme_support( 'post-formats', array('image', 'video') );
+        add_theme_support( 'post-thumbnails' );
     }
 
 
@@ -142,6 +146,8 @@ class Core {
     public function get_post($post_id = NULL) {
         $ret = array();
         if (is_null($post_id)) {
+            global $query_string;
+            query_posts( $query_string . 'posts_per_page=1' );
             if (have_posts()) {
                 the_post();
             }
