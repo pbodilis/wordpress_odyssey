@@ -291,6 +291,13 @@ class Core {
     public function get_comment_form() {
         return $this->comment_manager->get_comment_form();
     }
+
+    public function get_monthly_archive_counts() {
+        return $this->archive_manager->get_monthly_archive_counts();
+    }
+    public function get_rendered_monthly_archive_menu() {
+        return $this->archive_manager->get_monthly_archive_menu_rendering();
+    }
 }
 
 ?>

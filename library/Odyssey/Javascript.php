@@ -71,6 +71,7 @@ class Javascript
         wp_enqueue_script('odyssey-history',     get_template_directory_uri() . '/js/odyssey.history.js',     array('history', 'history-adapter', 'odyssey'), false, true);
         wp_enqueue_script('odyssey-navigation',  get_template_directory_uri() . '/js/odyssey.navigation.js',  array('jquery', 'odyssey'), false, true);
         wp_enqueue_script('odyssey-commentform', get_template_directory_uri() . '/js/odyssey.comment.js',     array('jquery', 'odyssey'), false, true);
+        wp_enqueue_script('odyssey-archive',     get_template_directory_uri() . '/js/odyssey.archive.js',     array('jquery', 'odyssey'), false, true);
 
         $locale_script = array(
             'ajaxurl'                   => admin_url('admin-ajax.php'),

@@ -6,11 +6,9 @@
                 <h3>
                     <?php echo __( 'Monthly Archives:', 'odyssey' ); ?>
                 </h3>
-                <ul>
-                <?php wp_get_archives('type=monthly'); ?>
-                </ul>
+                <?php echo the_core()->get_rendered_monthly_archive_menu(); ?>
             </li>
-            <?php wp_list_categories('title_li=<h3>' . __( 'Categories:', 'odyssey' ) . '</h3>'); ?>
+            <?php /*wp_list_categories('title_li=<h3>' . __( 'Categories:', 'odyssey' ) . '</h3>');*/ ?>
         </ul>
     </div>
 

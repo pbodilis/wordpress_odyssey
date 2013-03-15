@@ -17,6 +17,8 @@ namespace Odyssey;
  */
 class ArchiveManager
 {
+    const ARCHIVE_MENU_TEMPLATE_FILE = 'archive_menu';
+
     static private $instance;
     static public function get_instance(array $params = array()) {
         if (!isset(self::$instance)) {
@@ -30,6 +32,7 @@ class ArchiveManager
 
     public function get_monthly_archive_counts() {
         global $wpdb;
+        global $wp_locale;
         $limit = 0;
         $year_prev = null;
         $months = $wpdb->get_results(
@@ -44,15 +47,30 @@ class ArchiveManager
         );
 
         $ret = array();
+        $i = -1;
+        $current_year = -1;
         foreach($months as $month) {
-            if (!isset($ret[ $month->year ])) {
-                $ret[ $month->year ] = array();
-                $ret[ $month->year ]['total'] = 0;
+            if ($current_year != $month->year ) {
+                $current_year = $month->year;
+                $i = array_push($ret, array(
+                    'count'  => 0,
+                    'year'   => $current_year,
+                    'link'   => get_year_link( $current_year ),
+                    'months' => array(),
+                )) - 1;
             }
-            $ret[ $month->year ][ $month->month ] = $month->post_count;
-            $ret[ $month->year ]['total'] += $month->post_count;
+            $ret[ $i ]['months'][] = array(
+                'count' => $month->post_count,
+                'month' => $wp_locale->get_month($month->month),
+                'link'  => get_month_link( $current_year, $month->month ),
+            );
+            $ret[ $i ]['count'] += $month->post_count;
         }
         return $ret;
+    }
+
+    function get_monthly_archive_menu_rendering() {
+        return Renderer::get_instance()->render(self::ARCHIVE_MENU_TEMPLATE_FILE, array('archives' => $this->get_monthly_archive_counts()));
     }
 }
 

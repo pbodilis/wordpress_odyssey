@@ -1,0 +1,15 @@
+            <ul class="accordion">
+                {{#archives}}
+                <li id="year_{{year}}" class="year menu">
+                    <span class="menu_extend"></span> 
+                    <a href="{{link}}"> {{year}} <span class="post_count">{{count}}</span></a>
+                    <ul class="sub_menu">
+                        {{#months}}
+                        <li id="month_{{month}}" class="month">
+                            <a href="{{link}}"> {{month}} <span class="post_count">{{count}}</span></a>
+                        </li>
+                        {{/months}}
+                    </ul>
+                </li>
+                {{/archives}}
+            </ul>
