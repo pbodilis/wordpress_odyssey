@@ -66,6 +66,7 @@ class ArchiveManager
             );
             $ret[ $i ]['count'] += $month->post_count;
         }
+//        $ret['title'] = __( 'Monthly Archives:', 'odyssey' );
         return $ret;
     }
 

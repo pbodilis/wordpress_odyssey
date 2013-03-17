@@ -1,16 +1,6 @@
 <?php get_header(); ?>
 
-    <div id="archives_menu">
-        <ul>
-            <li>
-                <h3>
-                    <?php echo __( 'Monthly Archives:', 'odyssey' ); ?>
-                </h3>
-                <?php echo the_core()->get_rendered_monthly_archive_menu(); ?>
-            </li>
-            <?php /*wp_list_categories('title_li=<h3>' . __( 'Categories:', 'odyssey' ) . '</h3>');*/ ?>
-        </ul>
-    </div>
+<?php echo the_core()->get_rendered_monthly_archive_menu(); ?>
 
     <div id="archives_block">
         <h1 class="archive-title">

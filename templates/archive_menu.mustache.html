@@ -1,15 +1,24 @@
-            <ul class="accordion">
-                {{#archives}}
-                <li id="year_{{year}}" class="year menu">
-                    <span class="menu_extend"></span> 
-                    <a href="{{link}}"> {{year}} <span class="post_count">{{count}}</span></a>
-                    <ul class="sub_menu">
-                        {{#months}}
-                        <li id="month_{{month}}" class="month">
-                            <a href="{{link}}"> {{month}} <span class="post_count">{{count}}</span></a>
-                        </li>
-                        {{/months}}
-                    </ul>
-                </li>
-                {{/archives}}
-            </ul>
+    <div id="archives_menu">
+        <ul>
+            <li>
+                <h3>
+                    {{title}}
+                </h3>
+                <ul class="accordion">
+                    {{#archives}}
+                    <li class="menu">
+                        <span class="menu_head"> <span class="menu_extend"></span> <a href="{{link}}"> {{year}} <span class="post_count">{{count}}</span></a> </span>
+                        <ul id="menu_{{year}}_{{month}}" class="menu_content">
+                            {{#months}}
+                            <li class="menu">
+                                <a href="{{link}}"> {{month}} <span class="post_count">{{count}}</span></a>
+                            </li>
+                            {{/months}}
+                        </ul>
+                    </li>
+                    {{/archives}}
+                </ul>
+
+            </li>
+        </ul>
+    </div>
