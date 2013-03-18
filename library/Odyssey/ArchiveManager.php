@@ -46,32 +46,52 @@ class ArchiveManager
             "ORDER BY post_date DESC"
         );
 
-        $ret = array();
+        $archives = array();
         $i = -1;
         $current_year = -1;
         foreach($months as $month) {
             if ($current_year != $month->year ) {
                 $current_year = $month->year;
-                $i = array_push($ret, array(
+                $i = array_push($archives, array(
                     'count'  => 0,
-                    'year'   => $current_year,
+                    'name'   => $current_year,
                     'link'   => get_year_link( $current_year ),
-                    'months' => array(),
+                    'sub'    => array(),
                 )) - 1;
             }
-            $ret[ $i ]['months'][] = array(
+            $archives[ $i ]['sub'][] = array(
+                'name'  => $wp_locale->get_month($month->month),
                 'count' => $month->post_count,
-                'month' => $wp_locale->get_month($month->month),
                 'link'  => get_month_link( $current_year, $month->month ),
             );
-            $ret[ $i ]['count'] += $month->post_count;
+            $archives[ $i ]['count'] += $month->post_count;
         }
-//        $ret['title'] = __( 'Monthly Archives:', 'odyssey' );
-        return $ret;
+        return array(
+            'title'    => __( 'Monthly Archives:', 'odyssey' ),
+            'archives' => $archives,
+        );
     }
 
+    public function get_categories() {
+echo '<pre>' . PHP_EOL;
+        $categories = get_categories();
+
+        $cats = array();
+        $i = -1;
+        foreach($categories as $category) {
+            $i = array_push($cats, array(
+                'name'  => $category->cat_name,
+                'count' => $category->category_count,
+                'link'  => get_category_link( $category->term_id ),
+            ));
+        }
+        var_dump($cats);
+    }
+
+
     function get_monthly_archive_menu_rendering() {
-        return Renderer::get_instance()->render(self::ARCHIVE_MENU_TEMPLATE_FILE, array('archives' => $this->get_monthly_archive_counts()));
+// $this->get_categories();
+        return Renderer::get_instance()->render(self::ARCHIVE_MENU_TEMPLATE_FILE, $this->get_monthly_archive_counts());
     }
 }
 

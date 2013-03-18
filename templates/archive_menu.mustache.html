@@ -7,13 +7,18 @@
                 <ul class="accordion">
                     {{#archives}}
                     <li class="menu">
-                        <span class="menu_head"> <span class="menu_extend"></span> <a href="{{link}}"> {{year}} <span class="post_count">{{count}}</span></a> </span>
-                        <ul id="menu_{{year}}_{{month}}" class="menu_content">
-                            {{#months}}
+                        <span class="menu_head">
+                            {{#sub.0}}
+                            <span class="menu_extend"><span class="menu_extend_arrow"></span></span>
+                            {{/sub.0}}
+                            <a href="{{link}}"> {{name}} <span class="post_count">{{count}}</span></a>
+                        </span>
+                        <ul class="menu_content">
+                            {{#sub}}
                             <li class="menu">
-                                <a href="{{link}}"> {{month}} <span class="post_count">{{count}}</span></a>
+                                <a href="{{link}}"> {{name}} <span class="post_count">{{count}}</span></a>
                             </li>
-                            {{/months}}
+                            {{/sub}}
                         </ul>
                     </li>
                     {{/archives}}
