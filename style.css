@@ -248,11 +248,11 @@ body.white #headerbar .menu.but.nav a.prev span {
 }
 
 #headerbar .menu.loading {
-    background: url(./images/odyssey_loading.gif) no-repeat;
+/*     background: url(./images/odyssey_loading.gif) no-repeat; */
     width: 16px;
     height: 16px;
     margin: 7px;
-    display: none;
+/*     display: none; */
 }
 
 
@@ -615,8 +615,6 @@ ul.comments_list li .replyto:hover, ul.comments_list li .replying {
     letter-spacing:2px;
     color:rgb(255,255,255);
     cursor:pointer;
-
-    background:rgba(34,34,34,1) url(./images/toggle.gif) right -40px no-repeat;
 }
 
 #archives_menu .menu .menu_head {

@@ -60,6 +60,8 @@ class Javascript
         wp_enqueue_script('history',             get_template_directory_uri() . '/js/history.js');
         wp_enqueue_script('history-adapter',     get_template_directory_uri() . '/js/history.adapter.native.js');
 
+        wp_enqueue_script('activity-indicator',  get_template_directory_uri() . '/js/jquery.activity-indicator-1.0.0.min.js', array('jquery'));
+
         // embed the javascript file that makes the AJAX request
         wp_enqueue_script('odyssey',             get_template_directory_uri() . '/js/odyssey.js',             array('jquery'), false, true);
         wp_enqueue_script('odyssey-core',        get_template_directory_uri() . '/js/odyssey.core.js',        array('jquery', 'odyssey'), false, true);
