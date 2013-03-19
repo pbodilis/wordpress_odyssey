@@ -57,8 +57,7 @@ class ArchiveManager
                 $i = array_push($archives, array(
                     'count'        => 0,
                     'name'         => $current_year,
-                    'class'        => 'menu_level_1',
-                    'extended'     => $current_year == $displayed_year ? 'extended' : '',
+                    'extended'     => !is_category() && $current_year == $displayed_year ? 'extended' : '',
                     'link'         => get_year_link( $current_year ),
                     'menu_entries' => array(),
                 )) - 1;
@@ -66,8 +65,7 @@ class ArchiveManager
             $archives[ $i ]['menu_entries'][] = array(
                 'count'        => $month->post_count,
                 'name'         => $wp_locale->get_month($month->month),
-                'class'        => 'menu_level_2',
-                'extended'     => $current_year == $displayed_year && $month->month == $displayed_month ? 'extended' : '',
+                'extended'     => !is_category() && $current_year == $displayed_year && $month->month == $displayed_month ? 'extended' : '',
                 'link'         => get_month_link( $current_year, $month->month ),
                 'menu_entries' => array(),
             );
@@ -75,31 +73,64 @@ class ArchiveManager
         }
         return array(
             'extended'     => 'extended',
-            'title'        => __( 'Monthly Archives:', 'odyssey' ),
+            'title'        => __( 'Archives:', 'odyssey' ),
             'menu_entries' => $archives,
         );
     }
 
-    public function get_categories() {
-echo '<pre>' . PHP_EOL;
-        $categories = get_categories();
+    /**
+     * @returns array of parent categories id
+     */
+    private function get_parent_categories($id) {
+        if (0 == $id) {
+            return array(0);
+        }
 
+        $parent = get_category( $id );
+        return array_merge($this->get_parent_categories($parent->category_parent), array(intval($id)));
+    }
+
+    public function get_categories() {
+        $parent_cats = $this->get_parent_categories(get_query_var('cat'));
+
+        $categories = get_categories(array(
+            'hide_empty' => false,
+            'orderby'    => 'id',
+        ));
         $cats = array();
         $i = -1;
+        $l = array();
         foreach($categories as $category) {
-            $i = array_push($cats, array(
-                'name'  => $category->cat_name,
-                'count' => $category->category_count,
-                'link'  => get_category_link( $category->term_id ),
-            ));
+            if ($category->category_parent == 0) {
+                $tmp =& $cats;
+            } else {
+                $tmp =& $l[$category->category_parent]['menu_entries'];
+            }
+            $i = array_push($tmp, array(
+                'count'        => $category->category_count,
+                'name'         => $category->cat_name,
+                'extended'     => in_array($category->cat_ID, $parent_cats) ? 'extended' : '',
+                'link'         => get_category_link( $category->term_id ),
+                'menu_entries' => array(),
+            )) - 1;
+            $l[$category->cat_ID] =& $tmp[$i];
         }
-        var_dump($cats);
+        return array(
+            'extended'     => 'extended',
+            'title'        => __( 'Categories:', 'odyssey' ),
+            'menu_entries' => $cats,
+        );
     }
 
 
     function get_monthly_archive_menu_rendering() {
-// $this->get_categories();
-        return Renderer::get_instance()->render(self::ARCHIVE_MENU_TEMPLATE_FILE, $this->get_monthly_archive_counts());
+        $archives_section = array(
+            'archive_section' => array(
+                $this->get_monthly_archive_counts(),
+                $this->get_categories()
+            ),
+        );
+        return Renderer::get_instance()->render(self::ARCHIVE_MENU_TEMPLATE_FILE, $archives_section);
     }
 }
 

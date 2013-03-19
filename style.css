@@ -601,7 +601,7 @@ ul.comments_list li .replyto:hover, ul.comments_list li .replying {
     overflow:hidden;
 /*     margin-left: 5px; */
     color: rgb(168,168,168);
-    background-color: rgb(68,68,68);
+    background-color: rgba(68,68,68,1);
 }
 #archives_menu ul.menu_content li {
     padding: 0px 8px;
@@ -614,18 +614,20 @@ ul.comments_list li .replyto:hover, ul.comments_list li .replying {
     font-size:16px;
     letter-spacing:2px;
     color:rgb(255,255,255);
-    cursor:pointer;
+    background-color:rgba(0,0,0,1);
 }
 
 #archives_menu .menu .menu_head {
-    height: 24px;
-}
+/*     height: 24px; */
 
-#archives_menu a {
-    text-decoration: none;
     display: block;
     color: rgb(168,168,168);
     height: 18px;
+}
+
+#archives_menu a {
+    color: rgb(168,168,168);
+    text-decoration: none;
 }
 #archives_menu a:hover {
     color:rgb(255,255,255);
@@ -678,11 +680,11 @@ ul.comments_list li .replyto:hover, ul.comments_list li .replying {
     border-color: transparent transparent transparent rgba(38,38,38,1);
 }
 #archives_menu .menu .menu_extend:hover,
-#archives_menu .menu.extended .menu_extend {
+#archives_menu .menu.extended>.menu_head>.menu_extend {
     background: rgba(38,38,38,1);
 }
 #archives_menu .menu .menu_extend:hover .menu_extend_arrow,
-#archives_menu .menu.extended .menu_extend .menu_extend_arrow {
+#archives_menu .menu.extended>.menu_head>.menu_extend .menu_extend_arrow {
     margin-left: 4px;
     border-width: 10px 5px 0 5px;
     border-color: rgba(230,230,230,1) transparent transparent transparent;

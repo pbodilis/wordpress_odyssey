@@ -1,10 +1,14 @@
     <div id="archives_menu">
         <ul>
+            {{#archive_section}}
             <li>
-                <h3>
-                    {{title}}
-                </h3>
+                <span class="menu_head">
+                    <h3>
+                        {{title}}
+                    </h3>
+                </span>
                 {{>menu_entries}}
             </li>
+            {{/archive_section}}
         </ul>
     </div>
