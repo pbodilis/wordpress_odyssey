@@ -1,0 +1,13 @@
+                <ul class="menu_content {{extended}}">
+                    {{#menu_entries}}
+                    <li class="menu {{class}}">
+                        <span class="menu_head">
+                            {{#menu_entries.0}}
+                            <span class="menu_extend"><span class="menu_extend_arrow"></span></span>
+                            {{/menu_entries.0}}
+                            <a href="{{link}}"> {{name}} <span class="post_count">{{count}}</span></a>
+                        </span>
+                        {{>menu_entries}}
+                    </li>
+                    {{/menu_entries}}
+                </ul>

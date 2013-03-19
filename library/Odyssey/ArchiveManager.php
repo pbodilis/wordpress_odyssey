@@ -46,6 +46,8 @@ class ArchiveManager
             "ORDER BY post_date DESC"
         );
 
+        $displayed_year = get_the_time('Y');
+        $displayed_month = get_the_time('m');
         $archives = array();
         $i = -1;
         $current_year = -1;
@@ -53,22 +55,28 @@ class ArchiveManager
             if ($current_year != $month->year ) {
                 $current_year = $month->year;
                 $i = array_push($archives, array(
-                    'count'  => 0,
-                    'name'   => $current_year,
-                    'link'   => get_year_link( $current_year ),
-                    'sub'    => array(),
+                    'count'        => 0,
+                    'name'         => $current_year,
+                    'class'        => 'menu_level_1',
+                    'extended'     => $current_year == $displayed_year ? 'extended' : '',
+                    'link'         => get_year_link( $current_year ),
+                    'menu_entries' => array(),
                 )) - 1;
             }
-            $archives[ $i ]['sub'][] = array(
-                'name'  => $wp_locale->get_month($month->month),
-                'count' => $month->post_count,
-                'link'  => get_month_link( $current_year, $month->month ),
+            $archives[ $i ]['menu_entries'][] = array(
+                'count'        => $month->post_count,
+                'name'         => $wp_locale->get_month($month->month),
+                'class'        => 'menu_level_2',
+                'extended'     => $current_year == $displayed_year && $month->month == $displayed_month ? 'extended' : '',
+                'link'         => get_month_link( $current_year, $month->month ),
+                'menu_entries' => array(),
             );
             $archives[ $i ]['count'] += $month->post_count;
         }
         return array(
-            'title'    => __( 'Monthly Archives:', 'odyssey' ),
-            'archives' => $archives,
+            'extended'     => 'extended',
+            'title'        => __( 'Monthly Archives:', 'odyssey' ),
+            'menu_entries' => $archives,
         );
     }
 

@@ -32,14 +32,17 @@ class Renderer
     {
         $this->mustache = new \Mustache_Engine(
             array(
-                'template_class_prefix' => '__MyTemplates_',
+            //     'template_class_prefix' => '__MyTemplates_',
             //     'cache' => dirname(__FILE__).'/tmp/cache/mustache',
             //     'cache_file_mode' => 0666, // Please, configure your umask instead of doing this :)
                 'loader' => new \Mustache_Loader_FilesystemLoader(
                 	dirname(dirname(dirname(__FILE__))) . '/templates',
                 	$options = array('extension' => '.mustache.html',)
-            ),
-            //     'partials_loader' => new Mustache_Loader_FilesystemLoader(dirname(__FILE__).'/views/partials'),
+                ),
+                'partials_loader' => new \Mustache_Loader_FilesystemLoader(
+                    dirname(dirname(dirname(__FILE__))) . '/templates',
+                    $options = array('extension' => '.partial.mustache.html',)
+                ),
             //     'helpers' => array('i18n' => function($text) {
             //         // do something translatey here...
             //     }),

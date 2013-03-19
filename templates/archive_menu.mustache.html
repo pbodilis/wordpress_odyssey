@@ -4,26 +4,7 @@
                 <h3>
                     {{title}}
                 </h3>
-                <ul class="accordion">
-                    {{#archives}}
-                    <li class="menu">
-                        <span class="menu_head">
-                            {{#sub.0}}
-                            <span class="menu_extend"><span class="menu_extend_arrow"></span></span>
-                            {{/sub.0}}
-                            <a href="{{link}}"> {{name}} <span class="post_count">{{count}}</span></a>
-                        </span>
-                        <ul class="menu_content">
-                            {{#sub}}
-                            <li class="menu">
-                                <a href="{{link}}"> {{name}} <span class="post_count">{{count}}</span></a>
-                            </li>
-                            {{/sub}}
-                        </ul>
-                    </li>
-                    {{/archives}}
-                </ul>
-
+                {{>menu_entries}}
             </li>
         </ul>
     </div>
