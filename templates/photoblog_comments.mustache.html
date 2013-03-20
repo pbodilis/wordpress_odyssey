@@ -1,4 +1,3 @@
-                <ul class="comments_list">
                     {{#comments}}
                     <li id="comment_list_item_{{id}}" class="comment_list_item">
                         {{! maybe find a better way than this onClick}}
@@ -16,7 +15,8 @@
                             </p>
                         </div>
                         <div class="clr"></div>
-                        {{>render_comments}}
+                         <ul class="comments_list">
+                            {{>render_comments}}
+                        </ul>
                     </li>
                     {{/comments}}
-                </ul>

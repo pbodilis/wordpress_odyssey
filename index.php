@@ -23,7 +23,9 @@ get_header();
         <div class="clr"></div>
         <div id="comments_area">
             <h3 id="comment_title"></h3>
-            <div id="comment_list_item_0"></div>
+            <div id="comment_list_item_0">
+                <ul class="comments_list"></ul>
+            </div>
         </div>
         <div class="clr"></div>
     </div>

@@ -629,6 +629,7 @@ ul.comments_list li .replyto:hover, ul.comments_list li .replying {
     color: rgb(168,168,168);
     text-decoration: none;
 }
+#archives_menu .extended>.menu_head>a,
 #archives_menu a:hover {
     color:rgb(255,255,255);
 }

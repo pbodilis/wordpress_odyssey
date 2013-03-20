@@ -77,7 +77,7 @@ odyssey.comments = {
         odyssey.comments.post_comments_number = post.comments_number;
         jQuery('#comment_title').html(odyssey.comments.post_comments_number + ' Comment(s)');
 
-        jQuery('#comment_list_item_0').html(ich.render_comments({'comments': post.comments}));
+        jQuery('#comment_list_item_0>ul').html(ich.render_comments({'comments': post.comments}));
     },
 }
 

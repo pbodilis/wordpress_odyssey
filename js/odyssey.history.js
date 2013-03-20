@@ -20,3 +20,4 @@ odyssey.history = {
     }
 };
 
+odyssey.history.init();

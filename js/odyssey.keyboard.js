@@ -1,5 +1,8 @@
 odyssey.keyboard = {
     init: function() {
+        if (!odyssey.is_post()) {
+            return;
+        }
         var txtFocus = false;
         jQuery('input, textarea').focus(function() {
             txtFocus = true;
