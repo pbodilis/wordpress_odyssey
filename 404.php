@@ -1,15 +1,29 @@
 <?php
-/*
-Template Name: 404 Page
-*/
+/**
+ * The template for displaying 404 pages (Not Found).
+ *
+ * @package WordPress
+ * @subpackage Twenty_Twelve
+ * @since Twenty Twelve 1.0
+ */
 
-get_header();
+get_header(); ?>
 
-monolit_print_container('b');
+    <div id="primary" class="site-content">
+        <div id="content" role="main">
 
-headline(2, MSG_404);
-include (TEMPLATEPATH . '/searchform.php');
+            <article id="post-0" class="post error404 no-results not-found">
+                <header class="entry-header">
+                    <h1 class="entry-title"><?php _e( 'This is somewhat embarrassing, isn&rsquo;t it?', 'odyssey' ); ?></h1>
+                </header>
 
-monolit_print_container('e');
-get_footer();
-?>
+                <div class="entry-content">
+                    <p><?php _e( 'It seems we can&rsquo;t find what you&rsquo;re looking for. Perhaps searching can help.', 'odyssey' ); ?></p>
+                    <?php get_search_form(); ?>
+                </div><!-- .entry-content -->
+            </article><!-- #post-0 -->
+
+        </div><!-- #content -->
+    </div><!-- #primary -->
+
+<?php get_footer(); ?>
