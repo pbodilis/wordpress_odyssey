@@ -16,7 +16,6 @@ odyssey.history = {
 
     popstate: function() {
         var state = window.History.getState(); // Note: We are using History.getState() instead of event.state
-console.log(state.data.postID);
         if (state.data.postID != odyssey.history.postID) {
             jQuery.publish('core.get', state.data.postID);
         }
