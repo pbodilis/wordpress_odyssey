@@ -12,12 +12,10 @@ odyssey.header = {
         jQuery.subscribe('post.loaded',  odyssey.header.loaded);
     },
     loading: function() {
-        jQuery('header .menu.loading').activity({segments: 24, width:2, space: 0, length: 3, color: '#aaa', speed: 1});
-//         jQuery('header .menu.loading').show();
+        jQuery('header .menu.loading').show();
     },
     loaded: function() {
-        jQuery('header .menu.loading').activity(false);
-//         jQuery('header .menu.loading').hide();
+        jQuery('header .menu.loading').hide();
     },
 };
 

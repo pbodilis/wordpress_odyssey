@@ -172,7 +172,7 @@ class Core {
         $ret['content'] = apply_filters('the_content', $post->post_content);
         
         if(function_exists('the_ratings')) {
-            $ret['ratings'] = the_ratings('div', 0, false);
+            $ret['ratings'] = the_ratings('div', $post->ID, false);
         }
 
         $ret['class']   = implode(' ', get_post_class());

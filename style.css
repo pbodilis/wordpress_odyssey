@@ -248,11 +248,14 @@ body.white #headerbar .menu.but.nav a.prev span {
 }
 
 #headerbar .menu.loading {
-/*     background: url(./images/odyssey_loading.gif) no-repeat; */
+    margin: 7px;
+    display: none;
+}
+
+.loading {
     width: 16px;
     height: 16px;
-    margin: 7px;
-/*     display: none; */
+    background:url(images/odyssey_loading.gif) 0 0 no-repeat;
 }
 
 
