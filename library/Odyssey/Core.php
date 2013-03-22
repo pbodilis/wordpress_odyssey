@@ -127,7 +127,7 @@ class Core {
     public function get_post_and_adjacents($post_id = NULL, $adjacent = 'both') {
         $current = $this->get_post($post_id);
         $ret = array(
-            'current_ID'    => $current['ID'],
+            'current_ID'   => $current['ID'],
             $current['ID'] => $current,
         );
         if (('both' == $adjacent || 'next' == $adjacent) && isset($current['next_ID'])) {
@@ -166,17 +166,17 @@ class Core {
         $ret['categories']      = $this->get_post_categories($post->ID);
 //      $ret = array_merge($ret, $this->get_post_image($post->ID));
 
+        if (function_exists('the_ratings')) {
+            $ret['ratings'] = the_ratings('div', $post->ID, false);
+        }
+
         $ret['ID']      = $post->ID;
         $ret['title']   = $post->post_title;
         $ret['url']     = get_permalink($post->ID);
         $ret['content'] = apply_filters('the_content', $post->post_content);
-        
-        if(function_exists('the_ratings')) {
-            $ret['ratings'] = the_ratings('div', $post->ID, false);
-        }
 
         $ret['class']   = implode(' ', get_post_class());
-
+        
         $next_post = get_next_post();
         if (!empty($next_post)) {
             $ret['next_ID']    = $next_post->ID;
