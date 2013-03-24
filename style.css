@@ -89,7 +89,7 @@ body.black {
     left: 0;
     width: 100%;
     height: 30px;
-    line-height: 30px;
+    line-height: 26px;
     z-index: 9999;
 
     background-color: rgb(68,68,68);
@@ -103,7 +103,7 @@ body.white #headerbar {
 }
 #logo {
     display: block;
-    height: 28px;
+    line-height: 30px;
     float: left;
     font-size: 22px;
     padding-left: 16px;
