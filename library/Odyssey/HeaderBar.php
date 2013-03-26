@@ -161,7 +161,7 @@ class HeaderBar
     function get_rendering() {
         $blog = Core::get_instance()->get_blog();
         $post = (is_single() || is_home()) ? Core::get_instance()->get_post() : array();
-        
+
         $options = $this->get_header_bar_syndication_options();
         $syndication = array();
         foreach ($options as $option => &$value) {

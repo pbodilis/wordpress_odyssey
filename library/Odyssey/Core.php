@@ -109,7 +109,7 @@ class Core {
             $this->blog = array(
                 'title'             => wp_title('&raquo;', false),
                 'name'              => get_bloginfo('name'),
-                'url'               => home_url('/'),
+                'home_url'          => home_url('/'),
                 'wpurl'             => site_url('/'),
                 'version'           => get_bloginfo('version'),
                 'html_type'         => get_bloginfo('html_type'),
