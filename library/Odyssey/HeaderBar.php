@@ -160,6 +160,7 @@ class HeaderBar
 
     function get_rendering() {
         $blog = Core::get_instance()->get_blog();
+        $post = (is_single() || is_home()) ? Core::get_instance()->get_post() : array();
         
         $options = $this->get_header_bar_syndication_options();
         $syndication = array();
@@ -193,7 +194,7 @@ class HeaderBar
         }
         $blog['others'] = $others;
         
-        return Renderer::get_instance()->render(self::TEMPLATE_FILE, $blog);
+        return Renderer::get_instance()->render(self::TEMPLATE_FILE, array_merge($blog, $post));
     }
 
     static function option_id2css_class($id) {

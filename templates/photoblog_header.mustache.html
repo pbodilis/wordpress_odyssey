@@ -39,12 +39,16 @@
             <a class="black"     href="#"></a>
         </div>
         <nav class="menu but">
-            {{#previous}}
-            <a href="{{url}}" class="prev" title="{{#_i18n}}Previous:{{/_i18n}} {{title}}"><span class="navArrow"></span></a>
-            {{/previous}}
-            {{#next}}
-            <a href="{{url}}" class="next" title="{{#_i18n}}Next:{{/_i18n}} {{title}}"><span class="navArrow"></span></a>
-            {{/next}}
+            <a class="prev {{^previous_url}}deactivated{{/previous_url}}" title="{{#_i18n}}Previous{{/_i18n}}"
+                {{#previous_url}}
+                    href="{{previous_url}}"
+                {{/previous_url}}
+                ><span class="navArrow"></span></a>
+            <a class="next {{^next_url}}deactivated{{/next_url}}" title="{{#_i18n}}Next{{/_i18n}}"
+                {{#next_url}}
+                    href="{{next_url}}"
+                {{/next_url}}
+                ><span class="navArrow"></span></a>
         </nav>
         <div class="menu but tooltip">
             <a href="#">

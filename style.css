@@ -141,32 +141,32 @@ body.white #headerbar a:hover {
 #headerbar .menu.but a:hover {
     opacity: 1;
     filter: alpha(opacity=100);
+    cursor: pointer;
 }
-#headerbar .menu.but.nav a {
+#headerbar .menu.but a.deactivated {
+    opacity: 0.15;
+    filter: alpha(opacity=15);
+    cursor: default;
+}
+#headerbar nav.menu.but a {
     background-color: rgb(68,68,68);
 }
-#headerbar .menu.but.nav a span {
+#headerbar nav.menu.but a span {
     height: 0;
     width: 0;
-    border: 8px solid;
     margin-top: 2px;
+    border: 8px solid;
     border-color: transparent;
 }
-#headerbar .menu.but.nav a.next span {
+#headerbar nav.menu.but a.next span {
     float: right;
     margin-right: -2px;
     border-left-color: rgb(255,255,255);
 }
-body.white #headerbar .menu.but.nav a.next span {
-    border-left-color: rgb(0,0,0);
-}
-#headerbar .menu.but.nav a.prev span {
+#headerbar nav.menu.but a.prev span {
     float: left;
     margin-left: -2px;
     border-right-color: rgb(255,255,255);
-}
-body.white #headerbar .menu.but.nav a.prev span {
-    border-right-color: rgb(0,0,0);
 }
 #headerbar .menu.but.color a {
     width: 14px;

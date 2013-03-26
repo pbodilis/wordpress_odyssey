@@ -1,5 +1,6 @@
 odyssey.image = {
     image: null,
+    timeout: null,
 
     init: function() {
         if (odyssey.is_post()) {
@@ -54,6 +55,12 @@ odyssey.image = {
         };
     },
     render: function(e, post) {
+        if (odyssey.image.timeout == null) {
+            clearTimeout(odyssey.image.timeout);
+        }
+        odyssey.image.timeout = setTimeout(odyssey.image.do_render, 1, post)
+    },
+    do_render: function(post) {
         odyssey.image.image = post.image;
         post.frame = odyssey.image.get_photo_frame_position(post.image);
         var rendering = ich.render_image(post);
