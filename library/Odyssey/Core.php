@@ -245,7 +245,7 @@ class Core {
 
     public function get_post_categories($post_id) {
         $ret = array();
-        $categories = get_the_category();
+        $categories = get_the_category($post_id);
         foreach($categories as $category) {
             $ret[] = array(
                 'url'  => get_category_link( $category->term_id ),
@@ -286,6 +286,18 @@ class Core {
         } else {
             return false;
         }
+    }
+
+    public function get_archives_url() {
+        $displayed_year = get_the_time('Y');
+        $displayed_month = get_the_time('m');
+
+        return array(
+            'url'    => $this->archive_manager->get_link_to_most_recent_archive(),
+            'title'  => __( 'Archives', 'odyssey' ),
+            'name'   => __( 'Archives', 'odyssey' ),
+            'linkid' => 'archives',
+        );
     }
 
     public function get_pages_url() {

@@ -50,6 +50,7 @@ class HeaderBar
             'google_plus' => __( 'Google +', 'odyssey' ),
 
             'random'      => __( 'Random post', 'odyssey' ),
+            'archives'    => __( 'Archives page', 'odyssey' ),
             'pages'       => __( 'Pages', 'odyssey' ),
         );
         return $id2label[ $option_id ];
@@ -74,8 +75,9 @@ class HeaderBar
 
     static public function get_default_header_bar_other_links_options() {
         return array(
-            'random' => true,
-            'pages'  => true,
+            'random'   => true,
+            'archives' => true,
+            'pages'    => true,
         );
     }
 
@@ -151,7 +153,7 @@ class HeaderBar
         $data['section'][] = array(
             'name'        => __('Other links', 'odyssey' ),
             'description' => __('Enable other links:', 'odyssey' ),
-            'options'    => $data_options,
+            'options'     => $data_options,
             'submit'      => self::OTHER_LINKS_SUBMIT_NAME,
             'reset'       => self::OTHER_LINKS_RESET_NAME,
         );
@@ -184,6 +186,9 @@ class HeaderBar
             switch ($option) {
                 case 'random': // get a valid random post id
                     $others[] = Core::get_instance()->get_random_post_url();
+                    break;
+                case 'archives': // get a link to the latest archive
+                    $others[] = Core::get_instance()->get_archives_url();
                     break;
                 case 'pages': // get the page list
                     $others = array_merge($others, Core::get_instance()->get_pages_url());

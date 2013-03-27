@@ -30,6 +30,26 @@ class ArchiveManager
     public function __construct(array $params = array()) {
     }
 
+    public function get_link_to_most_recent_archive() {
+        global $wpdb;
+        global $wp_locale;
+        $limit = 0;
+        $year_prev = null;
+        $month = $wpdb->get_results(
+            "SELECT " .
+                "MONTH( post_date ) AS month, " .
+                "YEAR( post_date ) AS year " .
+            "FROM $wpdb->posts " .
+            "WHERE " .
+                "post_status = 'publish' AND " .
+                "post_date <= now( ) AND " .
+                "post_type = 'post' " .
+            "ORDER BY post_date DESC " .
+            "LIMIT 1"
+        );
+        return get_month_link( $month->year, $month->month );
+    }
+    
     public function get_monthly_archive_counts() {
         global $wpdb;
         global $wp_locale;
@@ -42,7 +62,10 @@ class ArchiveManager
                 "COUNT( id ) as post_count " .
             "FROM $wpdb->posts " .
             "WHERE " .
-                "post_status = 'publish' and post_date <= now( ) and post_type = 'post' GROUP BY month, year " .
+                "post_status = 'publish' AND " .
+                "post_date <= now( ) AND " .
+                "post_type = 'post' " .
+            "GROUP BY month, year " .
             "ORDER BY post_date DESC"
         );
 
