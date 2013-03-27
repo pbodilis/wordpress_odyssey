@@ -144,9 +144,13 @@ class Core {
     /**
      * \returns an array with the following info:
      */
+    protected $post_cache = array();
     public function get_post($post_id = NULL) {
         $ret = array();
         if (is_null($post_id)) {
+            if (isset($this->post_cache[-1])) {
+                return $this->post_cache[-1];
+            }
             global $query_string;
             query_posts( $query_string . 'posts_per_page=1' );
             if (have_posts()) {
@@ -156,7 +160,13 @@ class Core {
         } else if ('random' == $post_id) {
             global $post;
             $post = $this->get_random_post();
+            if (isset($this->post_cache[$post->ID])) {
+                return $this->post_cache[$post->ID];
+            }
         } else {
+            if (isset($this->post_cache[$post_id])) {
+                return $this->post_cache[$post_id];
+            }
             global $post;
             $post = get_post($post_id);
         }
@@ -191,6 +201,7 @@ class Core {
             $ret['previous_url']   = get_permalink($prev_post->ID);
         }
 
+        $this->post_cache[is_null($post_id) ? -1 : $ret['ID']] = $ret;
         return $ret;
     }
 
@@ -288,8 +299,8 @@ class Core {
     public function get_rendered_header_bar() {
         return $this->header_bar->get_rendering();
     }
-    public function get_comment_form() {
-        return $this->comment_manager->get_comment_form();
+    public function comment_form() {
+        $this->comment_manager->comment_form();
     }
 
     public function get_monthly_archive_counts() {

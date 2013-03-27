@@ -4,9 +4,14 @@ Template Name: Index Template
 */
 
 get_header();
+
+$post = the_core()->get_post();
 ?>
 
-<div id="photo_frame"></div>
+<?php
+// <div id="photo_frame"></div>
+echo the_core()->render('photoblog_image', $post);
+ ?>
 
 
 <div id="panel" class="out">
@@ -17,14 +22,20 @@ get_header();
         <h2>Info,&nbsp;rate&nbsp;&amp;&nbsp;Comments</h2>
     </div>
     <div id="panel_content">
-        <div id="content"></div>
+        <div id="content">
+            <?php echo the_core()->render('photoblog_content', $post); ?>
+        </div>
         <div class="clr"></div>
-<?php the_core()->get_comment_form(); ?>
+        <?php the_core()->comment_form(); ?>
         <div class="clr"></div>
         <div id="comments_area">
-            <h3 id="comment_title"></h3>
+            <h3 id="comment_title">
+                <?php  echo count($post['comments']); ?> Comment(s)
+            </h3>
             <div id="comment_list_item_0">
-                <ul class="comments_list"></ul>
+                <ul class="comments_list">
+                    <?php echo the_core()->render('photoblog_comments', $post); ?>
+                </ul>
             </div>
         </div>
         <div class="clr"></div>
@@ -32,6 +43,4 @@ get_header();
 </div>
 
 <?php
-
-
 get_footer();

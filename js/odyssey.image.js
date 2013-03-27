@@ -5,10 +5,15 @@ odyssey.image = {
     init: function() {
         if (odyssey.is_post()) {
             jQuery.subscribe('post.update', odyssey.image.render);
+            jQuery.subscribe('bootstrap', odyssey.image.bootstrap);
             jQuery(window).resize(odyssey.image.resize);
         }
     },
-
+    bootstrap: function(e, post) {
+        odyssey.image.image = post.image;
+        odyssey.image.resize();
+        jQuery('#photo_frame').fadeIn(400);
+    },
     get_photo_frame_position: function(image) {
         // those values should be extracted from the css
         // var photo_infos_height = jQuery('#photo_infos').height();

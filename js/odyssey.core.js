@@ -58,6 +58,10 @@ odyssey.core = {
             retrieve_post_callback(r.posts);
         });
     },
+    bootstrap: function(p) {
+        odyssey.core.posts = p;
+        jQuery.publish('bootstrap', odyssey.core.get_current_post());
+    },
     update_current_post: function(p) {
         for (var i in p) {
             odyssey.core.posts[i] = p[i];

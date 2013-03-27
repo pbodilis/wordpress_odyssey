@@ -86,7 +86,7 @@ class CommentManager
         ));
     }
 
-    public function get_comment_form() {
+    public function comment_form() {
         $commenter = wp_get_current_commenter();
         $req = get_option( 'require_name_email' );
         $aria_req = ( $req ? ' aria-required="true"' : '' );

@@ -60,10 +60,10 @@ class Javascript
         wp_enqueue_script('native-history',      get_template_directory_uri() . '/js/native.history.js');
 
         // embed the javascript file that makes the AJAX request
-        wp_enqueue_script('odyssey',             get_template_directory_uri() . '/js/odyssey.js',             array('jquery'), false, true);
-        wp_enqueue_script('odyssey-core',        get_template_directory_uri() . '/js/odyssey.core.js',        array('jquery', 'odyssey'), false, true);
+        wp_enqueue_script('odyssey',             get_template_directory_uri() . '/js/odyssey.js',             array('jquery'));
+        wp_enqueue_script('odyssey-core',        get_template_directory_uri() . '/js/odyssey.core.js',        array('jquery', 'odyssey') );
         wp_enqueue_script('odyssey-cookie',      get_template_directory_uri() . '/js/odyssey.cookie.js',      array('jquery', 'odyssey'), false, true);
-        wp_enqueue_script('odyssey-image',       get_template_directory_uri() . '/js/odyssey.image.js',       array('jquery', 'odyssey'), false, true);
+        wp_enqueue_script('odyssey-image',       get_template_directory_uri() . '/js/odyssey.image.js',       array('jquery', 'odyssey'));
         wp_enqueue_script('odyssey-header',      get_template_directory_uri() . '/js/odyssey.header.js',      array('jquery', 'odyssey'), false, true);
         wp_enqueue_script('odyssey-panel',       get_template_directory_uri() . '/js/odyssey.panel.js',       array('jquery', 'odyssey'), false, true);
         wp_enqueue_script('odyssey-keyboard',    get_template_directory_uri() . '/js/odyssey.keyboard.js',    array('jquery', 'odyssey'), false, true);
@@ -73,11 +73,11 @@ class Javascript
         wp_enqueue_script('odyssey-archive',     get_template_directory_uri() . '/js/odyssey.archive.js',     array('jquery', 'odyssey'), false, true);
 
         $locale_script = array(
-            'ajaxurl'                   => admin_url('admin-ajax.php'),
+            'ajaxurl' => admin_url('admin-ajax.php'),
         );
         if (is_home() || is_single()) {
-            $locale_script['posts']                     = json_encode(Core::get_instance()->get_post_and_adjacents());
-            $locale_script['comment_form_ajax_enabled'] = json_encode(CommentManager::get_instance()->get_option('comment_form_ajax_enabled'));
+            $locale_script['posts']                     = Core::get_instance()->get_post_and_adjacents();
+            $locale_script['comment_form_ajax_enabled'] = CommentManager::get_instance()->get_option('comment_form_ajax_enabled');
             $locale_script[self::POST_NONCE_EMBEDNAME]  = wp_create_nonce(self::POST_NONCE);
 
             // declare the URL to the file that handles the AJAX request (wp-admin/admin-ajax.php)
@@ -100,7 +100,7 @@ class Javascript
         $ret = '';
         $tpl_dir = get_template_directory_uri() . '/templates/';
         foreach($this->templates as $tpl_name => $tpl_file) {
-            echo '<link href="' . $tpl_dir . $tpl_file . '" rel="template" id="' . $tpl_name . '"/>' . PHP_EOL;
+            echo '<script id="' . $tpl_name . '" type="text/html" >' . file_get_contents($tpl_dir . $tpl_file) . '</script>' . PHP_EOL;
         }
     }
 
