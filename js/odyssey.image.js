@@ -10,6 +10,7 @@ odyssey.image = {
         }
     },
     bootstrap: function(e, post) {
+        jQuery('#photo_frame').hide();
         odyssey.image.image = post.image;
         odyssey.image.resize();
         jQuery('#photo_frame').fadeIn(400);

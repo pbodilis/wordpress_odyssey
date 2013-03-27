@@ -263,7 +263,7 @@ body.white #headerbar a:hover {
 #photo_frame {
     position: fixed;
     z-index: -999;
-    display: none;
+/*     display: none; */
 }
 #img {
     position: relative;

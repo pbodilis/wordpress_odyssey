@@ -61,10 +61,16 @@ class Core {
         add_filter('the_content', array(&$this, 'filter_content'));
 
         // the list of format support by the theme
-        add_theme_support( 'post-formats', array('image', 'video') );
-        add_theme_support( 'post-thumbnails' );
+        add_theme_support('post-formats', array('image', 'video'));
+        add_theme_support('post-thumbnails');
+
+        add_action('init', array(&$this, 'rmheadlink'));
     }
 
+    public function rmheadlink() {
+        remove_action('wp_head', 'rsd_link');
+        remove_action('wp_head', 'wlwmanifest_link');
+    }
 
     public function install() {
         update_option('default_post_format', 'image');
