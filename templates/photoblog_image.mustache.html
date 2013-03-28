@@ -1,9 +1,11 @@
-    <div id="photo_frame"
+{{! This is for post with image as post format}}
+{{#image}}
+    <section id="post_main" class="{{class}}"
             {{#frame}}
             style="left: {{left}}px; top: {{top}}px;"
             {{/frame}}
         >
-        <div id="img"
+        <div id="photo"
                 {{#frame}}
                 style="width: {{width}}px; height: {{height}}px;"
                 {{/frame}}
@@ -24,4 +26,18 @@
             <p>{{image.capture_date}}</p>
             {{/image.capture_date}}
         </div>
-    </div>
+    </section>
+{{/image}}
+
+{{! This is for any post that's not an image }}
+{{^image}}
+    <section id="post_main" class="{{class}}">
+        <article>
+            <h2>{{title}}</h2>
+            {{{content}}}
+        </article>
+    </section>
+{{/image}}
+
+
+

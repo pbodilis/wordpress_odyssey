@@ -176,7 +176,19 @@ class Core {
             global $post;
             $post = get_post($post_id);
         }
-        $ret['image']           = $this->get_post_image($post->ID);
+
+        $ret['ID']      = $post->ID;
+        $ret['title']   = $post->post_title;
+        $ret['url']     = get_permalink($post->ID);
+        $ret['content'] = apply_filters('the_content', $post->post_content);
+
+        $ret['class']   = implode(' ', get_post_class('', $post->ID));
+
+        $ret['format']  = get_post_format($post->ID);
+        if ($ret['format'] == 'image') {
+            $ret['image']                 = $this->get_post_image($post->ID);
+        }
+
         $ret['comments_number'] = $this->comment_manager->get_post_comments_number($post->ID);
         $ret['comments']        = $this->comment_manager->get_post_comments($post->ID);
         $ret['categories']      = $this->get_post_categories($post->ID);
@@ -186,13 +198,6 @@ class Core {
             $ret['ratings'] = the_ratings('div', $post->ID, false);
         }
 
-        $ret['ID']      = $post->ID;
-        $ret['title']   = $post->post_title;
-        $ret['url']     = get_permalink($post->ID);
-        $ret['content'] = apply_filters('the_content', $post->post_content);
-
-        $ret['class']   = implode(' ', get_post_class());
-        
         $next_post = get_next_post();
         if (!empty($next_post)) {
             $ret['next_ID']    = $next_post->ID;

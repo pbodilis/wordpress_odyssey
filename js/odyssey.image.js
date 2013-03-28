@@ -10,12 +10,14 @@ odyssey.image = {
         }
     },
     bootstrap: function(e, post) {
-        jQuery('#photo_frame').hide();
-        odyssey.image.image = post.image;
-        odyssey.image.resize();
-        jQuery('#photo_frame').fadeIn(400);
+        jQuery('#post_main').hide();
+        if (post.image) {
+            odyssey.image.image = post.image;
+            odyssey.image.resize();
+        }
+        jQuery('#post_main').fadeIn(400);
     },
-    get_photo_frame_position: function(image) {
+    get_post_main_position: function(image) {
         // those values should be extracted from the css
         // var photo_infos_height = jQuery('#photo_infos').height();
         var photo_infos_height = 42;
@@ -27,7 +29,7 @@ odyssey.image = {
         // panel handle width
         var panel_handle_width = jQuery('#panel_handle').width();
 
-        // check in css file #photo_frame for consistency
+        // check in css file #post_main for consistency
         var border_width = 5;
 
         var dE = document.documentElement;
@@ -67,24 +69,27 @@ odyssey.image = {
         odyssey.image.timeout = setTimeout(odyssey.image.do_render, 1, post)
     },
     do_render: function(post) {
-        odyssey.image.image = post.image;
-        post.frame = odyssey.image.get_photo_frame_position(post.image);
+        if (post.image) {
+            odyssey.image.image = post.image;
+            post.frame = odyssey.image.get_post_main_position(post.image);
+        }
+
         var rendering = ich.render_image(post);
         // fadeout the image, and make the replacement appear in the callback
-        jQuery('#photo_frame').fadeOut(200, function() {
+        jQuery('#post_main').fadeOut(200, function() {
             // insert image
-            jQuery('#photo_frame').replaceWith(rendering);
-            jQuery('#photo_frame').fadeIn(400);
+            jQuery('#post_main').replaceWith(rendering);
+            jQuery('#post_main').fadeIn(400);
         });
     },
     resize: function(e) {
-        frame = odyssey.image.get_photo_frame_position(odyssey.image.image);
+        frame = odyssey.image.get_post_main_position(odyssey.image.image);
 
-        jQuery('#photo_frame #img').css({
+        jQuery('#post_main #photo').css({
             'width':  frame.width,
             'height': frame.height
         });
-        jQuery('#photo_frame').css({
+        jQuery('#post_main').css({
             'left': frame.left,
             'top':  frame.top
         });
