@@ -283,10 +283,10 @@ class Core {
         $post = $this->get_random_post();
         if (false !== $post) {
             return array(
-                'url'    => get_permalink($post->ID),
-                'title'  => __( 'Random post', 'odyssey' ),
-                'name'   => __( 'Random', 'odyssey' ),
-                'linkid' => 'random',
+                'url'     => get_permalink($post->ID),
+                'title'   => __( 'Random post', 'odyssey' ),
+                'name'    => __( 'Random', 'odyssey' ),
+                'classes' => 'random',
             );
         } else {
             return false;
@@ -298,25 +298,46 @@ class Core {
         $displayed_month = get_the_time('m');
 
         return array(
-            'url'    => $this->archive_manager->get_link_to_most_recent_archive(),
-            'title'  => __( 'Archives', 'odyssey' ),
-            'name'   => __( 'Archives', 'odyssey' ),
-            'linkid' => 'archives',
+            'url'     => $this->archive_manager->get_link_to_most_recent_archive(),
+            'title'   => __( 'Archives', 'odyssey' ),
+            'name'    => __( 'Archives', 'odyssey' ),
+            'classes' => 'archives',
         );
     }
 
-    public function get_pages_url() {
-        $ret = array();
-        $pages = get_pages();
+    public function get_page_menu() {
+        $list = array();
+        $tree = array();
+
+        $args = array(
+            'sort_order' => 'ASC',
+            'sort_column' => 'ID',
+            'hierarchical' => 1,
+            'parent' => -1,
+            'post_type' => 'page',
+            'post_status' => 'publish'
+        );
+        $pages = get_pages($args);
         foreach ($pages as $page) {
-            $ret[] = array(
-                'url'    => get_permalink($page->ID),
-                'title'  => $page->post_excerpt,
-                'name'   => $page->post_title,
-                'linkid' => 'page_' . $page->ID,
+            $p = array(
+                'url'     => get_permalink($page->ID),
+                'title'   => $page->post_title,
+                'name'    => $page->post_title,
+                'id'      => 'page_item_' . $page->ID,
+                'classes' => 'page_item page-item-' . $page->ID,
+                'pages'   => array(),
             );
+            if (0 == $page->post_parent) {
+                $i = array_push($tree, $p);
+                $list[$page->ID] =& $tree[$i - 1];
+            } else {
+                $parent =& $list[$page->post_parent];
+                $i = array_push($parent['pages'], $p);
+                $list[$page->ID] =& $parent['pages'][$i - 1];
+            }
         }
-        return $ret;
+
+        return array_values($tree);
     }
 
     public function get_rendered_header_bar() {

@@ -206,17 +206,31 @@ body.white #headerbar a:hover {
 #headerbar .menu.but.syndication a.menu_but_rss {
     background-position: 0 -80px;
 }
-#headerbar .menu.txt ul li a {
+#headerbar ul.menu.txt li {
+    height: 100%;
+    display: inline-block;
+}
+#headerbar ul.menu.txt li a {
     font-family: Helvetica,Arial,sans-serif;
     font-size: 10px;
     text-transform: uppercase;
     letter-spacing: 0;
     padding: 0px 15px;
     height: 100%;
+    display: inline-block;
 }
-#headerbar .menu.txt ul li:before {
+#headerbar ul.menu.txt li:before {
     content: '\2022';
 }
+
+#headerbar ul.menu.txt ul.sub_page_menu {
+    display: none;
+}
+#headerbar ul.menu.txt li.page_item:hover>ul.sub_page_menu {
+    display: block;
+}
+
+
 
 #headerbar .menu.but.tooltip a {
     text-align: center;

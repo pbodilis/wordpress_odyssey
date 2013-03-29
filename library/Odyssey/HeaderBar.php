@@ -191,13 +191,15 @@ class HeaderBar
                     $others[] = Core::get_instance()->get_archives_url();
                     break;
                 case 'pages': // get the page list
-                    $others = array_merge($others, Core::get_instance()->get_pages_url());
+                    $others = array_merge($others, Core::get_instance()->get_page_menu());
                     break;
                 default:
                     break;
             }
         }
         $blog['others'] = $others;
+// echo '<pre>' . PHP_EOL;
+// var_dump($blog['others']);
         
         return Renderer::get_instance()->render(self::TEMPLATE_FILE, array_merge($blog, $post));
     }

@@ -4,26 +4,20 @@
                 {{{name}}}
             </a>
         </h1>
-        {{#others.0}}
-        <div class="menu txt">
-            <ul>
-                {{#others}}
-                <li>
-                    <a href="{{url}}"
-                        {{#title}}
-                        title="{{title}}"
-                        {{/title}}
-                        {{#linkid}}
-                        id="{{linkid}}"
-                        {{/linkid}}
-                        >
-                        {{name}}
-                    </a>
-                </li>
-                {{/others}}
-            </ul>
-        </div>
-        {{/others.0}}
+        <ul class="menu txt">
+            {{#others}}
+            <li class="{{classes}}">
+                <a href="{{url}}"
+                    {{#title}}
+                    title="{{title}}"
+                    {{/title}}
+                    >
+                    {{name}}
+                </a>
+                {{>photoblog_header_pages}}
+            </li>
+            {{/others}}
+        </ul>
 
         {{#syndication.0}}
         <div class="menu but syndication">
