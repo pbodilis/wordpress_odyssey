@@ -23,9 +23,23 @@ odyssey.core = {
     go_to_post: function(e, id, adjacent) {
         adjacent  = adjacent || 'both';
         if (odyssey.core.posts[id]) { // do we have the current post in cache ?
+            // if it's caching, move the state to pending
+            if (odyssey.core.posts[id] === 'caching') odyssey.core.posts[id] = 'pending';
+            // if it's pending, nothing to do
             if (odyssey.core.posts[id] === 'pending') return;
             odyssey.core.posts.current_ID = id; // just set the current cursor to the given id
             odyssey.core.publish_update(); // notify all views the current post needs to be displayed
+            
+            // cache the adjacent of this post if we don't have it already
+            var current = odyssey.core.get_current_post();
+            if (current.previous_ID && typeof odyssey.core.posts[current.previous_ID] == 'undefined') {
+                odyssey.core.posts[current.previous_ID] = 'caching';
+                odyssey.core.retrieve_post(current.previous_ID, 'previous', odyssey.core.cache_posts);
+            }
+            if (current.next_ID && typeof odyssey.core.posts[current.next_ID] == 'undefined') {
+                odyssey.core.posts[current.next_ID] = 'caching';
+                odyssey.core.retrieve_post(current.next_ID, 'next', odyssey.core.cache_posts);
+            }
         } else { // retrieve the post
             if ('random' != id) {
                 odyssey.core.posts[id] = 'pending';
@@ -67,6 +81,16 @@ odyssey.core = {
             odyssey.core.posts[i] = p[i];
         }
         odyssey.core.publish_update();
+    },
+    cache_posts: function(p) {
+        for (var i in p) {
+            if (odyssey.core.posts[i] === 'pending') {
+                odyssey.core.current_ID = i;
+            }
+            if (i != 'current_ID') {
+                odyssey.core.posts[i] = p[i];
+            }
+        }
     },
     publish_update: function() {
         var current = odyssey.core.get_current_post();

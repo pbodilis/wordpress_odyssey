@@ -11,7 +11,7 @@ odyssey.history = {
 
     update: function(e, post) {
         odyssey.history.postID = post.ID;
-        window.History.pushState({postID: post.ID}, post.title, post.url);
+        window.History.pushState({postID: post.ID}, odyssey.blog_name + ' » ' + post.title, post.url);
     },
 
     popstate: function() {

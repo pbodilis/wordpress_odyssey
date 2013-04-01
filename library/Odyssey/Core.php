@@ -320,18 +320,20 @@ class Core {
         $pages = get_pages($args);
         foreach ($pages as $page) {
             $p = array(
-                'url'     => get_permalink($page->ID),
-                'title'   => $page->post_title,
-                'name'    => $page->post_title,
-                'id'      => 'page_item_' . $page->ID,
-                'classes' => 'page_item page-item-' . $page->ID,
-                'pages'   => array(),
+                'url'         => get_permalink($page->ID),
+                'title'       => $page->post_title,
+                'name'        => $page->post_title,
+                'id'          => 'page_item_' . $page->ID,
+                'classes'     => 'page_item page-item-' . $page->ID,
+                'pages_count' => 0,
+                'pages'       => array(),
             );
             if (0 == $page->post_parent) {
                 $i = array_push($tree, $p);
                 $list[$page->ID] =& $tree[$i - 1];
             } else {
                 $parent =& $list[$page->post_parent];
+                ++$parent['pages_count'];
                 $i = array_push($parent['pages'], $p);
                 $list[$page->ID] =& $parent['pages'][$i - 1];
             }

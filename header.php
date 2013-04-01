@@ -21,7 +21,7 @@ $blog = the_core()->get_blog();
     <link rel="alternate" type="application/rss+xml" title="<?php echo $blog['name']; ?> Comments RSS Feed" href="<?php echo $blog['comments_rss2_url']; ?>" />
     <link rel="alternate" type="application/atom+xml" title="<?php echo $blog['name']; ?> Atom Feed" href="<?php echo $blog['atom_url']; ?>" />
 
-    <title><?php echo $blog['name']; ?> <?php echo $blog['title']; ?></title>
+    <title><?php echo $blog['name'] . $blog['title']; ?></title>
 
     <!-- theme js -->
     <?php wp_head(); ?>

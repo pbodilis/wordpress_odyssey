@@ -72,8 +72,10 @@ class Javascript
         wp_enqueue_script('odyssey-commentform', get_template_directory_uri() . '/js/odyssey.comment.js',     array('jquery', 'odyssey'), false, true);
         wp_enqueue_script('odyssey-archive',     get_template_directory_uri() . '/js/odyssey.archive.js',     array('jquery', 'odyssey'), false, true);
 
+        $blog = Core::get_instance()->get_blog();
         $locale_script = array(
-            'ajaxurl' => admin_url('admin-ajax.php'),
+            'blog_name' => $blog['name'],
+            'ajaxurl'    => admin_url('admin-ajax.php'),
         );
         if (is_home() || is_single()) {
             $locale_script['posts']                     = Core::get_instance()->get_post_and_adjacents();

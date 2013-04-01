@@ -3,13 +3,12 @@ Theme Name: odyssey
 Theme URI: https: //github.com/pbodilis/wordpress_odyssey
 Author: Pierre Bodilis
 Author URI: http: //rataki.eu
-Description: <p>A photoblog theme based on <a href="http: //www.wordpress.org/">Wordpress</a></p>
+Description: <p>A photoblog theme for <a href="http: //www.wordpress.org/">Wordpress</a></p>
 Version: 0.1
 License: GNU General Public License v2 or later
 License URI: http: //www.gnu.org/licenses/gpl-2.0.html
 Tags: gray, white, black
 Text Domain: Odyssey
-
 */
 
 
@@ -206,11 +205,7 @@ body.white #headerbar a:hover {
 #headerbar .menu.but.syndication a.menu_but_rss {
     background-position: 0 -80px;
 }
-#headerbar ul.menu.txt li {
-    height: 100%;
-    display: inline-block;
-}
-#headerbar ul.menu.txt li a {
+#headerbar ul.menu.txt a {
     font-family: Helvetica,Arial,sans-serif;
     font-size: 10px;
     text-transform: uppercase;
@@ -219,18 +214,42 @@ body.white #headerbar a:hover {
     height: 100%;
     display: inline-block;
 }
+
+#headerbar ul.menu.txt>li {
+    height: 100%;
+    display: inline-block;
+}
+
 #headerbar ul.menu.txt li:before {
+    width: auto;
+}
+#headerbar ul.menu.txt>li:before {
     content: '\2022';
 }
 
-#headerbar ul.menu.txt ul.sub_page_menu {
+#headerbar ul.menu.txt>li.page_item>ul.sub_page_menu {
     display: none;
+
+    position: absolute;
+    color: rgb(255,255,255);
+    background-color: rgb(68,68,68);
+    border: 1px solid rgb(34,34,34);
+    line-height: 20px;
 }
-#headerbar ul.menu.txt li.page_item:hover>ul.sub_page_menu {
+body.white #headerbar ul.menu.txt>li>ul.sub_page_menu {
+    background-color: rgb(230,230,230);
+}
+
+#headerbar ul.menu.txt>li:hover ul.sub_page_menu {
     display: block;
 }
 
-
+ul.sub_page_menu li.page_item {
+    display: list-item;
+}
+ul.sub_page_menu>li.page_item ul.sub_page_menu li.page_item {
+    padding-left: 10px;
+}
 
 #headerbar .menu.but.tooltip a {
     text-align: center;
