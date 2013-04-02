@@ -1,0 +1,17 @@
+        {{#pages_count}}
+        <ul class="sub_page_menu">
+            {{#pages}}
+            <li class="{{classes}}">
+                <a href="{{url}}"
+                    {{#title}}
+                    title="{{title}}"
+                    {{/title}}
+                    >
+                    {{name}}
+                </a>
+                {{>photoblog_header_menu_page}}
+            </li>
+            {{/pages}}
+        </ul>
+        {{/pages_count}}
+
