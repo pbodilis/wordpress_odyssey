@@ -14,7 +14,7 @@ echo the_core()->render('photoblog_image', $post);
 ?>
 
 
-<div id="panel" class="out">
+<div id="panel" class="">
     <div id="panel_handle">
         <div id="panel_handle_arrowbox">
             <div id="panel_handle_arrow"></div>
