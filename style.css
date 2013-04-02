@@ -383,6 +383,48 @@ ul.sub_page_menu>li.page_item ul.sub_page_menu li.page_item {
     display: block;
 }
 
+#post_main article {
+    margin:30px 0 5px 0;
+    width:100%;
+    overflow:none;
+}
+#post_main article {
+    font-size:13px;
+    line-height:18px;
+}
+#post_main article h2 {
+    margin:10px 0px;
+}
+#post_main article ul {
+    padding-bottom:20px;
+    display: block;
+}
+#post_main article ul li {
+    display: list-item;
+}
+#post_main article ul>li ul li {
+    padding-left: 15px;
+}
+#post_main article a {
+    text-decoration:none;
+    color:rgb(210,210,210);
+}
+#post_main article a:hover {
+    text-decoration:none;
+    color:rgb(255,255,255);
+}
+#post_main article .column {
+    display: block;
+}
+#post_main article .column .col1 {
+    width: 50%;
+    float: left;
+}
+#post_main article .column .col2 {
+    width: 50%;
+    float: left;
+}
+
 /* ******************************* image: panel handle ******************************* */
 #panel {
     position: absolute;
