@@ -382,6 +382,14 @@ ul.sub_page_menu>li.page_item ul.sub_page_menu li.page_item {
     background-color: rgb(58,58,58);
     display: block;
 }
+#post_main:not(.format-image) article h1,h2,h3,h4,h5 {
+    letter-spacing: 1px;
+}
+
+body.white #post_main:not(.format-image) article {
+    background-color: rgb(230,230,230);
+    color:rgb(58,58,58);
+}
 
 #post_main article {
     margin:30px 0 5px 0;
@@ -395,15 +403,13 @@ ul.sub_page_menu>li.page_item ul.sub_page_menu li.page_item {
 #post_main article h2 {
     margin:10px 0px;
 }
-#post_main article ul {
-    padding-bottom:20px;
+#post_main article ul, #post_main article ul li {
     display: block;
+    list-style: disc inside none;
 }
 #post_main article ul li {
     display: list-item;
-}
-#post_main article ul>li ul li {
-    padding-left: 15px;
+    padding-left: 10px;
 }
 #post_main article a {
     text-decoration:none;
@@ -412,6 +418,12 @@ ul.sub_page_menu>li.page_item ul.sub_page_menu li.page_item {
 #post_main article a:hover {
     text-decoration:none;
     color:rgb(255,255,255);
+}
+body.white #post_main article a {
+    color: rgb(130,130,130);
+}
+body.white #post_main article a:hover {
+    color:rgb(0,0,0);
 }
 #post_main article .column {
     display: block;
