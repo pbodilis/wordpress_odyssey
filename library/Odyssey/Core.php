@@ -263,10 +263,10 @@ class Core {
     public function get_random_post() {
         if (!isset($this->random_post)) {
             $args = array(
-                'posts_per_page'  => 1,
-                'orderby'         => 'rand',
-                'post_type'       => 'post',
-                'post_status'     => 'publish',
+                'posts_per_page'   => 1,
+                'orderby'          => 'rand',
+                'post_type'        => 'post',
+                'post_status'      => 'publish',
                 'suppress_filters' => true,
             );
             $posts = get_posts($args);
@@ -310,12 +310,12 @@ class Core {
         $tree = array();
 
         $args = array(
-            'sort_order' => 'ASC',
-            'sort_column' => 'ID',
+            'sort_order'   => 'ASC',
+            'sort_column'  => 'ID',
             'hierarchical' => 1,
-            'parent' => -1,
-            'post_type' => 'page',
-            'post_status' => 'publish'
+            'parent'       => -1,
+            'post_type'    => 'page',
+            'post_status'  => 'publish'
         );
         $pages = get_pages($args);
         foreach ($pages as $page) {

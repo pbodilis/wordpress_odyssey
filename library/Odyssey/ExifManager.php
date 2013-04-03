@@ -164,8 +164,8 @@ class ExifManager
 
     public function get_capture_date($post_id, $filename) {
         $exifs = $this->read_exifs($post_id, $filename);
-        if (isset($exifs['DateTime']) && 'a' !== $exifs['DateTime']) {
-            return date_i18n(get_option('date_format'), strtotime($exifs['DateTime']));
+        if (isset($exifs['DateTimeOriginal']) && 'a' !== $exifs['DateTimeOriginal']) {
+            return date_i18n(get_option('date_format'), strtotime($exifs['DateTimeOriginal']));
         } else {
             return false;
         }
