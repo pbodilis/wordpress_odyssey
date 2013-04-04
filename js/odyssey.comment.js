@@ -2,9 +2,13 @@ odyssey.comments = {
     status: {},
     post_comments_number: 0,
     
+    bootstrap: function(e, post) {
+        odyssey.comments.post_comments_number = post.comments_number;
+    },
     init: function() {
         // update the panel on post update
         jQuery.subscribe('post.update', odyssey.comments.render);
+        jQuery.subscribe('bootstrap', odyssey.comments.bootstrap);
 
         if (odyssey.comment_form_ajax_enabled == 'false') {
             return;

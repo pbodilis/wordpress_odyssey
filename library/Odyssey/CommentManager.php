@@ -34,6 +34,7 @@ class CommentManager
         Javascript::get_instance()->add_template('render_comments', 'photoblog_comments.mustache.html');
 
         add_action('comment_post', array(&$this, 'comment_post'), 20, 2);
+        add_filter('comment_post_redirect', array(&$this, 'no_comment_redirection'));
     }
 
     static public function option_id2label($option_id) {
@@ -200,8 +201,11 @@ class CommentManager
                 default:
                     echo json_encode(false);
             }
-            die();
         }
+    }
+
+    public function no_comment_redirection($location) {
+        die();
     }
 }
 
