@@ -47,7 +47,7 @@ class ArchiveManager
             "ORDER BY post_date DESC " .
             "LIMIT 1"
         );
-        return get_month_link( $month->year, $month->month );
+        return get_month_link( $month[0]->year, $month[0]->month );
     }
     
     public function get_monthly_archive_counts() {
