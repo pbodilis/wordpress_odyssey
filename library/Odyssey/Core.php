@@ -186,7 +186,7 @@ class Core {
 
         $ret['format']  = get_post_format($post->ID);
         if ($ret['format'] == 'image') {
-            $ret['image']                 = $this->get_post_image($post->ID);
+            $ret['image'] = $this->get_post_image($post->ID);
         }
 
         $ret['comments_number'] = $this->comment_manager->get_post_comments_number($post->ID);

@@ -180,7 +180,7 @@ class CommentManager
                 case '1': //Approved comment
                     $comment = &get_comment($comment_ID);
                     $post    = &get_post($comment->comment_post_ID);
-                    wp_notify_postauthor($comment_ID, $comment->comment_type);
+                    // wp_notify_postauthor($comment_ID, $comment->comment_type);
 
                     if ($comment->comment_approved) {
                         $ret = array(
@@ -209,4 +209,3 @@ class CommentManager
     }
 }
 
-?>

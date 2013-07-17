@@ -39,8 +39,8 @@ class Admin
         $this->managers[] = &$m;
     }
 
-    public function build_admin_page() {
-
+    public function build_admin_page()
+    {
         add_theme_page(
             __('Odyssey theme options', 'odyssey'),      // page_title
             __('Odyssey theme options', 'odyssey'),      // menu_title
