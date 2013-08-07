@@ -295,7 +295,7 @@ ul.sub_page_menu>li.page_item ul.sub_page_menu li.page_item {
 /* ******************************* #post_main: photo (only when post format is 'image') ******************************* */
 #content {
     width: 100%;
-    padding-top: 35px; /* header bar height */
+    padding-top: 30px; /* header bar height */
 /*     height: 1000px; */
 }
 #post_main {
