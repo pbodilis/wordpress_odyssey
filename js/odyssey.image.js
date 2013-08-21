@@ -10,12 +10,12 @@ odyssey.image = {
         }
     },
     bootstrap: function(e, post) {
-        jQuery('#post_main').hide();
+        jQuery('#photo_container').hide();
         if (post.image) {
             odyssey.image.image = post.image;
             odyssey.image.resize();
         }
-        jQuery('#post_main').fadeIn(400);
+        jQuery('#photo_container').fadeIn(400);
     },
     get_post_main_position: function(image) {
         // those values should be extracted from the css
@@ -29,7 +29,7 @@ odyssey.image = {
         // panel handle width
         var panel_handle_width = jQuery('#panel_handle').width();
 
-        // check in css file #post_main for consistency
+        // check in css file #photo_container for consistency
         var border_width = 5;
 
         var dE = document.documentElement;
@@ -58,7 +58,6 @@ odyssey.image = {
         return {
             width:  frame_width,
             height: frame_height,
-            left:   (dE.clientWidth - frame_width + panel_handle_width) / 2 - border_width,
             top:    (dE.clientHeight - frame_height + header_height) / 2 - border_width - offset_height,
             dEHeight: dE.clientHeight - header_height
         };
@@ -77,29 +76,24 @@ odyssey.image = {
 
         var rendering = ich.render_image(post);
         // fadeout the image, and make the replacement appear in the callback
-        jQuery('#post_main').fadeOut(200, function() {
+        jQuery('#photo_container').fadeOut(200, function() {
             // insert image
-            jQuery('#post_main').replaceWith(rendering);
-            jQuery('#post_main').fadeIn(400);
+            jQuery('#photo_container').replaceWith(rendering);
+            jQuery('#photo_container').fadeIn(400);
         });
     },
     resize: function(e) {
         frame = odyssey.image.get_post_main_position(odyssey.image.image);
 
-        jQuery('#post_main').css({
-            'width':  frame.width,
+        jQuery('#photo_container').css({
+            'width':  frame.cont_width,
         });
-        jQuery('#post_main #photo').css({
+        jQuery('#photo_container #photo').css({
             'width':  frame.width,
             'height': frame.height
         });
-        jQuery('#post_main').css({
-//             'left': frame.left,
-//             'top':  frame.top
-        });
-        jQuery('#content').css({
-//             'left': frame.left,
-            'height':  frame.dEHeight
+        jQuery('#photo_wrapper').css({
+            'height': frame.dEHeight,
         });
     },
 }

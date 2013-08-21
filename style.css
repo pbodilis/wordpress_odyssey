@@ -292,17 +292,22 @@ ul.sub_page_menu>li.page_item ul.sub_page_menu li.page_item {
 }
 
 
-/* ******************************* #post_main: photo (only when post format is 'image') ******************************* */
-#content {
-    width: 100%;
+/* ******************************* #photo_container: photo (only when post format is 'image') ******************************* */
+#page {
+    width: 1060px;
     padding-top: 30px; /* header bar height */
-/*     height: 1000px; */
+    margin: 0 auto;
 }
-#post_main {
-    margin-left: auto;
-    margin-right: auto;
+#photo_wrapper {
+    margin: 0 auto;
+    display: table;
 }
-#post_main.format-image {
+#photo_container {
+    display: table-cell;
+    vertical-align: middle;
+    margin: 0 auto;
+}
+#photo_container.format-image {
 /*     position: fixed; */
     z-index: -999;
 /*     display: none; */
@@ -377,73 +382,6 @@ ul.sub_page_menu>li.page_item ul.sub_page_menu li.page_item {
 }
 #photo_infos p {
     font-size: 12px;
-}
-/* ******************************* #post_main: non photo (all other post format) ******************************* */
-#post_main:not(.format-image) {
-    position: absolute;
-    width: 100%;
-}
-#post_main:not(.format-image) article {
-    margin: 30px auto;
-    padding: 20px 20px;
-    width: 800px;
-    color: rgb(168,168,168);
-    background-color: rgb(58,58,58);
-    display: block;
-}
-#post_main:not(.format-image) article h1,h2,h3,h4,h5 {
-    letter-spacing: 1px;
-}
-
-body.white #post_main:not(.format-image) article {
-    background-color: rgb(230,230,230);
-    color:rgb(58,58,58);
-}
-
-#post_main article {
-    margin:30px 0 5px 0;
-    width:100%;
-    overflow:none;
-}
-#post_main article {
-    font-size:13px;
-    line-height:18px;
-}
-#post_main article h2 {
-    margin:10px 0px;
-}
-#post_main article ul, #post_main article ul li {
-    display: block;
-    list-style: disc inside none;
-}
-#post_main article ul li {
-    display: list-item;
-    padding-left: 10px;
-}
-#post_main article a {
-    text-decoration:none;
-    color:rgb(210,210,210);
-}
-#post_main article a:hover {
-    text-decoration:none;
-    color:rgb(255,255,255);
-}
-body.white #post_main article a {
-    color: rgb(130,130,130);
-}
-body.white #post_main article a:hover {
-    color:rgb(0,0,0);
-}
-#post_main article .column {
-    display: block;
-}
-#post_main article .column .col1 {
-    width: 50%;
-    float: left;
-}
-#post_main article .column .col2 {
-    width: 50%;
-    float: left;
 }
 
 /* ******************************* image: panel handle ******************************* */
