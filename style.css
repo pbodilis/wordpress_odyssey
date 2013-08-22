@@ -312,13 +312,15 @@ ul.sub_page_menu>li.page_item ul.sub_page_menu li.page_item {
     z-index: -999;
 /*     display: none; */
 }
-#photo {
+/*#photo {
     position: relative;
     border: 5px rgb(40,40,40) solid;
     background-color: rgb(40,40,40);
-}
-#photo img {
+}*/
+#page img {
     width: 100%;
+    border: 5px rgb(40,40,40) solid;
+    margin-left: -5px;
 }
 #photo a {
     width: 50%;

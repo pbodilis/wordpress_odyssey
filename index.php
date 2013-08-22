@@ -35,3 +35,8 @@ echo the_core()->render('photoblog_image', $post);
 
 <?php
 get_footer();
+
+
+
+
+

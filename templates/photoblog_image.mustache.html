@@ -1,23 +1,8 @@
 {{! This is for post with image as post format}}
 {{#image}}
-<div id="photo_wrapper" class="">
-    <section id="photo_container" class="{{class}}"
-            {{#frame}}
-            style="width: {{width}}px; height: {{height}}px;"
-            {{/frame}}
-        >
-        <div id="photo"
-            >
-            <img src="{{image.url}}" alt="{{title}}"/>
-            <nav>
-                {{#previous_ID}}
-                <a href="{{previous_url}}" class="navLink prev"><span class="navArrow" title="Previous: {{previous_title}}"></span></a>
-                {{/previous_ID}}
-                {{#next_ID}}
-                <a href="{{next_url}}" class="navLink next"><span class="navArrow" title="Next: {{next_title}}"></span></a>
-                {{/next_ID}}
-            </nav>
-        </div>
+<div id="photo_wrapper" class="" style="height: {{frame.dEHeight}}px;">
+    <section id="photo_container" class="" style="width: {{frame.width}}px;">
+        <img src="{{image.url}}" alt="{{title}}" style="width: {{frame.width}}px; height: {{frame.height}}px;" />
         <div id="photo_infos">
             <h2>{{title}}</h2>
             {{#image.capture_date}}
