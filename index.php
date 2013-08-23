@@ -14,10 +14,9 @@ $post = the_core()->get_post();
 echo the_core()->render('photoblog_image', $post);
 ?>
 
-    <div id="content">
         <?php echo the_core()->render('photoblog_content', $post); ?>
         <div class="clr"></div>
-        <?php the_core()->comment_form(); ?>
+        <?php the_core()->comment_form($post['ID']); ?>
         <div class="clr"></div>
         <div id="comments_area">
             <h3 id="comment_title">
@@ -29,8 +28,6 @@ echo the_core()->render('photoblog_image', $post);
                 </ul>
             </div>
         </div>
-    </div>
-
 </div>
 
 <?php

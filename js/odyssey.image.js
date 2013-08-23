@@ -18,27 +18,18 @@ odyssey.image = {
         jQuery('#photo_container').fadeIn(400);
     },
     get_post_main_position: function(image) {
-        // those values should be extracted from the css
-        var photo_infos_height = 0;
-        var header_height     = jQuery('header.headerbar').height();
+        var dE = document.documentElement;
+        var header_height = jQuery('header.headerbar').height();
+        var photo_infos_height = 42; // guess on the photo info height
+        var border_width = 5; // check in css file #photo_container for consistency
+        var resized_width, resized_height;
 
         if (jQuery('body').hasClass('admin-bar')) { // am I logged in?
             header_height += jQuery('#wpadminbar').height();
         }
-        // panel handle width
-        var panel_handle_width = jQuery('#panel_handle').width();
-
-        // check in css file #photo_container for consistency
-        var border_width = 5;
-
-        var dE = document.documentElement;
-
-        var resized_width, resized_height;
-
-        var photo_infos_height = 42; // guess on the photo info height
         var display_height_area = dE.clientHeight - header_height * 2 - border_width * 2 - photo_infos_height - 20;
 
-        if (image.height < display_height_area) {
+        if (image.height < display_height_area) { // the height for is image is big enough for the image to fit in
             resized_height = image.height;
             resized_width  = image.width;
         } else { // height smaller than the display area, let's resize the image

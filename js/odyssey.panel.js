@@ -13,6 +13,8 @@ odyssey.panel = {
     toggle: function(e) {
         jQuery('#panel').toggleClass('out');
     },
+
+// 	document.getElementById( 'top' ).scrollIntoView();
 }
 
 odyssey.panel.init();

@@ -87,7 +87,7 @@ class CommentManager
         ));
     }
 
-    public function comment_form() {
+    public function comment_form($post_id = NULL) {
         $commenter = wp_get_current_commenter();
         $req = get_option( 'require_name_email' );
         $aria_req = ( $req ? ' aria-required="true"' : '' );
@@ -109,7 +109,7 @@ class CommentManager
         //         'email' => '<p class="comment-form-email"><label for="email">' . __( 'Email', 'domainreference' ) . '</label> ' . ( $req ? '<span class="required">*</span>' : '' ) . '<input id="email" name="email" type="text" value="' . esc_attr(  $commenter['comment_author_email'] ) . '" size="30"' . $aria_req . ' /></p>',
         //         'url' => '<p class="comment-form-url"><label for="url">' . __( 'Website', 'domainreference' ) . '</label>' . '<input id="url" name="url" type="text" value="' . esc_attr( $commenter['comment_author_url'] ) . '" size="30" /></p>' ) )
         );
-        comment_form($args);
+        comment_form($args, $post_id);
     }
 
     static private $cache;

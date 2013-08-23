@@ -213,6 +213,7 @@ class Core {
         }
 
         $this->post_cache[is_null($post_id) ? -1 : $ret['ID']] = $ret;
+		wp_reset_query();
         return $ret;
     }
 
@@ -345,8 +346,8 @@ class Core {
     public function get_rendered_header_bar() {
         return $this->header_bar->get_rendering();
     }
-    public function comment_form() {
-        $this->comment_manager->comment_form();
+    public function comment_form($post_id = NULL) {
+        $this->comment_manager->comment_form($post_id);
     }
 
     public function get_monthly_archive_counts() {
