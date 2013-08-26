@@ -68,7 +68,7 @@ odyssey.image = {
         jQuery('#photo_container').css({
             'width':  frame.width,
         });
-        jQuery('#page img').css({
+        jQuery('#photo_container img').css({
             'width':  frame.width,
             'height': frame.height
         });

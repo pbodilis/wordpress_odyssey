@@ -1,7 +1,9 @@
 odyssey.panel = {
     init: function() {
+        jQuery(document).on('click', '#content_title', odyssey.panel.toggle);
+
         // update the panel on post update
-       jQuery.subscribe('post.update', odyssey.panel.render);
+        jQuery.subscribe('post.update', odyssey.panel.render);
 
         // click on the panel handle, or a "panel.toggle" event toggles the panel
         jQuery.subscribe('panel.toggle', odyssey.panel.toggle);
@@ -11,10 +13,11 @@ odyssey.panel = {
         jQuery('#content').replaceWith(ich.render_content(post));
     },
     toggle: function(e) {
-        jQuery('#panel').toggleClass('out');
+        jQuery('html, body').animate({
+            scrollTop:jQuery('#content_title').offset().top
+        }, 'slow', 'swing');
     },
 
-// 	document.getElementById( 'top' ).scrollIntoView();
 }
 
 odyssey.panel.init();

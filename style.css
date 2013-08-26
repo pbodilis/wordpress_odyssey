@@ -95,7 +95,7 @@ body.black {
 
     -moz-box-shadow: 5px 5px 5px rgba(0,0,0,0.5);
     -webkit-box-shadow: 5px 5px 5px rgba(0,0,0,0.5);
-    box-shadow: 5px 5px 5px rgba(0,0,0,0.5);
+    box-shadow: 0px 5px 5px rgba(0,0,0,0.5);
 }
 body.white #headerbar {
     background-color: rgb(230,230,230);
@@ -307,26 +307,14 @@ ul.sub_page_menu>li.page_item ul.sub_page_menu li.page_item {
     vertical-align: middle;
     margin: 0 auto;
 }
-#photo_container.format-image {
-/*     position: fixed; */
-    z-index: -999;
-/*     display: none; */
-}
-#page img {
+#photo_container img {
     width: 100%;
     border: 5px rgb(40,40,40) solid;
     margin-left: -5px;
 }
-#photo a {
-    width: 50%;
-    height: 100%;
-    position: absolute;
-    top: 0;
-}
 #photo_infos p:after, #photo_infos p:before {
     content: '\2022';
 }
-
 #photo_infos {
     text-align: right;
     color: rgb(161,161,161);
@@ -337,9 +325,8 @@ ul.sub_page_menu>li.page_item ul.sub_page_menu li.page_item {
 }
 
 /* ******************************* image: panel handle ******************************* */
-#content {
+#content, #comments {
     width: 100%;
-    padding: 0px 5px;
 
     color: rgb(201,201,201);
     background-color: rgb(68,68,68);
@@ -368,10 +355,16 @@ ul.sub_page_menu>li.page_item ul.sub_page_menu li.page_item {
     color: rgb(230,230,230);
 }
 
+.post_content, .post_categories, .image_exifs, .post-ratings, .comment-respond, #comments_area {
+    width: 1024px;
+    margin: 0 auto;
+}
+
 #content_title {
     color: rgb(141,141,141);
     font-size: 18px;
     letter-spacing: 2px;
+    cursor: pointer;
 }
 #content_title:hover {
     color: rgb(255,255,255);
@@ -405,7 +398,8 @@ ul.sub_page_menu>li.page_item ul.sub_page_menu li.page_item {
 
 /* ** Comment form ** */
 #commentform {
-    margin-top: 5px;
+/*     padding: 5px; */
+/*     height: 220px; */
 }
 #commentform .comment-form-author {
     width: 26%;
