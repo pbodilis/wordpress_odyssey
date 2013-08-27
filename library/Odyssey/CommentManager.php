@@ -154,7 +154,8 @@ class CommentManager
                 'content'    => apply_filters('comment_text', $comment->comment_content),
                 'leaf'       => true,
                 'comments'   => array(),
-//                'avatar'     => get_avatar( $comment, 30 ),
+                'avatar'     => get_avatar($comment, 30),
+// 'render_comments' => function($text) { echo 'COIN COIN';}
             );
             if (0 == $comment->comment_parent) {
                 $i = array_push($tree, $c);
@@ -192,7 +193,7 @@ class CommentManager
                             'content'    => apply_filters('comment_text', $comment->comment_content),
                             'leaf'       => true,
                             'comments'   => array(),
-//                            'avatar'     => get_avatar( $comment, 30 ),
+                            'avatar'     => get_avatar( $comment, 30 ),
 // 'approved' => $comment->comment_approved,
                         );
                         echo json_encode(array($ret));

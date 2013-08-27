@@ -347,15 +347,15 @@ ul.sub_page_menu>li.page_item ul.sub_page_menu li.page_item {
     font-size: 16px;
     margin-top: 20px;
 }
-#content a {
+#content a, #comments a {
     text-decoration: none;
     color: rgb(151,151,151);
 }
-#content a:hover {
+#content a:hover, #comments a:hover {
     color: rgb(230,230,230);
 }
 
-.post_content, .post_categories, .image_exifs, .post-ratings, .comment-respond, #comments_area {
+.post_content, .post_categories, .image_exifs, .post-ratings, #respond, #comments_area {
     width: 1024px;
     margin: 0 auto;
 }
@@ -399,7 +399,7 @@ ul.sub_page_menu>li.page_item ul.sub_page_menu li.page_item {
 /* ** Comment form ** */
 #commentform {
 /*     padding: 5px; */
-/*     height: 220px; */
+    height: 180px;
 }
 #commentform .comment-form-author {
     width: 26%;
@@ -456,7 +456,7 @@ ul.sub_page_menu>li.page_item ul.sub_page_menu li.page_item {
     float: right;
     width: 30%;
     height: 17px;
-    font-size: 12px;
+    font-size: 13px;
     border: none;
     color: rgb(201,201,201);
     background-color: rgb(58,58,58);
