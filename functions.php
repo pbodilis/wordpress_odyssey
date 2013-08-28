@@ -27,6 +27,9 @@ if (!isset($content_width)) {
     $content_width = 900;
 }
 
+// Switches default core markup for search form, comment form, and comments
+// to output valid HTML5.
+add_theme_support( 'html5', array( 'search-form', 'comment-form', 'comment-list' ) );
 
 // remove_filter('the_content', 'wpautop');
 
@@ -48,39 +51,5 @@ function redirect() {
 }
 
 
-
-// $defaults = array(
-//     'default-color'          => 'rgb(85, 85, 85)',
-//     'default-image'          => '',
-//     'wp-head-callback'       => '_custom_background_cb',
-//     'admin-head-callback'    => '',
-//     'admin-preview-callback' => ''
-// );
-// add_theme_support('custom-background', $defaults);
-
-
-// register_sidebar(array(
-//   'name' => __('the Sidebar on top'),
-//   'id' => 'heading-sidebar',
-//   'description' => __( 'Widgets in this area will be shown inline on top of the screen.' ),
-// ));
-// 
-// function your_widget_display($args) {
-//    extract($args);
-//    echo $before_widget;
-//    echo $before_title . 'My Unique Widget' . $after_title;
-//    echo $after_widget;
-//    // print some HTML for the widget to display here
-//    echo "Your Widget Test";
-// }
-// 
-// wp_register_sidebar_widget(
-//     'your_widget_1',        // your unique widget id
-//     'Your Widget',          // widget name
-//     'your_widget_display',  // callback function
-//     array(                  // options
-//         'description' => 'Description of what your widget does'
-//     )
-// );
 
 ?>

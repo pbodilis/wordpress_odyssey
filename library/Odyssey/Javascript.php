@@ -50,9 +50,10 @@ class Javascript
      * @since 0.1
      */
     public function enqueue_javascript() {
+       wp_enqueue_script('comment-reply'); // to have the comment form moveable
+
         // template engine
         wp_enqueue_script('ICanHaz',             get_template_directory_uri() . '/js/ICanHaz.js',             array('jquery'), false, true);
-
         // pub sub implementation
         wp_enqueue_script('pubsub',              get_template_directory_uri() . '/js/ba-tiny-pubsub.js',      array('jquery'));
 
