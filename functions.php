@@ -50,6 +50,8 @@ function redirect() {
     endif;
 }
 
+// enable comments on non-single pages (basically, home)
+$withcomments = 1;
 
 
 ?>

@@ -12,6 +12,7 @@ $post = the_core()->get_post();
 
 <?php
 get_template_part('single', $post['format']);
+
 comments_template();
 ?>
 

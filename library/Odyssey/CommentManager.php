@@ -154,8 +154,7 @@ class CommentManager
                 'content'    => apply_filters('comment_text', $comment->comment_content),
                 'leaf'       => true,
                 'comments'   => array(),
-                'avatar'     => get_avatar($comment, 30),
-// 'render_comments' => function($text) { echo 'COIN COIN';}
+                'avatar'     => get_avatar($comment, 30)
             );
             if (0 == $comment->comment_parent) {
                 $i = array_push($tree, $c);
@@ -180,23 +179,12 @@ class CommentManager
                     echo json_encode(false);
                 case '1': //Approved comment
                     $comment = &get_comment($comment_ID);
-                    $post    = &get_post($comment->comment_post_ID);
-                    // wp_notify_postauthor($comment_ID, $comment->comment_type);
-
                     if ($comment->comment_approved) {
-                        $ret = array(
-                            'id'         => $comment->comment_ID,
-                            'author'     => $comment->comment_author,
-                            'author_url' => $comment->comment_author_url,
-                            'date'       => date_i18n(get_option('date_format'), strtotime($comment->comment_date)),
-                            'time'       => date_i18n(get_option('time_format'), strtotime($comment->comment_date)),
-                            'content'    => apply_filters('comment_text', $comment->comment_content),
-                            'leaf'       => true,
-                            'comments'   => array(),
-                            'avatar'     => get_avatar( $comment, 30 ),
-// 'approved' => $comment->comment_approved,
-                        );
-                        echo json_encode(array($ret));
+                        wp_list_comments( array(
+                            'style'       => 'ol',
+                            'short_ping'  => true,
+                            'avatar_size' => 74,
+                        ), array($comment));
                     }
                     break;
                 default:

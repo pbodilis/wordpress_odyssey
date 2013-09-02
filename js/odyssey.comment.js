@@ -85,5 +85,5 @@ odyssey.comments = {
     },
 }
 
-odyssey.comments.init();
+// odyssey.comments.init();
 

@@ -449,7 +449,7 @@ ul.sub_page_menu>li.page_item ul.sub_page_menu li.page_item {
 
 .comment-list > li:after,
 .comment-list .children > li:before {
-	background: url(images/dotted-line.png) repeat left top;
+/* 	background: url(images/dotted-line.png) repeat left top; */
 	background-size: 4px 4px;
 	content: "";
 	display: block;
