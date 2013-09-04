@@ -172,25 +172,11 @@ class CommentManager
     public function comment_post($comment_ID, $comment_status) {
         if ( ! $this->get_option( 'comment_form_ajax_enabled' ) ) return;
 
-        if ( ! empty( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && 'xmlhttprequest' == strtolower($_SERVER['HTTP_X_REQUESTED_WITH'])) {
-            switch( $comment_status ) {
-                case '0': //notify moderator of unapproved comment
-                    wp_notify_moderator($comment_ID);
-                    echo json_encode(false);
-                case '1': //Approved comment
-                    $comment = &get_comment($comment_ID);
-                    if ($comment->comment_approved) {
-                        wp_list_comments( array(
-                            'style'       => 'ol',
-                            'short_ping'  => true,
-                            'avatar_size' => 74,
-                        ), array($comment));
-                    }
-                    break;
-                default:
-                    echo json_encode(false);
-            }
-        }
+        wp_list_comments( array(
+            'style'       => 'ol',
+            'short_ping'  => true,
+            'avatar_size' => 74,
+        ), array(get_comment($comment_ID)));
     }
 
     public function no_comment_redirection($location) {

@@ -24,7 +24,7 @@ odyssey.comments = {
                 type: 'post',
                 url:        jQuery('#commentform').attr('action'),
                 data:       jQuery('#commentform').serialize(),
-                dataType:  'json',
+                dataType:  'html',
                 beforeSend: function(xhr, settings) {
                     odyssey.comments.status.html('Processing...');
                 },
@@ -45,9 +45,14 @@ odyssey.comments = {
                 success: function(data, test_status, xhr) {
                     // update status
                     odyssey.comments.status.html('Comment posted!');
-
                     // display newly added comment
-                    var comment = ich.render_comments({'comments': data});
+                    
+                    var parent_id = jQuery('#comment_parent').val();
+                    if (parent_id == 0) {
+                    } else {
+                        jQuery('#comment-' + parent_id + ' ol.children').append(data);
+                    }
+/*
                     comment.hide();
                     jQuery('#comment_list_item_' + jQuery('#comment_parent').val() + '>ul.comments_list').append(comment);
                     comment.slideDown();
@@ -58,7 +63,7 @@ odyssey.comments = {
                     jQuery('#comment').val('');
 
                     // reload post comment
-                    jQuery.publish('core.comments.reload');
+                    jQuery.publish('core.comments.reload');*/
                 }
             });
         });
@@ -85,5 +90,5 @@ odyssey.comments = {
     },
 }
 
-// odyssey.comments.init();
+odyssey.comments.init();
 
