@@ -31,8 +31,6 @@ class CommentManager
     public function __construct(array $params = array()) {
         Admin::get_instance()->register($this);
 
-        Javascript::get_instance()->add_template('render_comments', 'photoblog_comments.mustache.html');
-
         add_action('comment_post', array(&$this, 'comment_post'), 20, 2);
         add_filter('comment_post_redirect', array(&$this, 'no_comment_redirection'));
     }
@@ -112,23 +110,8 @@ class CommentManager
         comment_form($args, $post_id);
     }
 
-    static private $cache;
-    static private function cache_post_comments($post_id) {
-        if (! isset(self::$cache[ $post_id ])) {
-            $args = array(
-                'post_id' => $post_id,
-                'status'  => 'approve',
-                'orderby' => 'comment_date',
-                'order'   => 'ASC',
-            );
-    
-            self::$cache[ $post_id ] = get_comments($args);
-        }
-        return self::$cache[ $post_id ];
-    }
-
     public function get_post_comments_number($post_id) {
-        return count(self::cache_post_comments($post_id));
+        return 9999;
     }
 
     /**
@@ -141,32 +124,25 @@ class CommentManager
      *  - 'children'
      */
     public function get_post_comments($post_id) {
-        $list = array();
-        $tree = array();
+        $args = array(
+            'post_id' => $post_id,
+            'status'  => 'approve',
+            'orderby' => 'comment_date',
+            'order'   => 'ASC',
+        );
+    
+        ob_start();
+        wp_list_comments( array(
+            'style'       => 'ol',
+            'short_ping'  => true,
+            'avatar_size' => 74,
+        ), get_comments( $args ));
+
+
+        $comments = ob_get_contents();
+        ob_end_clean();
         
-        foreach(self::cache_post_comments($post_id) as $comment) {
-            $c = array(
-                'id'         => $comment->comment_ID,
-                'author'     => $comment->comment_author,
-                'author_url' => $comment->comment_author_url,
-                'date'       => date_i18n(get_option('date_format'), strtotime($comment->comment_date)),
-                'time'       => date_i18n(get_option('time_format'), strtotime($comment->comment_date)),
-                'content'    => apply_filters('comment_text', $comment->comment_content),
-                'leaf'       => true,
-                'comments'   => array(),
-                'avatar'     => get_avatar($comment, 30)
-            );
-            if (0 == $comment->comment_parent) {
-                $i = array_push($tree, $c);
-                $list[$comment->comment_ID] =& $tree[$i - 1];
-            } else {
-                $parent =& $list[$comment->comment_parent];
-                $parent['leaf'] = false;
-                $i = array_push($parent['comments'], $c);
-                $list[$comment->comment_ID] =& $parent['comments'][$i - 1];
-            }
-        }
-        return array_values($tree);
+        return $comments;
     }
 
     public function comment_post($comment_ID, $comment_status) {

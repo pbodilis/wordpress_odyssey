@@ -48,22 +48,27 @@ odyssey.comments = {
                     // display newly added comment
                     
                     var parent_id = jQuery('#comment_parent').val();
+                    var comment_list;
                     if (parent_id == 0) {
+                        comment_list = jQuery('#comments_area ol.comment-list');
                     } else {
-                        jQuery('#comment-' + parent_id + ' ol.children').append(data);
+                        if (jQuery('#comment-' + parent_id + ' ol.children').length == 0) {
+                            jQuery('#comment-' + parent_id).append('<ol class="children"></ol>');
+                        }
+                        comment_list = jQuery('#comment-' + parent_id + ' ol.children');
                     }
-/*
+                    var comment = jQuery(data);
                     comment.hide();
-                    jQuery('#comment_list_item_' + jQuery('#comment_parent').val() + '>ul.comments_list').append(comment);
+                    comment_list.append(comment);
                     comment.slideDown();
-                    jQuery('#comment_title').html(++(odyssey.comments.post_comments_number) + ' Comment(s)');
 
                     // clear form
                     odyssey.comments.replyto_cancel();
                     jQuery('#comment').val('');
+                    jQuery('#cancel-comment-reply-link').click();
 
                     // reload post comment
-                    jQuery.publish('core.comments.reload');*/
+                    jQuery.publish('core.comments.reload');
                 }
             });
         });
@@ -75,18 +80,13 @@ odyssey.comments = {
         jQuery('#comment_parent').val(comment_id);
         odyssey.comments.status.html('Replying to: ' + author + ' <a href="#" class="replyto_cancel">(cancel)</a>');
     },
-    replyto_cancel: function() {
-        jQuery('.replying').toggleClass('replying', false);
-        jQuery('#comment_parent').val(0);
-        odyssey.comments.status.html('');
-    },
     render: function(e, post) {
-        odyssey.comments.replyto_cancel();
-        jQuery('#comment_post_ID').val(post.ID);
-        odyssey.comments.post_comments_number = post.comments_number;
-        jQuery('#comment_title').html(odyssey.comments.post_comments_number + ' Comment(s)');
+//        odyssey.comments.replyto_cancel();
+//        jQuery('#comment_post_ID').val(post.ID);
+//       odyssey.comments.post_comments_number = post.comments_number;
+//        jQuery('#comment_title').html(odyssey.comments.post_comments_number + ' Comment(s)');
 
-        jQuery('#comment_list_item_0>ul').html(ich.render_comments({'comments': post.comments}));
+//        jQuery('#comment_list_item_0>ul').html(ich.render_comments({'comments': post.comments}));
     },
 }
 
