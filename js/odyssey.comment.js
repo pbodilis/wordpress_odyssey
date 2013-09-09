@@ -15,8 +15,6 @@ odyssey.comments = {
         }
         odyssey.comments.status = jQuery('#comment_status');
         
-        jQuery(document).on('click', 'a.replyto_cancel', odyssey.comments.replyto_cancel);
-
         jQuery(document).on('submit', '#commentform', function(e) {
             e.preventDefault();
 
@@ -58,12 +56,9 @@ odyssey.comments = {
                         comment_list = jQuery('#comment-' + parent_id + ' ol.children');
                     }
                     var comment = jQuery(data);
-                    comment.hide();
-                    comment_list.append(comment);
-                    comment.slideDown();
+                    comment.hide().appendTo(comment_list).fadeIn();
 
                     // clear form
-                    odyssey.comments.replyto_cancel();
                     jQuery('#comment').val('');
                     jQuery('#cancel-comment-reply-link').click();
 
@@ -81,12 +76,8 @@ odyssey.comments = {
         odyssey.comments.status.html('Replying to: ' + author + ' <a href="#" class="replyto_cancel">(cancel)</a>');
     },
     render: function(e, post) {
-//        odyssey.comments.replyto_cancel();
-//        jQuery('#comment_post_ID').val(post.ID);
-//       odyssey.comments.post_comments_number = post.comments_number;
-//        jQuery('#comment_title').html(odyssey.comments.post_comments_number + ' Comment(s)');
-
-//        jQuery('#comment_list_item_0>ul').html(ich.render_comments({'comments': post.comments}));
+        jQuery('#comments_area>ol.comment-list').html(post.comments);
+        jQuery('#comment_title').html(jQuery('li.comment').length + ' Comment(s)');
     },
 }
 

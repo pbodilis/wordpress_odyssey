@@ -97,22 +97,7 @@ odyssey.core = {
         jQuery.publish('post.update', current);
     },
     reload_comments: function(e) {
-        var id = odyssey.core.posts.current_ID;
-        var ajaxArgs = {
-            action:     'odyssey_get_json_post_comments',
-            id:         id,
-            post_nonce: odyssey.post_nonce
-        }
-        jQuery.ajax({
-            url:      odyssey.ajaxurl,
-            dataType: 'json',
-            data:     ajaxArgs,
-        }).done(function(r) {
-            if (!r) return;
-            odyssey.core.posts[id].comments_number = r.comments_number;
-            odyssey.core.posts[id].comments        = r.comments;
-            odyssey.post_nonce                     = r.post_nonce;
-        });
+        odyssey.core.posts[id].comments = jQuery('#comments_area>ol.comment-list').html();
     },
     previous: function(e) {
         var current = odyssey.core.posts[odyssey.core.posts.current_ID];

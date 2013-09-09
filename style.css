@@ -355,7 +355,7 @@ ul.sub_page_menu>li.page_item ul.sub_page_menu li.page_item {
     color: rgb(230,230,230);
 }
 
-.post_content, .post_categories, .image_exifs, .post-ratings, #respond, #comments_area {
+.post_content, .post_categories, .image_exifs, .post-ratings, #comments>#respond, #comments_area {
     width: 1024px;
     margin: 0 auto;
 }
@@ -441,6 +441,7 @@ ul.sub_page_menu>li.page_item ul.sub_page_menu li.page_item {
 .comment-list .children {
 	list-style-type: none;
 	padding: 0;
+    margin: 0px auto;
 }
 
 .comment-list .children {
@@ -536,7 +537,7 @@ ul.sub_page_menu>li.page_item ul.sub_page_menu li.page_item {
 }
 
 .comment-metadata {
-	margin-bottom: 20px;
+/* 	margin-bottom: 20px; */
 }
 
 .ping-meta {
@@ -569,7 +570,6 @@ ul.sub_page_menu>li.page_item ul.sub_page_menu li.page_item {
 }
 
 .comment .comment-respond {
-	margin-bottom: 20px;
 	padding: 20px;
 }
 
