@@ -31,7 +31,8 @@ if (!isset($content_width)) {
 // to output valid HTML5.
 add_theme_support( 'html5', array( 'search-form', 'comment-form', 'comment-list' ) );
 
-// remove_filter('the_content', 'wpautop');
+// Add Genericons font, used in the main stylesheet.
+wp_enqueue_style( 'genericons', get_template_directory_uri() . '/font/genericons.css', array(), '2.09' );
 
 
 remove_filter('check_comment_flood', 'check_comment_flood_db');
