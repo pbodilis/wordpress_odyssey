@@ -21,6 +21,10 @@
                     </ul>
                 </article>
                 {{/image.exifs.0}}
-                {{{ratings}}}
-               <div class="clr"></div>
+                {{#ratings}}
+                <article class="post_rating">
+                    {{{.}}}
+                </article>
+                {{/ratings}}
+                <div class="clr"></div>
             </section>

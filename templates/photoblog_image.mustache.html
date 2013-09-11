@@ -1,15 +1,15 @@
 {{! This is for post with image as post format}}
 {{#image}}
 <div id="photo_wrapper" class="" style="height: {{frame.dEHeight}}px;">
-    <section id="photo_container" class="" style="width: {{frame.width}}px;">
+    <figure id="photo_container" class="" style="width: {{frame.width}}px;">
         <img src="{{image.url}}" alt="{{title}}" style="width: {{frame.width}}px; height: {{frame.height}}px;" />
-        <div id="photo_infos">
+        <figcaption id="photo_infos">
             <h2>{{title}}</h2>
             {{#image.capture_date}}
             <p>{{image.capture_date}}</p>
             {{/image.capture_date}}
-        </div>
-    </section>
+        </figcaption>
+    </figure>
 {{/image}}
 
 {{! This is for any post that's not an image }}

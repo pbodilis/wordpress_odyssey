@@ -206,7 +206,7 @@ body.white #headerbar a:hover {
 }
 #headerbar ul.menu.txt a {
     font-family: Helvetica,Arial,sans-serif;
-    font-size: 10px;
+    font-size: 12px;
     text-transform: uppercase;
     letter-spacing: 0;
     padding: 0px 15px;
@@ -309,7 +309,7 @@ ul.sub_page_menu>li.page_item ul.sub_page_menu li.page_item {
 #photo_container img {
     width: 100%;
     border: 5px rgb(40,40,40) solid;
-    margin-left: -5px;
+/*     margin-left: -5px; */
 }
 #photo_infos p:after, #photo_infos p:before {
     content: '\2022';
@@ -320,7 +320,7 @@ ul.sub_page_menu>li.page_item ul.sub_page_menu li.page_item {
     height: 42px; /* hardcoded to help position calculation */
 }
 #photo_infos p {
-    font-size: 12px;
+    font-size: 13px;
 }
 
 /* ******************************* image: panel handle ******************************* */
@@ -329,7 +329,7 @@ ul.sub_page_menu>li.page_item ul.sub_page_menu li.page_item {
 
     color: rgb(201,201,201);
     background-color: rgb(68,68,68);
-    font-size: 12.5px;
+    font-size: 14px;
 }
 #content h1, #content h2, #content h3, #content h4, #content h5 {
     letter-spacing: 2px;
@@ -353,12 +353,10 @@ ul.sub_page_menu>li.page_item ul.sub_page_menu li.page_item {
 #content a:hover, #comments a:hover {
     color: rgb(230,230,230);
 }
-
-.post_content, .post_categories, .image_exifs, .post-ratings, #comments>#respond, #comments_area {
+.post_content, .post_categories, .image_exifs, .post_rating, .comment-respond, #comments_area {
     width: 1024px;
     margin: 0 auto;
 }
-
 #content_title {
     color: rgb(141,141,141);
     font-size: 18px;
@@ -369,23 +367,22 @@ ul.sub_page_menu>li.page_item ul.sub_page_menu li.page_item {
     color: rgb(255,255,255);
 }
 
-.post_content, .post_categories, .image_exifs {
+#content article {
     background-color: rgb(34,34,34);
-    padding: 5px;
+    padding: 5px 0px;
+}
+.post_content p, .post_categories ul, .image_exifs ul {
     line-height: 160%;
+    padding: 0px 50px;
 }
 .post_content {
-    font-size: 13.5px;
-}
-.post_content p {
-    margin-top: 0;
-    margin-bottom: 10px;
-}
-.post_content p img:not(.wp-smiley) {
-    width: 100%;
+    font-size: 14px;
 }
 .post_categories, .image_exifs {
-    font-size: 10.5px;
+    font-size: 13px;
+}
+.post_categories ul, .image_exifs ul {
+    display: inline-block;
 }
 .post_categories>ul>li:before, .image_exifs>ul>li:before {
     content: '\2022';
@@ -456,8 +453,8 @@ ul.sub_page_menu>li.page_item ul.sub_page_menu li.page_item {
 	width: 100%;
 }
 
-.comments-title {
-	font: 300 italic 28px "Source Sans Pro", Helvetica, sans-serif;
+.comments-title, .comment-reply-title {
+    font-size: 22px;
 }
 
 .comment-list,
@@ -492,7 +489,7 @@ ul.sub_page_menu>li.page_item ul.sub_page_menu li.page_item {
 
 .comment-author {
 	float: left;
-	max-width: 74px;
+	max-width: 110px;
 }
 
 .comment-author .avatar {
@@ -537,6 +534,7 @@ ul.sub_page_menu>li.page_item ul.sub_page_menu li.page_item {
 
 .comment-list .edit-link {
 	margin-left: 20px;
+    float: right;
 }
 
 .comment-metadata,
@@ -588,16 +586,12 @@ ul.sub_page_menu>li.page_item ul.sub_page_menu li.page_item {
 
 /* Comment form */
 .comment-respond {
-	background-color: #f7f5e7;
+    background-color: rgb(34,34,34);
 	padding: 30px 0;
 }
 
 .comment .comment-respond {
 	padding: 20px;
-}
-
-.comment-reply-title {
-	font: 300 italic 28px "Source Sans Pro", Helvetica, sans-serif;
 }
 
 .comment-reply-title small a {
@@ -800,7 +794,7 @@ ul.comments_list li .replyto:hover, ul.comments_list li .replying {
     margin-top: 40px;
     width: 250px;
 
-    font-size: 13px;
+    font-size: 14px;
     text-decoration: none;
 }
 #archives_menu ul, #archives_menu li {
