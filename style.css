@@ -357,6 +357,9 @@ ul.sub_page_menu>li.page_item ul.sub_page_menu li.page_item {
     width: 1024px;
     margin: 0 auto;
 }
+#comments_area {
+    padding: 30px 0;
+}
 #content_title {
     color: rgb(141,141,141);
     font-size: 18px;

@@ -111,22 +111,16 @@ class CommentManager
     }
 
     public function get_post_comments_number($post_id) {
-        return 9999;
+        $comments_count = wp_count_comments( $post_id );
+        return $comments_count->approved;
     }
 
     /**
-     * build a tree of comments
-     *  - 'id'
-     *  - 'author'
-     *  - 'author_url'
-     *  - 'date'
-     *  - 'content'
-     *  - 'children'
+     * @returns the html list of post comments
      */
     public function get_post_comments($post_id) {
         $args = array(
             'post_id' => $post_id,
-//             'status'  => 'approve',
             'orderby' => 'comment_date',
             'order'   => 'ASC',
         );

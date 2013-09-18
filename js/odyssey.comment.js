@@ -77,7 +77,8 @@ odyssey.comments = {
     },
     render: function(e, post) {
         jQuery('#comments_area>ol.comment-list').html(post.comments);
-        jQuery('#comment_title').html(jQuery('li.comment').length + ' Comment(s)');
+        var comments_count = jQuery('li.comment').length;
+        jQuery('h3.comments-title').html(comments_count + ' Comment' + ((comments_count != 1) ? 's' : ''));
     },
 }
 
