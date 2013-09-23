@@ -59,9 +59,9 @@ class HeaderBar
         $blog = Core::get_instance()->get_blog();
         
         return array(
-            'rss'         => array('enabled' => true,  'value' => $blog['rss2_url']),
-            'com_rss'     => array('enabled' => false, 'value' => $blog['comments_rss2_url']),
-            'atom'        => array('enabled' => false, 'value' => $blog['atom_url']),
+            'rss'         => array('enabled' => true,  'value' => $blog[ 'rss2_url' ]),
+            'com_rss'     => array('enabled' => false, 'value' => $blog[ 'comments_rss2_url' ]),
+            'atom'        => array('enabled' => false, 'value' => $blog[ 'atom_url' ]),
             'facebook'    => array('enabled' => false, 'value' => __('Facebook page url', 'odyssey' )),
             'twitter'     => array('enabled' => false, 'value' => __('Twitter page url', 'odyssey' )),
             'flickr'      => array('enabled' => false, 'value' => __('Flickr page url', 'odyssey' )),
@@ -81,7 +81,7 @@ class HeaderBar
         );
     }
 
-    public function getHeaderBarOtherLinksSettings() {
+    public function get_header_bar_other_links_options() {
         return get_option(self::OTHER_LINKS_OPTION_NAME, self::get_default_header_bar_other_links_options());
     }
 
@@ -128,7 +128,7 @@ class HeaderBar
         if (isset($_POST[self::OTHER_LINKS_RESET_NAME])) {
             delete_option(self::OTHER_LINKS_OPTION_NAME);
         }
-        $options = $this->getHeaderBarOtherLinksSettings();
+        $options = $this->get_header_bar_other_links_options();
         if (isset($_POST[self::OTHER_LINKS_SUBMIT_NAME])) {
             unset($_POST[self::OTHER_LINKS_SUBMIT_NAME]);
             foreach ($options as $option => &$enabled) {
@@ -160,10 +160,7 @@ class HeaderBar
         return Renderer::get_instance()->render('admin_headerbar', $data);
     }
 
-    function get_rendering() {
-        $blog = Core::get_instance()->get_blog();
-        $post = (is_single() || is_home()) ? Core::get_instance()->get_post() : array();
-
+    function get_syndication() {
         $options = $this->get_header_bar_syndication_options();
         $syndication = array();
         foreach ($options as $option => &$value) {
@@ -175,9 +172,11 @@ class HeaderBar
                 );
             }
         }
-        $blog['syndication'] = $syndication;
-        
-        $options = $this->getHeaderBarOtherLinksSettings();
+        return $syndication;
+    }
+
+    function get_other_links() {
+        $options = $this->get_header_bar_other_links_options();
         $others = array();
         foreach ($options as $option => $enabled) {
             if ( ! $enabled) {
@@ -197,12 +196,14 @@ class HeaderBar
                     break;
             }
         }
-        $blog['others'] = $others;
-// echo '<pre>' . PHP_EOL;
-// var_dump($blog['others']);
-        
-        return Renderer::get_instance()->render(self::TEMPLATE_FILE, array_merge($blog, $post));
+        return $others;
     }
+//         $blog['others'] = $others;
+// // echo '<pre>' . PHP_EOL;
+// // var_dump($blog['others']);
+//         
+//         return Renderer::get_instance()->render(self::TEMPLATE_FILE, array_merge($blog, $post));
+//     }
 
     static function option_id2css_class($id) {
         $id2Class = array(

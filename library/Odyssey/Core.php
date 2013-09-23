@@ -130,6 +130,13 @@ class Core {
         return $this->blog;
     }
 
+    public function get_syndication() {
+        return $this->header_bar->get_syndication();
+    }
+    public function get_other_links() {
+        return $this->header_bar->get_other_links();
+    }
+
     public function get_post_and_adjacents($post_id = NULL, $adjacent = 'both') {
         $current = $this->get_post($post_id);
         $ret = array(
