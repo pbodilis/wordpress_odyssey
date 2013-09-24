@@ -14,16 +14,16 @@ $others      = the_core()->get_other_links();
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr" dir="ltr">
 <head>
-    <meta http-equiv="Content-Type" content="<?php echo $blog['html_type']; ?>; charset=<?php echo $blog['charset']; ?>" />
-    <meta name="generator" content="WordPress <?php echo $blog['version']; ?>" /> <!-- leave this for stats -->
-    <meta name="title" content="<?php echo $blog['title']; ?>" />
+    <meta http-equiv="Content-Type" content="<?php echo $blog->html_type; ?>; charset=<?php echo $blog->charset; ?>" />
+    <meta name="generator" content="WordPress <?php echo $blog->version; ?>" /> <!-- leave this for stats -->
+    <meta name="title" content="<?php echo $blog->title; ?>" />
 
-    <link rel="stylesheet" href="<?php echo $blog['stylesheet_url']; ?>" type="text/css" media="screen" />
-    <link rel="alternate" type="application/rss+xml" title="<?php echo $blog['name']; ?> RSS Feed" href="<?php echo $blog['rss2_url']; ?>" />
-    <link rel="alternate" type="application/rss+xml" title="<?php echo $blog['name']; ?> Comments RSS Feed" href="<?php echo $blog['comments_rss2_url']; ?>" />
-    <link rel="alternate" type="application/atom+xml" title="<?php echo $blog['name']; ?> Atom Feed" href="<?php echo $blog['atom_url']; ?>" />
+    <link rel="stylesheet" href="<?php echo $blog->stylesheet_url; ?>" type="text/css" media="screen" />
+    <link rel="alternate" type="application/rss+xml" title="<?php echo $blog->name; ?> RSS Feed" href="<?php echo $blog->rss2_url; ?>" />
+    <link rel="alternate" type="application/rss+xml" title="<?php echo $blog->name; ?> Comments RSS Feed" href="<?php echo $blog->comments_rss2_url; ?>" />
+    <link rel="alternate" type="application/atom+xml" title="<?php echo $blog->name; ?> Atom Feed" href="<?php echo $blog->atom_url; ?>" />
 
-    <title><?php echo $blog[ 'name' ] . $blog[ 'title' ]; ?></title>
+    <title><?php echo $blog->name . $blog->title; ?></title>
 
     <!-- theme js -->
     <?php wp_head(); ?>
@@ -32,28 +32,28 @@ $others      = the_core()->get_other_links();
 
     <header id="headerbar" class="headerbar">
         <h1 id="logo">
-            <a href="<?php echo $blog[ 'home_url' ]; ?>" title="<?php echo $blog[ 'description' ]; ?>">
-                <?php echo $blog[ 'name' ]; ?>
+            <a href="<?php echo $blog->home_url; ?>" title="<?php echo $blog->description; ?>">
+                <?php echo $blog->name; ?>
             </a>
         </h1>
-        <?php if (! empty($others) ) { ?>
+
         <ul class="menu txt">
-            <?php foreach ($others as $o) { ?>
-            <li class="<?php echo $o[ 'classes' ]; ?>">
-                <a href="<?php echo $o[ 'url' ]; ?>" title="<?php echo $o[ 'title' ]; ?>" >
-                    <?php echo $o[ 'name' ]; ?>
+            <?php foreach ($others as $o) {?>
+            <li class="<?php echo $o->classes; ?>">
+                <a href="<?php echo $o->url; ?>" title="<?php echo $o->title; ?>" >
+                    <?php echo $o->name; ?>
                 </a>
             </li>
             <?php } ?>
+            <?php echo the_core()->get_page_list(); ?>
         </ul>
-        <?php } ?>
 
-        <?php if (! empty($syndication) ) { ?>
+        <?php if ( ! empty($syndication) ) { ?>
         <div class="menu but syndication">
-            <?php foreach ($syndication as $s ) { ?>
-            <a class="<?php  echo $s[ 'class' ]; ?>"
-                href="<?php  echo $s[ 'url' ];   ?>"
-                title="<?php echo $s[ 'title' ]; ?>"
+            <?php foreach ( $syndication as $s ) { ?>
+            <a class="<?php  echo $s->class; ?>"
+                href="<?php  echo $s->url;   ?>"
+                title="<?php echo $s->title; ?>"
                 target="_blank"></a>
             <?php } ?>
         </div>
@@ -65,7 +65,7 @@ $others      = the_core()->get_other_links();
             <a class="black"     href="#"></a>
         </div>
 <!--        <nav class="menu but">
-            <a class="prev <?php echo $blog[ 'class' ]; ?> {{^previous_url}}deactivated{{/previous_url}}" title="Previous"
+            <a class="prev <?php echo $blog->class; ?> {{^previous_url}}deactivated{{/previous_url}}" title="Previous"
                 {{#previous_url}}
                     href="{{previous_url}}"
                 {{/previous_url}}

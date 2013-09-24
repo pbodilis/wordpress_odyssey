@@ -59,9 +59,9 @@ class HeaderBar
         $blog = Core::get_instance()->get_blog();
         
         return array(
-            'rss'         => array('enabled' => true,  'value' => $blog[ 'rss2_url' ]),
-            'com_rss'     => array('enabled' => false, 'value' => $blog[ 'comments_rss2_url' ]),
-            'atom'        => array('enabled' => false, 'value' => $blog[ 'atom_url' ]),
+            'rss'         => array('enabled' => true,  'value' => $blog->rss2_url),
+            'com_rss'     => array('enabled' => false, 'value' => $blog->comments_rss2_url),
+            'atom'        => array('enabled' => false, 'value' => $blog->atom_url),
             'facebook'    => array('enabled' => false, 'value' => __('Facebook page url', 'odyssey' )),
             'twitter'     => array('enabled' => false, 'value' => __('Twitter page url', 'odyssey' )),
             'flickr'      => array('enabled' => false, 'value' => __('Flickr page url', 'odyssey' )),
@@ -165,11 +165,11 @@ class HeaderBar
         $syndication = array();
         foreach ($options as $option => &$value) {
             if ($value['enabled']) {
-                $syndication[] = array(
-                    'class' => self::option_id2css_class($option),
-                    'title' => self::option_id2label($option),
-                    'url'   => $value['value'],
-                );
+                $s = new \stdClass();
+                $s->class = self::option_id2css_class($option);
+                $s->title = self::option_id2label($option);
+                $s->url   = $value['value'];
+                $syndication[] = $s;
             }
         }
         return $syndication;
@@ -188,9 +188,6 @@ class HeaderBar
                     break;
                 case 'archives': // get a link to the latest archive
                     $others[] = Core::get_instance()->get_archives_url();
-                    break;
-                case 'pages': // get the page list
-                    $others = array_merge($others, Core::get_instance()->get_page_menu());
                     break;
                 default:
                     break;

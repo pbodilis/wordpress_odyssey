@@ -204,7 +204,7 @@ body.white #headerbar a:hover {
 #headerbar .menu.but.syndication a.menu_but_rss:before {
     content: '\f413';
 }
-#headerbar ul.menu.txt a {
+#headerbar .menu.txt a, #headerbar .menu.txt p {
     font-family: Helvetica,Arial,sans-serif;
     font-size: 12px;
     text-transform: uppercase;

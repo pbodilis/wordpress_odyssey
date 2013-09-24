@@ -112,20 +112,19 @@ class Core {
      */
     public function get_blog() {
         if (!isset($this->blog)) {
-            $this->blog = array(
-                'title'             => wp_title('&raquo;', false),
-                'name'              => get_bloginfo('name'),
-                'home_url'          => home_url('/'),
-                'wpurl'             => site_url('/'),
-                'version'           => get_bloginfo('version'),
-                'html_type'         => get_bloginfo('html_type'),
-                'description'       => get_bloginfo('description'),
-                'stylesheet_url'    => get_bloginfo('stylesheet_url'),
-                'rss2_url'          => get_bloginfo('rss2_url'),
-                'comments_rss2_url' => get_bloginfo('comments_rss2_url'),
-                'atom_url'          => get_bloginfo('atom_url'),
-                'charset'           => get_bloginfo('charset'),
-            );
+            $this->blog = new \stdClass();
+            $this->blog->title             = wp_title('&raquo;', false);
+            $this->blog->name              = get_bloginfo('name');
+            $this->blog->home_url          = home_url('/');
+            $this->blog->wpurl             = site_url('/');
+            $this->blog->version           = get_bloginfo('version');
+            $this->blog->html_type         = get_bloginfo('html_type');
+            $this->blog->description       = get_bloginfo('description');
+            $this->blog->stylesheet_url    = get_bloginfo('stylesheet_url');
+            $this->blog->rss2_url          = get_bloginfo('rss2_url');
+            $this->blog->comments_rss2_url = get_bloginfo('comments_rss2_url');
+            $this->blog->atom_url          = get_bloginfo('atom_url');
+            $this->blog->charset           = get_bloginfo('charset');
         }
         return $this->blog;
     }
@@ -140,16 +139,16 @@ class Core {
     public function get_post_and_adjacents($post_id = NULL, $adjacent = 'both') {
         $current = $this->get_post($post_id);
         $ret = array(
-            'current_ID'   => $current['ID'],
-            $current['ID'] => $current,
+            'current_ID' => $current->ID,
+            $current->ID => $current,
         );
-        if (('both' == $adjacent || 'next' == $adjacent) && isset($current['next_ID'])) {
-            $next = $this->get_post($current['next_ID']);
-            $ret[$next['ID']] = $next;
+        if (('both' == $adjacent || 'next' == $adjacent) && isset($current->next_ID)) {
+            $next = $this->get_post($current->next_ID);
+            $ret[$next->ID] = $next;
         }
-        if (('both' == $adjacent || 'previous' == $adjacent) && isset($current['previous_ID'])) {
-            $prev = $this->get_post($current['previous_ID']);
-            $ret[$prev['ID']] = $prev;
+        if (('both' == $adjacent || 'previous' == $adjacent) && isset($current->previous_ID)) {
+            $prev = $this->get_post($current->previous_ID);
+            $ret[$prev->ID] = $prev;
         }
         return $ret;
     }
@@ -159,7 +158,7 @@ class Core {
      */
     protected $post_cache = array();
     public function get_post($post_id = NULL) {
-        $ret = array();
+        $ret = new \stdClass();
         if (is_null($post_id)) {
             if (isset($this->post_cache[-1])) {
                 return $this->post_cache[-1];
@@ -184,43 +183,42 @@ class Core {
             $post = get_post($post_id);
         }
 
-        $ret['ID']      = $post->ID;
-        $ret['title']   = $post->post_title;
-        $ret['url']     = get_permalink($post->ID);
-        $ret['content'] = apply_filters('the_content', $post->post_content);
+        $ret->ID      = $post->ID;
+        $ret->title   = $post->post_title;
+        $ret->url     = get_permalink($post->ID);
+        $ret->content = apply_filters('the_content', $post->post_content);
 
-        $ret['class']   = implode(' ', get_post_class('', $post->ID));
+        $ret->class   = implode(' ', get_post_class('', $post->ID));
 
-        $ret['format']  = get_post_format($post->ID);
-        if ($ret['format'] == 'image') {
-            $ret['image'] = $this->get_post_image($post->ID);
+        $ret->format  = get_post_format($post->ID);
+        if ($ret->format == 'image') {
+            $ret->image = $this->get_post_image($post->ID);
         }
 
-        $ret['comments_number'] = $this->comment_manager->get_post_comments_number($post->ID);
-        $ret['comments']        = $this->comment_manager->get_post_comments($post->ID);
-        $ret['categories']      = $this->get_post_categories($post->ID);
+        $ret->comments_number = $this->comment_manager->get_post_comments_number($post->ID);
+        $ret->comments        = $this->comment_manager->get_post_comments($post->ID);
+        $ret->categories      = $this->get_post_categories($post->ID);
 //      $ret = array_merge($ret, $this->get_post_image($post->ID));
 
         if (function_exists('the_ratings')) {
-            $ret['ratings'] = the_ratings('div', $post->ID, false);
+            $ret->ratings = the_ratings('div', $post->ID, false);
         }
 
         $next_post = get_next_post();
         if (!empty($next_post)) {
-            $ret['next_ID']    = $next_post->ID;
-            $ret['next_title'] = $next_post->post_title;
-            $ret['next_url']   = get_permalink($next_post->ID);
+            $ret->next_ID    = $next_post->ID;
+            $ret->next_title = $next_post->post_title;
+            $ret->next_url   = get_permalink($next_post->ID);
         }
 
         $prev_post = get_previous_post();
         if (!empty($prev_post)) {
-            $ret['previous_ID']    = $prev_post->ID;
-            $ret['previous_title'] = $prev_post->post_title;
-            $ret['previous_url']   = get_permalink($prev_post->ID);
+            $ret->previous_ID    = $prev_post->ID;
+            $ret->previous_title = $prev_post->post_title;
+            $ret->previous_url   = get_permalink($prev_post->ID);
         }
 
-        $this->post_cache[is_null($post_id) ? -1 : $ret['ID']] = $ret;
-		wp_reset_query();
+        wp_reset_query();
         return $ret;
     }
 
@@ -228,7 +226,7 @@ class Core {
      * @return the first attached image of a post as the main post image
      */
     public function get_post_image($post_id) {
-        $ret = array();
+        $ret = new \stdClass();
 
         $args = array(
             'numberposts'    => 1,
@@ -243,15 +241,14 @@ class Core {
         if ($attachments) {
             $attachment = current($attachments);
             $data = wp_get_attachment_image_src($attachment->ID, 'full');
-            $ret['url']    = $data[0];
-            $ret['width']  = $data[1];
-            $ret['height'] = $data[2];
+            $ret->url    = $data[0];
+            $ret->width  = $data[1];
+            $ret->height = $data[2];
 
             $img_filename = get_attached_file($attachment->ID);
-            $ret['capture_date'] = $this->exif_manager->get_capture_date($attachment->ID, $img_filename);
-            $ret['exifs']        = $this->exif_manager->get_image_exif($attachment->ID, $img_filename);
+            $ret->capture_date = $this->exif_manager->get_capture_date($attachment->ID, $img_filename);
+            $ret->exifs        = $this->exif_manager->get_image_exif($attachment->ID, $img_filename);
         }
-
 
         return $ret;
     }
@@ -260,15 +257,15 @@ class Core {
         $ret = array();
         $categories = get_the_category($post_id);
         foreach($categories as $category) {
-            $ret[] = array(
-                'url'  => get_category_link( $category->term_id ),
-                'name' => $category->cat_name,
-            );
+            $c = new \stdClass();
+            $c->url = get_category_link( $category->term_id );
+            $c->name = $category->cat_name;
+            $ret[] = $c;
         }
         return $ret;
     }
 
-    public function get_random_post() {
+    public function get_random_post_id() {
         if (!isset($this->random_post)) {
             $args = array(
                 'posts_per_page'   => 1,
@@ -284,18 +281,18 @@ class Core {
                 $this->random_post = current($posts);
             }
         }
-        return $this->random_post;
+        return $this->random_post->ID;
     }
 
     public function get_random_post_url() {
-        $post = $this->get_random_post();
-        if (false !== $post) {
-            return array(
-                'url'     => get_permalink($post->ID),
-                'title'   => __( 'Random post', 'odyssey' ),
-                'name'    => __( 'Random', 'odyssey' ),
-                'classes' => 'random',
-            );
+        $post_id = $this->get_random_post_id();
+        if (false !== $post_id) {
+            $r = new \stdClass();
+            $r->url     = get_permalink($post_id);
+            $r->title   = __( 'Random post', 'odyssey' );
+            $r->name    = __( 'Random', 'odyssey' );
+            $r->classes = 'random';
+            return $r;
         } else {
             return false;
         }
@@ -305,54 +302,28 @@ class Core {
         $displayed_year = get_the_time('Y');
         $displayed_month = get_the_time('m');
 
-        return array(
-            'url'     => $this->archive_manager->get_link_to_most_recent_archive(),
-            'title'   => __( 'Archives', 'odyssey' ),
-            'name'    => __( 'Archives', 'odyssey' ),
-            'classes' => 'archives',
-        );
+        $a = new \stdClass();
+        $a->url     = $this->archive_manager->get_link_to_most_recent_archive();
+        $a->title   = __( 'Archives', 'odyssey' );
+        $a->name    = __( 'Archives', 'odyssey' );
+        $a->classes = 'archives';
+        return $a;
     }
 
-    public function get_page_menu() {
-        $list = array();
-        $tree = array();
-
+    public function get_page_list() {
         $args = array(
             'sort_order'   => 'ASC',
             'sort_column'  => 'ID',
             'hierarchical' => 1,
             'parent'       => -1,
             'post_type'    => 'page',
-            'post_status'  => 'publish'
+            'post_status'  => 'publish',
+            'title_li'     => '<p id="page_list_title">' . __('Pages') . '</p>',
+            'echo'         => 0,
         );
-        $pages = get_pages($args);
-        foreach ($pages as $page) {
-            $p = array(
-                'url'         => get_permalink($page->ID),
-                'title'       => $page->post_title,
-                'name'        => $page->post_title,
-                'id'          => 'page_item_' . $page->ID,
-                'classes'     => 'page_item page-item-' . $page->ID,
-                'pages_count' => 0,
-                'pages'       => array(),
-            );
-            if (0 == $page->post_parent) {
-                $i = array_push($tree, $p);
-                $list[$page->ID] =& $tree[$i - 1];
-            } else {
-                $parent =& $list[$page->post_parent];
-                ++$parent['pages_count'];
-                $i = array_push($parent['pages'], $p);
-                $list[$page->ID] =& $parent['pages'][$i - 1];
-            }
-        }
-
-        return array_values($tree);
+        return wp_list_pages( $args );
     }
 
-    public function get_rendered_header_bar() {
-        return $this->header_bar->get_rendering();
-    }
     public function comment_form($post_id = NULL) {
         $this->comment_manager->comment_form($post_id);
     }

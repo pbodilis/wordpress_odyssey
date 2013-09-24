@@ -75,7 +75,7 @@ class Javascript
 
         $blog = Core::get_instance()->get_blog();
         $locale_script = array(
-            'blog_name' => $blog['name'],
+            'blog_name' => $blog->name,
             'ajaxurl'   => admin_url('admin-ajax.php'),
         );
         if (is_home() || is_single()) {

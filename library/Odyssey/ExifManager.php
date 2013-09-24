@@ -156,7 +156,7 @@ class ExifManager
                     break;
             }
             if (false !== $value) {
-                $ret[] = array('name' => self::option_id2label($option), 'value' => $value);
+                $ret[self::option_id2label($option)] = $value;
             }
         }
         return $ret;
