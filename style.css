@@ -108,17 +108,17 @@ body.white #headerbar {
     font-size: 22px;
     padding-left: 16px;
 }
-#headerbar a {
+#headerbar a, #headerbar p {
     text-decoration: none;
     color: rgb(161,161,161);
 }
-#headerbar a:hover {
+#headerbar a:hover, #headerbar p:hover {
     color: rgb(255,255,255);
 }
-body.white #headerbar a {
+body.white #headerbar a, body.white #headerbar p  {
     color: rgb(99,99,99);
 }
-body.white #headerbar a:hover {
+body.white #headerbar a:hover, body.white #headerbar p:hover {
     color: rgb(0,0,0);
 }
 #headerbar .menu {
@@ -214,10 +214,10 @@ body.white #headerbar a:hover {
     display: inline-block;
 }
 
-#headerbar ul.menu.txt>li {
+/*#headerbar ul.menu.txt>li {
     height: 100%;
     display: inline-block;
-}
+}*/
 
 #headerbar ul.menu.txt li:before {
     width: auto;
@@ -248,6 +248,35 @@ ul.sub_page_menu li.page_item {
 }
 ul.sub_page_menu>li.page_item ul.sub_page_menu li.page_item {
     padding-left: 10px;
+}
+.pagenav p {
+    margin: 0px;
+    cursor: pointer;
+}
+.page_item a {
+    padding: 0px;
+}
+.pagenav ul, .pagenav li {
+    display: list-item;
+    padding-left: 5px;
+}
+.pagenav>ul {
+    padding-left: 0px;
+    visibility: hidden;
+    opacity: 0;
+    height: 0;
+    background-color: rgb(68,68,68);
+    
+    transition: opacity 0.5s ease-in-out;
+    
+    -moz-box-shadow: 5px 5px 5px rgba(0,0,0,0.5);
+    -webkit-box-shadow: 5px 5px 5px rgba(0,0,0,0.5);
+    box-shadow: 0px 5px 5px rgba(0,0,0,0.5);
+}
+.pagenav:hover>ul {
+    visibility:visible;
+    opacity: 1;
+    height: auto;
 }
 
 #headerbar .menu.but.tooltip a {
