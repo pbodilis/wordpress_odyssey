@@ -20,14 +20,14 @@ odyssey.image = {
     get_post_main_position: function(image) {
         var dE = document.documentElement;
         var header_height = jQuery('header.headerbar').height();
-        var photo_infos_height = 42; // guess on the photo info height
+        var fig_caption_height = 42; // guess on the photo info height
         var border_width = 5; // check in css file #photo_container for consistency
         var resized_width, resized_height;
 
         if (jQuery('body').hasClass('admin-bar')) { // am I logged in?
             header_height += jQuery('#wpadminbar').height();
         }
-        var display_height_area = dE.clientHeight - header_height * 2 - border_width * 2 - photo_infos_height - 20;
+        var display_height_area = dE.clientHeight - header_height * 2 - border_width * 2 - fig_caption_height - 20;
 
         if (image.height < display_height_area) { // the height for is image is big enough for the image to fit in
             resized_height = image.height;
@@ -39,6 +39,7 @@ odyssey.image = {
         return {
             width:  Math.round(resized_width),
             height: Math.round(resized_height),
+            cheight: Math.round(resized_height) + border_width * 2 + fig_caption_height,
             dEHeight: dE.clientHeight - header_height * 2
         };
     },
@@ -67,11 +68,12 @@ odyssey.image = {
 
         jQuery('#photo_container').css({
             'width':  frame.width,
+            'height': frame.cheight
         });
-        jQuery('#photo_container img').css({
-            'width':  frame.width,
-            'height': frame.height
-        });
+//         jQuery('#photo_container img').css({
+//             'width':  frame.width,
+//             'height': frame.height
+//         });
         jQuery('#photo_wrapper').css({
             'height': frame.dEHeight,
         });

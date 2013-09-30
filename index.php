@@ -18,9 +18,6 @@ if (locate_template('single-' . $post->format . '.php') != '') { // template par
     get_template_part('single', 'default');
 }
 
-
-
-comments_template();
 ?>
 
 </div>

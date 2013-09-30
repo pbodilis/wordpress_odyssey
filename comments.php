@@ -1,5 +1,5 @@
     <section id="comments">
-        <div id="comments_area">
+        <div id="responses">
             <h3 class="comments-title">
                 <?php 
                 printf( _nx( 'One comment', '%1$s comments', $post->comments_number, 'comments title', 'odyssey' ),

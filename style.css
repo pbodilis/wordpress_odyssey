@@ -328,17 +328,22 @@ ul.sub_page_menu>li.page_item ul.sub_page_menu li.page_item {
 }
 #photo_wrapper {
     margin: 0 auto;
-    display: table;
+    width: 100%;
+    position: relative;
+    clear: both;
+/*     display: table; */
 }
 #photo_container {
-    display: table-cell;
-    vertical-align: middle;
-    margin: 0 auto;
+/*     display: table-cell; */
+/*     vertical-align: middle; */
+    position: absolute;
+    margin: auto;
+    top: 0; left: 0; bottom: 0; right: 0;
 }
 #photo_container img {
     width: 100%;
     border: 5px rgb(40,40,40) solid;
-/*     margin-left: -5px; */
+    margin-left: -5px;
 }
 #photo_infos p:after, #photo_infos p:before {
     content: '\2022';
@@ -360,15 +365,18 @@ ul.sub_page_menu>li.page_item ul.sub_page_menu li.page_item {
     background-color: rgb(68,68,68);
     font-size: 14px;
 }
-#content h1, #content h2, #content h3, #content h4, #content h5 {
+/*#content h1, #content h2, #content h3, #content h4, #content h5 {
     letter-spacing: 2px;
     background-color: rgb(34,34,34);
-}
+}*/
 
 #content h2 {
     padding: 5px;
     font-size: 20px;
     text-align: center;
+
+    letter-spacing: 2px;
+    background-color: rgb(34,34,34);
 }
 #content h3 {
     padding: 2px 0px 2px 3px;
@@ -382,11 +390,12 @@ ul.sub_page_menu>li.page_item ul.sub_page_menu li.page_item {
 #content a:hover, #comments a:hover {
     color: rgb(230,230,230);
 }
-.post_content, .post_categories, .image_exifs, .post_rating, #comments>.comment-respond, #comments_area {
+.post_content, .post_categories, .image_exifs, .post_rating, #comments>#respond, #responses {
     width: 1024px;
     margin: 0 auto;
 }
-#comments_area {
+#responses {
+    background-color: rgb(34,34,34);
     padding: 30px 0;
 }
 #content_title {
@@ -481,10 +490,14 @@ ul.sub_page_menu>li.page_item ul.sub_page_menu li.page_item {
     display: block;
     margin-left: auto;
     margin-right: auto;
-    max-width: 604px;
+    max-width: 800px;
     width: 100%;
 }
 
+/*#responses>.comments-title {
+    text-align: center;
+}
+*/
 .comments-title, .comment-reply-title {
     font-size: 22px;
 }
@@ -616,7 +629,8 @@ ul.sub_page_menu>li.page_item ul.sub_page_menu li.page_item {
 
 /* Comment form */
 .comment-respond {
-    background-color: rgb(34,34,34);
+/*     background-color: rgb(34,34,34); */
+    background-color: rgb(16,16,16);
     padding: 30px 0;
 }
 

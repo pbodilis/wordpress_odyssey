@@ -48,7 +48,7 @@ odyssey.comments = {
                     var parent_id = jQuery('#comment_parent').val();
                     var comment_list;
                     if (parent_id == 0) {
-                        comment_list = jQuery('#comments_area ol.comment-list');
+                        comment_list = jQuery('#responses ol.comment-list');
                     } else {
                         if (jQuery('#comment-' + parent_id + ' ol.children').length == 0) {
                             jQuery('#comment-' + parent_id).append('<ol class="children"></ol>');
@@ -76,7 +76,7 @@ odyssey.comments = {
         odyssey.comments.status.html('Replying to: ' + author + ' <a href="#" class="replyto_cancel">(cancel)</a>');
     },
     render: function(e, post) {
-        jQuery('#comments_area>ol.comment-list').html(post.comments);
+        jQuery('#responses>ol.comment-list').html(post.comments);
         var comments_count = jQuery('li.comment').length;
         jQuery('h3.comments-title').html(comments_count + ' Comment' + ((comments_count != 1) ? 's' : ''));
     },

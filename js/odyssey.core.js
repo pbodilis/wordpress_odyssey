@@ -97,7 +97,7 @@ odyssey.core = {
         jQuery.publish('post.update', current);
     },
     reload_comments: function(e) {
-        odyssey.core.posts[id].comments = jQuery('#comments_area>ol.comment-list').html();
+        odyssey.core.posts[id].comments = jQuery('#responses>ol.comment-list').html();
     },
     previous: function(e) {
         var current = odyssey.core.posts[odyssey.core.posts.current_ID];
