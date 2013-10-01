@@ -18,8 +18,8 @@
 
 
 <div id="wrapper" class="">
+    <h2 id="content_title">Info, rate &amp; Comments</h2>
     <section id="content" class="<?php echo $post->class; ?>">
-        <h2 id="content_title">Info, rate &amp; Comments</h2>
         <article class="post_content"><?php echo $post->content; ?></article>
         <article class="post_categories">
             <ul>
