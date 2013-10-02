@@ -319,6 +319,36 @@ ul.sub_page_menu>li.page_item ul.sub_page_menu li.page_item {
     background:url(images/odyssey_loading.gif) 0 0 no-repeat;
 }
 
+/* ******************************* nav ******************************* */
+nav.main-nav {
+}
+nav.main-nav a {
+    z-index: 90009999;
+
+    position: fixed;
+    height: 100%;
+    line-height: 100%;
+    width: 20%;
+    display: block;
+    text-align: center;
+font-size: 40px;
+display:inline-block;
+}
+nav.main-nav a.previous {
+    top: 0px;
+    left: 0px;
+}
+nav.main-nav a.previous:before {
+    content: '\00AB';
+}
+nav.main-nav a.next {
+    top: 0px;
+    right: 0px;
+}
+nav.main-nav a.next:before {
+    content: '\00BB';
+}
+
 
 /* ******************************* #photo_container: photo (only when post format is 'image') ******************************* */
 #page {
@@ -532,7 +562,7 @@ ul.sub_page_menu>li.page_item ul.sub_page_menu li.page_item {
 .comment-author .url,
 .comment-reply-link,
 .comment-reply-login {
-    color: #bc360a;
+/*     color: #bc360a; */
     font-size: 14px;
     font-style: normal;
     font-weight: normal;
@@ -611,7 +641,8 @@ ul.sub_page_menu>li.page_item ul.sub_page_menu li.page_item {
 
 /* Comment form */
 .comment-respond {
-    background-color: rgb(16,16,16);
+    background-color: rgb(22,22,22);
+/*     background-color: rgb(16,16,16); */
     padding: 30px 50px;
 }
 

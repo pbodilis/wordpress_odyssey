@@ -37,16 +37,18 @@ $others      = the_core()->get_other_links();
             </a>
         </h1>
 
-        <ul class="menu txt">
-            <?php foreach ($others as $o) {?>
-            <li class="<?php echo $o->classes; ?>">
-                <a href="<?php echo $o->url; ?>" title="<?php echo $o->title; ?>" >
-                    <?php echo $o->name; ?>
-                </a>
-            </li>
-            <?php } ?>
-            <?php echo the_core()->get_page_list(); ?>
-        </ul>
+        <nav>
+            <ul class="menu txt">
+                <?php foreach ($others as $o) {?>
+                <li class="<?php echo $o->classes; ?>">
+                    <a href="<?php echo $o->url; ?>" title="<?php echo $o->title; ?>" >
+                        <?php echo $o->name; ?>
+                    </a>
+                </li>
+                <?php } ?>
+                <?php echo the_core()->get_page_list(); ?>
+            </ul>
+        </nav>
 
         <?php if ( ! empty($syndication) ) { ?>
         <div class="menu but syndication">
