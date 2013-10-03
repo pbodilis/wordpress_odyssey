@@ -10,8 +10,8 @@ $post = the_core()->get_post();
 ?>
 
 <nav class="main-nav">
-    <a class="previous" title="Previous" href="<?php echo $post->previous_url; ?>"><?php echo $post->previous_title; ?></a>
-    <a class="next"     title="Next"     href="<?php echo $post->next_url;     ?>"><?php echo $post->next_title; ?></a>
+    <a class="previous" title="Previous" href="<?php echo $post->previous_url; ?>"></a>
+    <a class="next"     title="Next"     href="<?php echo $post->next_url;     ?>"></a>
 </nav>
 
 

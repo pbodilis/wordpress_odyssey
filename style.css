@@ -67,9 +67,6 @@ body {
     -ms-transition: background 0.5s ease-in-out;
     transition: background 0.5s ease-in-out;
 }
-body.forImageDisplay {
-    overflow: hidden;
-}
 body.white {
     background-color: rgb(255,255,255);
 }
@@ -91,6 +88,7 @@ body.black {
     height: 30px;
     line-height: 28px;
     z-index: 9999;
+    min-width: 800px;
 
     background-color: rgb(68,68,68);
 
@@ -323,26 +321,36 @@ ul.sub_page_menu>li.page_item ul.sub_page_menu li.page_item {
 nav.main-nav {
 }
 nav.main-nav a {
-    z-index: 90009999;
+    text-decoration: none;
+    color: rgb(151,151,151);
+
+/*     background-color: #F0F0F0; */
+/*     border: 1px solid #CCCCCC; */
+    height: 98px;
+    line-height: 100px;
+    font-size: 100px;
+
+    margin-top: -50px;
+    text-align: center;
 
     position: fixed;
-    height: 100%;
-    line-height: 100%;
-    width: 20%;
-    display: block;
-    text-align: center;
-font-size: 40px;
-display:inline-block;
+    width: 5%;
+    z-index: 999;
+    top: 50%;
+}
+nav.main-nav a:hover {
+    color: rgb(200,200,200);
+}
+nav.main-nav a[href=''] {
+    display: none;
 }
 nav.main-nav a.previous {
-    top: 0px;
-    left: 0px;
+    left: 0px ;
 }
 nav.main-nav a.previous:before {
     content: '\00AB';
 }
 nav.main-nav a.next {
-    top: 0px;
     right: 0px;
 }
 nav.main-nav a.next:before {
@@ -361,11 +369,9 @@ nav.main-nav a.next:before {
     width: 100%;
     position: relative;
     clear: both;
-/*     display: table; */
 }
 #photo_container {
-/*     display: table-cell; */
-/*     vertical-align: middle; */
+    vertical-align: middle;
     position: absolute;
     margin: auto;
     top: 0; left: 0; bottom: 0; right: 0;
