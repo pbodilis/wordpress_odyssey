@@ -92,8 +92,8 @@ class Core {
                 $content = strip_shortcodes($content);
                 // ouch, now, that's a ugly hack :/
                 // remove the image, the link and the paragraph in which the image is.
-                $content = preg_replace('/<img[^>]+\>/', __( 'Download image', 'odyssey' ), $content, 1);
-                $content = preg_replace('/<p[^>]*>[\s|&nbsp;]*<\/p>/', '', $content);
+                $content = preg_replace('/<p\><a[^>]+\><img[^>]+\><\/a><\/p>/', '', $content, 1);
+//                 $content = preg_replace('/<p[^>]*>[\s|&nbsp;]*<\/p>/', '', $content);
     //            $content = preg_replace('/(width|height)="\d*"\s/', '', $content);
                 break;
             default:
