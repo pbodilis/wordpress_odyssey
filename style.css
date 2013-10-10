@@ -58,6 +58,7 @@ body {
     margin: 0;
     padding: 0;
     font-family: Tahoma,Arial,Helvetica,sans-serif;
+    min-width: 920px;
     height: 100%;
     background-color: rgb(85,85,85);
 
@@ -660,49 +661,31 @@ nav.main-nav a.next:before {
     padding: 20px;
 }*/
 
-.comment-reply-title small a {
-    color: #131310;
-    display: inline-block;
-    float: right;
-    height: 16px;
-    overflow: hidden;
-    width: 16px;
-}
-
-.comment-reply-title small a:hover {
-    color: #ed331c;
-    text-decoration: none;
-}
-
-.comment-reply-title small a:before {
-    content: "\f406";
-    vertical-align: top;
-}
-
 .comment-form .comment-notes {
     margin-bottom: 15px;
 }
 
 .comment-form .comment-form-author,
 .comment-form .comment-form-email,
-.comment-form .comment-form-url {
+.comment-form .comment-form-url,
+.comment-form .comment-form-comment {
     margin-bottom: 8px;
 }
 
-.comment-form [for="author"],
+/*.comment-form [for="author"],
 .comment-form [for="email"],
 .comment-form [for="url"],
 .comment-form [for="comment"] {
     float: left;
     padding: 5px 0;
     width: 120px;
-}
+}*/
 
 .comment-form .required {
     color: #ed331c;
 }
 
-.comment-form input[type="text"],
+/*.comment-form input[type="text"],
 .comment-form input[type="email"],
 .comment-form input[type="url"] {
     max-width: 270px;
@@ -712,7 +695,7 @@ nav.main-nav a.next:before {
 .comment-form textarea {
     width: 100%;
 }
-
+*/
 .form-allowed-tags,
 .form-allowed-tags code {
     color: #686758;
@@ -750,7 +733,7 @@ nav.main-nav a.next:before {
 }
 
 #commentform {
-    height: 140px;
+/*     height: 140px; */
 }
 #commentform .comment-form-author {
     width: 26%;
@@ -779,7 +762,6 @@ nav.main-nav a.next:before {
 #commentform textarea {
     height: 80px;
     width: 100%;
-    margin: 5px 0px;
 }
 #commentform textarea, #commentform input {
     font-size: 11px;
@@ -792,29 +774,33 @@ nav.main-nav a.next:before {
     border-color: rgb(151,44,44);
 }
 #commentform #vinfos_save_block {
-    float: left;
+/*     float: left; */
     margin-top: 5px;
 }
 #commentform #vinfos_save_block span {
     margin-left: 5px;
 }
 
-#commentform #comment_status {
+#commentform #comment_status,
+#commentform p.form-submit {
     float: left;
-    width: 70%;
-}
-#commentform #comment_submit {
+    display: inline-block;
+
     height: 18px;
+}
+#commentform #comment_status {
+    width: 70%;
+    font-size: 11px;
+}
+#commentform p.form-submit {
     font-size: 13px;
+    width: 30%;
+}
+
+#commentform #comment_submit {
     border: none;
     color: rgb(201,201,201);
     background-color: rgb(58,58,58);
-}
-p.form-submit {
-    float: right;
-    width: 30%;
-    height: 18px;
-    line-height: 18px;
 }
 
 /* ******************************* archives ******************************* */
