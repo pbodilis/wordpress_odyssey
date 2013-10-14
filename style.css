@@ -266,12 +266,16 @@ ul.sub_page_menu>li.page_item ul.sub_page_menu li.page_item {
     height: 0;
     background-color: rgb(68,68,68);
     
-    transition: opacity 0.5s ease-in-out;
+    transition: opacity 0.2s ease-in-out;
     
     -moz-box-shadow: 5px 5px 5px rgba(0,0,0,0.5);
     -webkit-box-shadow: 5px 5px 5px rgba(0,0,0,0.5);
     box-shadow: 0px 5px 5px rgba(0,0,0,0.5);
 }
+body.white .pagenav>ul {
+    background-color: rgb(230,230,230);
+}
+
 .pagenav:hover>ul {
     visibility:visible;
     opacity: 1;
