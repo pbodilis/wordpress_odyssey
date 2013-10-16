@@ -372,7 +372,7 @@ nav.main-nav a.next:before {
     width: 100%;
     padding-top: 30px; /* header bar height */
     margin: 0 auto;
-    height: auto !important;
+    height: 100%;
     min-height: 100%;
 }
 #photo_wrapper {
@@ -410,6 +410,8 @@ nav.main-nav a.next:before {
     color: rgb(201,201,201);
     font-size: 14px;
     min-width: 800px;
+    height: 100%;
+    min-height: 100%;
 }
 
 #content, #comments {
