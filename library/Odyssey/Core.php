@@ -58,7 +58,7 @@ class Core {
         
         // add couple of filters on body_class, and content
         add_filter('body_class',  array(&$this, 'body_class'));
-        add_filter('the_content', array(&$this, 'filter_content'));
+//         add_filter('the_content', array(&$this, 'filter_content'));
 
         // the list of format support by the theme
         add_theme_support('post-formats', array('image', 'video'));
@@ -86,22 +86,22 @@ class Core {
         return $classes;
     }
 
-    public function filter_content($content) {
-        switch (get_post_format()) {
-            case 'image':
-                $content = strip_shortcodes($content);
-                // ouch, now, that's a ugly hack :/
-                // remove the image, the link and the paragraph in which the image is.
-                $content = preg_replace('/<p\><a[^>]+\><img[^>]+\><\/a><\/p>/', '', $content, 1);
-//                 $content = preg_replace('/<p[^>]*>[\s|&nbsp;]*<\/p>/', '', $content);
-    //            $content = preg_replace('/(width|height)="\d*"\s/', '', $content);
-                break;
-            default:
-                break;
-        }
-        
-        return $content;
-    }
+//     public function filter_content($content) {
+//         switch (get_post_format()) {
+//             case 'image':
+//                 $content = strip_shortcodes($content);
+//                 // ouch, now, that's a ugly hack :/
+//                 // remove the image, the link and the paragraph in which the image is.
+//                 $content = preg_replace('/<p\><a[^>]+\><img[^>]+\><\/a><\/p>/', '', $content, 1);
+// //                 $content = preg_replace('/<p[^>]*>[\s|&nbsp;]*<\/p>/', '', $content);
+//     //            $content = preg_replace('/(width|height)="\d*"\s/', '', $content);
+//                 break;
+//             default:
+//                 break;
+//         }
+//         
+//         return $content;
+//     }
 
 
     /**
@@ -186,7 +186,13 @@ class Core {
         $ret->ID      = $post->ID;
         $ret->title   = $post->post_title;
         $ret->url     = get_permalink($post->ID);
-        $ret->content = apply_filters('the_content', $post->post_content);
+
+        $after_more = explode('<!--more-->', $post->post_content);
+        if (array_key_exists(1, $after_more) ) {
+            $ret->content = apply_filters('the_content', $after_more[1]);
+        } else {
+            $ret->content = apply_filters('the_content', $after_more[0]);
+        }
 
         $ret->class   = implode(' ', get_post_class('', $post->ID));
 

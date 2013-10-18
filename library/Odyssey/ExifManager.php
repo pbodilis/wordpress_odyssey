@@ -33,8 +33,41 @@ class ExifManager
 
     public function __construct(array $params = array()) {
         Admin::get_instance()->register($this);
+        add_action('admin_init', array(&$this, 'admin_init'));
     }
 
+    public function admin_init() {
+        register_setting(Admin::OPTION_GROUP, self::OPTION_NAME);
+        add_settings_section(
+            self::OPTION_NAME,                // section id
+            __('Exif Management', 'odyssey'), // section title
+            array(&$this, 'section_text'),    // callback to the function displaying the output of the section
+            'odyssey_theme_options'           // menu page (slug of the theme setting page)
+        );
+        foreach($this->get_option() as $key => $value) {
+            add_settings_field(
+                $key,
+                self::option_id2label($key),
+                array(&$this, 'option_field'),
+                'odyssey_theme_options',       // menu page (slug of the theme setting page)
+                self::OPTION_NAME,             // the option name it is recoreded into
+                array('label_for' => $key, 'value' => $value)
+            );
+        }
+        
+    }
+
+    public function section_text() {
+        echo '<p>Please select the exif field to display</p>' . PHP_EOL;
+    }
+    function option_field($args) {
+        $options = get_option(self::OPTION_NAME);
+        echo '<input id="plugin_text_string" ' .
+            'name="odyssey_options_exif[' . $options['text_string'] . ']" ' .
+            'type="checkbox"' .
+            ($args['value'] ? 'checked="checked"' : '') .
+            ' />';
+    }
     static public function option_id2label($option_id) {
         $id2label = array(
             'Make'             => __('Manufacturer: ', 'odyssey' ),
@@ -88,40 +121,50 @@ class ExifManager
         );
     }
 
-    public function get_options() {
+    public function get_option() {
         return get_option(self::OPTION_NAME, self::get_default_options());
     }
 
     function get_option_page() {
-        if ( isset( $_POST[ self::RESET ] ) ) {
-            delete_option(self::OPTION_NAME);
-        }
-        $options = $this->get_options();
-        if (isset($_POST[self::SUBMIT])) {
-            $doUpdate = false;
-            foreach ($options as $option => &$enabled) {
-                // it's enabled now (as it is part of the POST), but wasn't enabled before -> update
-                if (isset($_POST[ $option ] ) && ! $enabled) {
-                    $enabled = true;
-                    $doUpdate = true;
-                // it's unenabled now (as it is not part of the POST), but was enabled before -> update
-                } else if (!isset($_POST[ $option ] ) && $enabled) {
-                    $enabled = false;
-                    $doUpdate = true;
-                }
-            }
-            $doUpdate && update_option(self::OPTION_NAME, $options);
-        }
+        echo '<div>' . PHP_EOL;
+        echo '  <h2>Exif Management</h2>' . PHP_EOL;
+        echo '  <form action="options.php" method="post">' . PHP_EOL;
+        settings_fields(self::OPTION_NAME);
+        do_settings_sections('odyssey_theme_options');
 
-        $data = array();
-        foreach ($options as $option => &$enabled) {
-            $data[] = array('id' => $option, 'enabled' => $enabled, 'exif' => self::option_id2label($option));
-        }
-        return Renderer::get_instance()->render('admin_exif', array(
-            'options' => $data,
-            'submit'   => self::SUBMIT,
-            'reset'    => self::RESET,
-        ));
+        echo '<input name="Submit" type="submit" value="' . esc_attr_e('Save Changes') . '" />' . PHP_EOL;
+        echo '  </form>' . PHP_EOL;
+        echo '</div>' . PHP_EOL;
+
+//         if ( isset( $_POST[ self::RESET ] ) ) {
+//             delete_option(self::OPTION_NAME);
+//         }
+//         $options = $this->get_options();
+//         if (isset($_POST[self::SUBMIT])) {
+//             $doUpdate = false;
+//             foreach ($options as $option => &$enabled) {
+//                 // it's enabled now (as it is part of the POST), but wasn't enabled before -> update
+//                 if (isset($_POST[ $option ] ) && ! $enabled) {
+//                     $enabled = true;
+//                     $doUpdate = true;
+//                 // it's unenabled now (as it is not part of the POST), but was enabled before -> update
+//                 } else if (!isset($_POST[ $option ] ) && $enabled) {
+//                     $enabled = false;
+//                     $doUpdate = true;
+//                 }
+//             }
+//             $doUpdate && update_option(self::OPTION_NAME, $options);
+//         }
+// 
+//         $data = array();
+//         foreach ($options as $option => &$enabled) {
+//             $data[] = array('id' => $option, 'enabled' => $enabled, 'exif' => self::option_id2label($option));
+//         }
+//         return Renderer::get_instance()->render('admin_exif', array(
+//             'options' => $data,
+//             'submit'   => self::SUBMIT,
+//             'reset'    => self::RESET,
+//         ));
     }
 
     /**
