@@ -20,6 +20,7 @@ class Admin
     private $managers = array();
 
     const OPTION_GROUP = 'odyssey_options';
+    const OPTION_PAGE = 'odyssey_option_page';
 
     static private $instance;
     static public function get_instance(array $params = array())
@@ -74,11 +75,14 @@ class Admin
 
         echo '<form method="post" action="options.php">';
         settings_fields( self::OPTION_GROUP );
+        do_settings_sections( self::OPTION_PAGE );
+        echo '  <input name="Submit" type="submit" value="' . __('Save Changes', 'odyssey') . '" />' . PHP_EOL;
+        echo '</form>' . PHP_EOL;
 
-        foreach($this->managers as $manager) {
-            echo $manager->get_option();
-break;
-        }
+//         foreach($this->managers as $manager) {
+//             echo $manager->get_option();
+// break;
+//         }
     }
 
 }

@@ -17,7 +17,9 @@ namespace Odyssey;
  */
 class HeaderBar
 {
-    const TEMPLATE_FILE = 'photoblog_header';
+//     const TEMPLATE_FILE = 'photoblog_header';
+
+    const OPTION_NAME = 'odyssey_options_header';
 
     const SYNDICATION_OPTION_NAME = 'odyssey_options_headerbar_syndication';
     const SYNDICATION_SUBMIT_NAME = 'odyssey_submit_headerbar_syndication';
@@ -37,6 +39,51 @@ class HeaderBar
 
     public function __construct(array $params = array()) {
         Admin::get_instance()->register($this);
+        add_action('admin_init', array(&$this, 'admin_init'));
+    }
+
+    public function admin_init() {
+        register_setting(Admin::OPTION_GROUP, self::OPTION_NAME);
+        add_settings_section(
+            self::OPTION_NAME,                // section id
+            __('Exif Management', 'odyssey'), // section title
+            array(&$this, 'section_text'),    // callback to the function displaying the output of the section
+            Admin::OPTION_PAGE           // menu page (slug of the theme setting page)
+        );
+        foreach($this->get_option() as $key => $value) {
+            add_settings_field(
+                $key,
+                self::option_id2label($key),
+                array(&$this, 'option_field'),
+                Admin::OPTION_PAGE,       // menu page (slug of the theme setting page)
+                self::OPTION_NAME,             // the option name it is recoreded into
+                array('label_for' => $key, 'value' => $value)
+            );
+        }
+    }
+    public function section_text() {
+        echo '<p>Please select the exif field to display</p>' . PHP_EOL;
+    }
+    public function get_option() {
+        $default = self::get_default_options();
+        $options = get_option(self::OPTION_NAME, self::get_default_options());
+        foreach($default as $key => $value) {
+            if (array_key_exists($key, $options) && $options[$key] === true) {
+                $default[$key] = true;
+            } else {
+                $default[$key] = false;
+            }
+        }
+
+        return array_merge($default, $options);
+    }
+
+    function option_field($args) {
+        echo '<input id="' . $args['label_for'] . '" ' .
+            'name="' . self::OPTION_NAME . '[' . $args['label_for'] . ']" ' .
+            'type="checkbox"' .
+            ($args['value'] ? 'checked="checked"' : '') .
+            ' />';
     }
 
     static public function option_id2label($option_id) {

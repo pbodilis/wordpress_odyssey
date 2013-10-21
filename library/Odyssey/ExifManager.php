@@ -42,28 +42,39 @@ class ExifManager
             self::OPTION_NAME,                // section id
             __('Exif Management', 'odyssey'), // section title
             array(&$this, 'section_text'),    // callback to the function displaying the output of the section
-            'odyssey_theme_options'           // menu page (slug of the theme setting page)
+            Admin::OPTION_PAGE           // menu page (slug of the theme setting page)
         );
         foreach($this->get_option() as $key => $value) {
             add_settings_field(
                 $key,
                 self::option_id2label($key),
                 array(&$this, 'option_field'),
-                'odyssey_theme_options',       // menu page (slug of the theme setting page)
+                Admin::OPTION_PAGE,       // menu page (slug of the theme setting page)
                 self::OPTION_NAME,             // the option name it is recoreded into
                 array('label_for' => $key, 'value' => $value)
             );
         }
-        
     }
-
     public function section_text() {
         echo '<p>Please select the exif field to display</p>' . PHP_EOL;
     }
+    public function get_option() {
+        $default = self::get_default_options();
+        $options = get_option(self::OPTION_NAME, self::get_default_options());
+        foreach($default as $key => $value) {
+            if (array_key_exists($key, $options) && $options[$key] === true) {
+                $default[$key] = true;
+            } else {
+                $default[$key] = false;
+            }
+        }
+        
+        return array_merge($default, $options);
+    }
+
     function option_field($args) {
-        $options = get_option(self::OPTION_NAME);
-        echo '<input id="plugin_text_string" ' .
-            'name="odyssey_options_exif[' . $options['text_string'] . ']" ' .
+        echo '<input id="' . $args['label_for'] . '" ' .
+            'name="' . self::OPTION_NAME . '[' . $args['label_for'] . ']" ' .
             'type="checkbox"' .
             ($args['value'] ? 'checked="checked"' : '') .
             ' />';
@@ -119,52 +130,6 @@ class ExifManager
 
             'Title'            => false,
         );
-    }
-
-    public function get_option() {
-        return get_option(self::OPTION_NAME, self::get_default_options());
-    }
-
-    function get_option_page() {
-        echo '<div>' . PHP_EOL;
-        echo '  <h2>Exif Management</h2>' . PHP_EOL;
-        echo '  <form action="options.php" method="post">' . PHP_EOL;
-        settings_fields(self::OPTION_NAME);
-        do_settings_sections('odyssey_theme_options');
-
-        echo '<input name="Submit" type="submit" value="' . esc_attr_e('Save Changes') . '" />' . PHP_EOL;
-        echo '  </form>' . PHP_EOL;
-        echo '</div>' . PHP_EOL;
-
-//         if ( isset( $_POST[ self::RESET ] ) ) {
-//             delete_option(self::OPTION_NAME);
-//         }
-//         $options = $this->get_options();
-//         if (isset($_POST[self::SUBMIT])) {
-//             $doUpdate = false;
-//             foreach ($options as $option => &$enabled) {
-//                 // it's enabled now (as it is part of the POST), but wasn't enabled before -> update
-//                 if (isset($_POST[ $option ] ) && ! $enabled) {
-//                     $enabled = true;
-//                     $doUpdate = true;
-//                 // it's unenabled now (as it is not part of the POST), but was enabled before -> update
-//                 } else if (!isset($_POST[ $option ] ) && $enabled) {
-//                     $enabled = false;
-//                     $doUpdate = true;
-//                 }
-//             }
-//             $doUpdate && update_option(self::OPTION_NAME, $options);
-//         }
-// 
-//         $data = array();
-//         foreach ($options as $option => &$enabled) {
-//             $data[] = array('id' => $option, 'enabled' => $enabled, 'exif' => self::option_id2label($option));
-//         }
-//         return Renderer::get_instance()->render('admin_exif', array(
-//             'options' => $data,
-//             'submit'   => self::SUBMIT,
-//             'reset'    => self::RESET,
-//         ));
     }
 
     /**
