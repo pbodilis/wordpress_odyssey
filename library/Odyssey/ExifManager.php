@@ -19,7 +19,7 @@ class ExifManager
 {
     const METADATA_NAME = '_wp_odyssey_metadata_exif';
 
-    const OPTION_NAME = 'odyssey_options_exif';
+    const OPTION_NAME = 'odyssey_option_exif';
     const SUBMIT      = 'odyssey_submit_exif';
     const RESET       = 'odyssey_reset_exif';
 
@@ -60,16 +60,16 @@ class ExifManager
     }
     public function get_option() {
         $default = self::get_default_options();
-        $options = get_option(self::OPTION_NAME, self::get_default_options());
+        $option = get_option(self::OPTION_NAME, self::get_default_options());
         foreach($default as $key => $value) {
-            if (array_key_exists($key, $options) && $options[$key] === true) {
+            if (array_key_exists($key, $option) && $option[$key] === true) {
                 $default[$key] = true;
             } else {
                 $default[$key] = false;
             }
         }
         
-        return array_merge($default, $options);
+        return array_merge($default, $option);
     }
 
     function option_field($args) {
@@ -139,32 +139,32 @@ class ExifManager
      * @return array of selected exif, with at least captureDate
      */
     public function get_image_exif($post_id, $filename) {
-        $options = $this->get_options();
-        if (false === $options) {
+        $option = $this->get_option();
+        if (false === $option) {
             return false;
         }
         $exifs = $this->read_exifs($post_id, $filename);
         $ret = array();
 
-        foreach ($options as $option => $enabled) {
-            if ( ! $enabled || ! isset( $exifs[ $option ] ) || 'a' === $exifs[ $option ] ) {
+        foreach ($option as $name => $enabled) {
+            if ( ! $enabled || ! isset( $exifs[ $name ] ) || 'a' === $exifs[ $name ] ) {
                 continue;
             }
 
-            switch ($option) {
+            switch ($name) {
                 case 'FNumber':
                 case 'FocalLength':
-                    $value = self::compute_math($exifs[ $option ]);
+                    $value = self::compute_math($exifs[ $name ]);
                     break;
                 case 'ExposureProgram':
-                    $value = self::exposure_program($exifs[ $option ]);
+                    $value = self::exposure_program($exifs[ $name ]);
                     break;
                 default:
-                    $value = $exifs[ $option ];
+                    $value = $exifs[ $name ];
                     break;
             }
             if (false !== $value) {
-                $ret[self::option_id2label($option)] = $value;
+                $ret[self::option_id2label($name)] = $value;
             }
         }
         return $ret;
@@ -200,7 +200,7 @@ class ExifManager
      */
     static private function compute_math($math_string) {
         $math_string = trim($math_string);                                   // trim white spaces
-        $math_string = ereg_replace('[^0-9\+-\*\/\(\) ]', '', $math_string); // remove any non-numbers chars; exception for math operators
+        $math_string = preg_replace('[^0-9\+-\*\/\(\) ]', '', $math_string); // remove any non-numbers chars; exception for math operators
         if (empty($math_string)) {
             return false;
         }

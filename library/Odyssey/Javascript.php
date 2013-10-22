@@ -42,6 +42,7 @@ class Javascript
 
         add_action('wp_head',            array(&$this, 'enqueue_templates'), 0);
         add_action('wp_enqueue_scripts', array(&$this, 'enqueue_javascript'));
+        add_action('wp_enqueue_scripts', array(&$this, 'enqueue_css'));
     }
 
     /**
@@ -97,6 +98,11 @@ class Javascript
 //             pageTracker._initData();
 //             pageTracker._trackPageview();
 //         </script>
+    }
+
+    public function enqueue_css() {
+        // Add Genericons font, used in the main stylesheet.
+        wp_enqueue_style( 'genericons', get_template_directory_uri() . '/font/genericons.css', array(), '2.09' );
     }
 
     public function enqueue_templates() {

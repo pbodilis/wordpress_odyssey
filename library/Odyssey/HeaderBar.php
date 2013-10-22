@@ -19,7 +19,7 @@ class HeaderBar
 {
 //     const TEMPLATE_FILE = 'photoblog_header';
 
-    const OPTION_NAME = 'odyssey_options_header';
+    const OPTION_NAME = 'odyssey_option_header';
 
     const SYNDICATION_OPTION_NAME = 'odyssey_options_headerbar_syndication';
     const SYNDICATION_SUBMIT_NAME = 'odyssey_submit_headerbar_syndication';
@@ -47,43 +47,45 @@ class HeaderBar
         add_settings_section(
             self::OPTION_NAME,                // section id
             __('Exif Management', 'odyssey'), // section title
-            array(&$this, 'section_text'),    // callback to the function displaying the output of the section
+            array(&$this, 'section_text_syndication'),    // callback to the function displaying the output of the section
             Admin::OPTION_PAGE           // menu page (slug of the theme setting page)
         );
-        foreach($this->get_option() as $key => $value) {
+        foreach($this->get_option_syndication() as $key => $value) {
             add_settings_field(
                 $key,
                 self::option_id2label($key),
-                array(&$this, 'option_field'),
+                array(&$this, 'option_field_syndication'),
                 Admin::OPTION_PAGE,       // menu page (slug of the theme setting page)
                 self::OPTION_NAME,             // the option name it is recoreded into
                 array('label_for' => $key, 'value' => $value)
             );
         }
     }
-    public function section_text() {
-        echo '<p>Please select the exif field to display</p>' . PHP_EOL;
+    public function section_text_syndication() {
+        echo '<p>Please select the syndication to display in header bar</p>' . PHP_EOL;
     }
-    public function get_option() {
-        $default = self::get_default_options();
-        $options = get_option(self::OPTION_NAME, self::get_default_options());
+    public function get_option_syndication() {
+        $default = self::get_default_option();
+        $option = get_option(self::OPTION_NAME, self::get_default_option());
         foreach($default as $key => $value) {
-            if (array_key_exists($key, $options) && $options[$key] === true) {
-                $default[$key] = true;
+            if (array_key_exists($key, $option) && $option[$key] === true) {
+                $default[$key]['enabled'] = true;
             } else {
-                $default[$key] = false;
+                $default[$key]['enabled'] = false;
             }
         }
 
-        return array_merge($default, $options);
+        return array_merge($default, $option);
     }
 
-    function option_field($args) {
+    function option_field_syndication($args) {
         echo '<input id="' . $args['label_for'] . '" ' .
             'name="' . self::OPTION_NAME . '[' . $args['label_for'] . ']" ' .
             'type="checkbox"' .
-            ($args['value'] ? 'checked="checked"' : '') .
+            ($args['value']['enabled'] ? 'checked="checked"' : '') .
             ' />';
+        echo '<input name="tf-' . $args['label_for'] . '" type="text" size="60" value="' . $args['value']['value'] . '" class="regular-text" />' . PHP_EOL;
+
     }
 
     static public function option_id2label($option_id) {
@@ -102,7 +104,8 @@ class HeaderBar
         );
         return $id2label[ $option_id ];
     }
-    static public function get_default_header_bar_syndication_options() {
+
+    static public function get_default_option() {
         $blog = Core::get_instance()->get_blog();
         
         return array(
@@ -116,10 +119,10 @@ class HeaderBar
         );
     }
 
-    public function get_header_bar_syndication_options() {
-        return get_option(self::SYNDICATION_OPTION_NAME, self::get_default_header_bar_syndication_options());
-    }
-
+//     public function get_header_bar_syndication_options() {
+//         return get_option(self::SYNDICATION_OPTION_NAME, self::get_default_header_bar_syndication_options());
+//     }
+// 
     static public function get_default_header_bar_other_links_options() {
         return array(
             'random'   => true,
