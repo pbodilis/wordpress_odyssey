@@ -19,15 +19,13 @@ class HeaderBar
 {
 //     const TEMPLATE_FILE = 'photoblog_header';
 
-    const OPTION_NAME = 'odyssey_option_header';
+    const SYNDICATION_OPTION_NAME = 'odyssey_option_headerbar_syndication';
+//     const SYNDICATION_SUBMIT_NAME = 'odyssey_submit_headerbar_syndication';
+//     const SYNDICATION_RESET_NAME  = 'odyssey_reset_headerbar_syndication';
 
-    const SYNDICATION_OPTION_NAME = 'odyssey_options_headerbar_syndication';
-    const SYNDICATION_SUBMIT_NAME = 'odyssey_submit_headerbar_syndication';
-    const SYNDICATION_RESET_NAME  = 'odyssey_reset_headerbar_syndication';
-
-    const OTHER_LINKS_OPTION_NAME = 'odyssey_options_headerbar_other_links';
-    const OTHER_LINKS_SUBMIT_NAME = 'odyssey_submit_headerbar_other_links';
-    const OTHER_LINKS_RESET_NAME  = 'odyssey_reset_headerbar_other_links';
+    const OTHER_LINKS_OPTION_NAME = 'odyssey_option_headerbar_other_links';
+//     const OTHER_LINKS_SUBMIT_NAME = 'odyssey_submit_headerbar_other_links';
+//     const OTHER_LINKS_RESET_NAME  = 'odyssey_reset_headerbar_other_links';
 
     static private $instance;
     static public function get_instance(array $params = array()) {
@@ -39,13 +37,15 @@ class HeaderBar
 
     public function __construct(array $params = array()) {
         Admin::get_instance()->register($this);
-        add_action('admin_init', array(&$this, 'admin_init'));
+        add_action('admin_init', array(&$this, 'admin_init_syndication'));
+        add_action('admin_init', array(&$this, 'admin_init_other_links'));
     }
 
-    public function admin_init() {
-        register_setting(Admin::OPTION_GROUP, self::OPTION_NAME);
+    public function admin_init_syndication() {
+        // syndication is tricky, as there's a check box to enable/disable the field, and a textfield.
+        register_setting(Admin::OPTION_GROUP, self::SYNDICATION_OPTION_NAME, array(&$this, 'sanitize_option_syndication'));
         add_settings_section(
-            self::OPTION_NAME,                // section id
+            self::SYNDICATION_OPTION_NAME,                // section id
             __('Exif Management', 'odyssey'), // section title
             array(&$this, 'section_text_syndication'),    // callback to the function displaying the output of the section
             Admin::OPTION_PAGE           // menu page (slug of the theme setting page)
@@ -55,8 +55,8 @@ class HeaderBar
                 $key,
                 self::option_id2label($key),
                 array(&$this, 'option_field_syndication'),
-                Admin::OPTION_PAGE,       // menu page (slug of the theme setting page)
-                self::OPTION_NAME,             // the option name it is recoreded into
+                Admin::OPTION_PAGE,            // menu page (slug of the theme setting page)
+                self::SYNDICATION_OPTION_NAME, // the option name it is recorded into
                 array('label_for' => $key, 'value' => $value)
             );
         }
@@ -65,8 +65,11 @@ class HeaderBar
         echo '<p>Please select the syndication to display in header bar</p>' . PHP_EOL;
     }
     public function get_option_syndication() {
-        $default = self::get_default_option();
-        $option = get_option(self::OPTION_NAME, self::get_default_option());
+        $default = self::get_default_option_syndication();
+        $option = get_option(self::SYNDICATION_OPTION_NAME, $default);
+        if (empty($option)) {
+            $option = array();
+        }
         foreach($default as $key => $value) {
             if (array_key_exists($key, $option) && $option[$key] === true) {
                 $default[$key]['enabled'] = true;
@@ -78,15 +81,100 @@ class HeaderBar
         return array_merge($default, $option);
     }
 
-    function option_field_syndication($args) {
+    public function option_field_syndication($args) {
         echo '<input id="' . $args['label_for'] . '" ' .
-            'name="' . self::OPTION_NAME . '[' . $args['label_for'] . ']" ' .
+            'name="' . self::SYNDICATION_OPTION_NAME . '[' . $args['label_for'] . ']" ' .
             'type="checkbox"' .
             ($args['value']['enabled'] ? 'checked="checked"' : '') .
             ' />';
-        echo '<input name="tf-' . $args['label_for'] . '" type="text" size="60" value="' . $args['value']['value'] . '" class="regular-text" />' . PHP_EOL;
-
+        echo '<input name="' . $args['label_for'] . '" type="text" size="60" value="' . $args['value']['value'] . '" class="regular-text" />' . PHP_EOL;
     }
+
+    public function sanitize_option_syndication($input) {
+        $option = get_option(self::SYNDICATION_OPTION_NAME, self::get_default_option_syndication());
+        foreach($option as $key => $enabled) {
+            if (array_key_exists($key, $input) && $input[$key] === 'on') {
+                $option[$key]['enabled'] = true;
+                $option[$key]['value']   = $_REQUEST[$key];
+            } else {
+                $option[$key]['enabled'] = false;
+            }
+        }
+        return $option;
+    }
+    static public function get_default_option_syndication() {
+        $blog = Core::get_instance()->get_blog();
+
+        return array(
+            'rss'         => array('enabled' => true,  'value' => $blog->rss2_url),
+            'com_rss'     => array('enabled' => false, 'value' => $blog->comments_rss2_url),
+            'atom'        => array('enabled' => false, 'value' => $blog->atom_url),
+            'facebook'    => array('enabled' => false, 'value' => __('Facebook page url', 'odyssey' )),
+            'twitter'     => array('enabled' => false, 'value' => __('Twitter page url', 'odyssey' )),
+            'flickr'      => array('enabled' => false, 'value' => __('Flickr page url', 'odyssey' )),
+            'google_plus' => array('enabled' => false, 'value' => __('Google+ page url', 'odyssey' )),
+        );
+    }
+
+
+
+
+    public function admin_init_other_links() {
+        register_setting(Admin::OPTION_GROUP, self::OTHER_LINKS_OPTION_NAME);
+        add_settings_section(
+            self::OTHER_LINKS_OPTION_NAME,    // section id
+            __('Other links', 'odyssey'), // section title
+            array(&$this, 'section_text_other_links'),    // callback to the function displaying the output of the section
+            Admin::OPTION_PAGE           // menu page (slug of the theme setting page)
+        );
+        foreach($this->get_option_other_links() as $key => $value) {
+            add_settings_field(
+                $key,
+                self::option_id2label($key),
+                array(&$this, 'option_field'),
+                Admin::OPTION_PAGE,       // menu page (slug of the theme setting page)
+                self::OTHER_LINKS_OPTION_NAME,             // the option name it is recoreded into
+                array('label_for' => $key, 'value' => $value)
+            );
+        }
+    }
+    public function section_text_other_links() {
+        echo '<p>Please select the other links to display</p>' . PHP_EOL;
+    }
+    public function get_option_other_links() {
+        $default = self::get_default_header_bar_other_links_option();
+        $option = get_option(self::OTHER_LINKS_OPTION_NAME, $default);
+        if (empty($option)) {
+            $option = array();
+        }
+        foreach($default as $key => $value) {
+            if (array_key_exists($key, $option) && $option[$key] === true) {
+                $default[$key] = true;
+            } else {
+                $default[$key] = false;
+            }
+        }
+
+        return array_merge($default, $option);
+    }
+
+    function option_field($args) {
+        echo '<input id="' . $args['label_for'] . '" ' .
+            'name="' . self::OTHER_LINKS_OPTION_NAME . '[' . $args['label_for'] . ']" ' .
+            'type="checkbox"' .
+            ($args['value'] ? 'checked="checked"' : '') .
+            ' />';
+    }
+
+    static public function get_default_header_bar_other_links_option() {
+        return array(
+            'random'   => true,
+            'archives' => true,
+            'pages'    => true,
+        );
+    }
+
+
 
     static public function option_id2label($option_id) {
         $id2label = array(
@@ -105,113 +193,8 @@ class HeaderBar
         return $id2label[ $option_id ];
     }
 
-    static public function get_default_option() {
-        $blog = Core::get_instance()->get_blog();
-        
-        return array(
-            'rss'         => array('enabled' => true,  'value' => $blog->rss2_url),
-            'com_rss'     => array('enabled' => false, 'value' => $blog->comments_rss2_url),
-            'atom'        => array('enabled' => false, 'value' => $blog->atom_url),
-            'facebook'    => array('enabled' => false, 'value' => __('Facebook page url', 'odyssey' )),
-            'twitter'     => array('enabled' => false, 'value' => __('Twitter page url', 'odyssey' )),
-            'flickr'      => array('enabled' => false, 'value' => __('Flickr page url', 'odyssey' )),
-            'google_plus' => array('enabled' => false, 'value' => __('Google+ page url', 'odyssey' )),
-        );
-    }
-
-//     public function get_header_bar_syndication_options() {
-//         return get_option(self::SYNDICATION_OPTION_NAME, self::get_default_header_bar_syndication_options());
-//     }
-// 
-    static public function get_default_header_bar_other_links_options() {
-        return array(
-            'random'   => true,
-            'archives' => true,
-            'pages'    => true,
-        );
-    }
-
-    public function get_header_bar_other_links_options() {
-        return get_option(self::OTHER_LINKS_OPTION_NAME, self::get_default_header_bar_other_links_options());
-    }
-
-    function get_option_page() {
-        $data = array('configureSetting' => array());
-
-        if (isset($_POST[self::SYNDICATION_RESET_NAME])) {
-            delete_option(self::SYNDICATION_OPTION_NAME);
-        }
-        $options = $this->get_header_bar_syndication_options();
-        if (isset($_POST[self::SYNDICATION_SUBMIT_NAME])) {
-            unset($_POST[self::SYNDICATION_SUBMIT_NAME]);
-            foreach ($options as $option => &$value) {
-                // it's enabled now (as it is part of the POST), but wasn't enabled before -> update
-                if (isset($_POST[$option]) && !$value['enabled']) {
-                    $value['enabled'] = true;
-                // it's unenabled now (as it is not part of the POST), but was enabled before -> update
-                } else if (!isset($_POST[$option]) && $value['enabled']) {
-                    $value['enabled'] = false;
-                }
-                if (isset($_POST['tf-' . $option])) {
-                    $value['value'] = $_POST['tf-' . $option];
-                }
-            }
-            update_option(self::SYNDICATION_OPTION_NAME, $options);
-        }
-        $data_options = array();
-        foreach ($options as $option => &$value) {
-            $data_options[] = array(
-                'id'      => $option,
-                'label'   => self::option_id2label($option),
-                'enabled' => $value['enabled'],
-                'value'   => $value['value'],
-            );
-        }
-        $data['section'][] = array(
-            'name'        => __('Syndication links', 'odyssey' ),
-            'description' => __('Links to the platforms on which this blog can be followed:', 'odyssey' ),
-            'options'    => $data_options,
-            'submit'      => self::SYNDICATION_SUBMIT_NAME,
-            'reset'       => self::SYNDICATION_RESET_NAME,
-        );
-
-        if (isset($_POST[self::OTHER_LINKS_RESET_NAME])) {
-            delete_option(self::OTHER_LINKS_OPTION_NAME);
-        }
-        $options = $this->get_header_bar_other_links_options();
-        if (isset($_POST[self::OTHER_LINKS_SUBMIT_NAME])) {
-            unset($_POST[self::OTHER_LINKS_SUBMIT_NAME]);
-            foreach ($options as $option => &$enabled) {
-                // it's enabled now (as it is part of the POST), but wasn't enabled before -> update
-                if (isset($_POST[$option]) && !$enabled) {
-                    $enabled = true;
-                // it's unenabled now (as it is not part of the POST), but was enabled before -> update
-                } else if (!isset($_POST[$option]) && $enabled) {
-                    $enabled = false;
-                }
-            }
-            update_option(self::OTHER_LINKS_OPTION_NAME, $options);
-        }
-        $data_options = array();
-        foreach ($options as $option => &$enabled) {
-            $data_options[] = array(
-                'id'      => $option,
-                'label'   => self::option_id2label($option),
-                'enabled' => $enabled,
-            );
-        }
-        $data['section'][] = array(
-            'name'        => __('Other links', 'odyssey' ),
-            'description' => __('Enable other links:', 'odyssey' ),
-            'options'     => $data_options,
-            'submit'      => self::OTHER_LINKS_SUBMIT_NAME,
-            'reset'       => self::OTHER_LINKS_RESET_NAME,
-        );
-        return Renderer::get_instance()->render('admin_headerbar', $data);
-    }
-
     function get_syndication() {
-        $options = $this->get_header_bar_syndication_options();
+        $options = $this->get_option_syndication();
         $syndication = array();
         foreach ($options as $option => &$value) {
             if ($value['enabled']) {
@@ -226,7 +209,7 @@ class HeaderBar
     }
 
     function get_other_links() {
-        $options = $this->get_header_bar_other_links_options();
+        $options = $this->get_option_other_links();
         $others = array();
         foreach ($options as $option => $enabled) {
             if ( ! $enabled) {

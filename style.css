@@ -241,6 +241,9 @@ ul.sub_page_menu li.page_item {
 ul.sub_page_menu>li.page_item ul.sub_page_menu li.page_item {
     padding-left: 10px;
 }
+li.pagenav {
+    display:inline;
+}
 .pagenav p {
     margin: 0px;
     cursor: pointer;

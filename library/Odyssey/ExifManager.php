@@ -61,6 +61,9 @@ class ExifManager
     public function get_option() {
         $default = self::get_default_options();
         $option = get_option(self::OPTION_NAME, self::get_default_options());
+        if (empty($option)) {
+            $option = array();
+        }
         foreach($default as $key => $value) {
             if (array_key_exists($key, $option) && $option[$key] === true) {
                 $default[$key] = true;
