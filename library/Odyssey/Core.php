@@ -18,7 +18,6 @@ namespace Odyssey;
 class Core {
     protected $admin;
     protected $exif_manager;
-    protected $renderer;
     protected $header_bar;
     protected $comment_manager;
     protected $archive_manager;
@@ -41,7 +40,6 @@ class Core {
     public function init(array $params = array()) {
         $this->admin           = Admin::get_instance();
         $this->exif_manager    = ExifManager::get_instance();
-        $this->renderer        = Renderer::get_instance();
         $this->header_bar      = HeaderBar::get_instance();
         $this->comment_manager = CommentManager::get_instance();
 
@@ -74,10 +72,6 @@ class Core {
 
     public function install() {
         update_option('default_post_format', 'image');
-    }
-
-    public function render($template, $data) {
-        echo $this->renderer->render($template, $data);
     }
 
     function body_class($classes) {

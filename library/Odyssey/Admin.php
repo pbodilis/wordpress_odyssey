@@ -57,8 +57,6 @@ class Admin
             'odyssey_theme_options',                     // menu_slug
             array(&$this, 'get_option_page'));           // renderer
     }
-// http://planetozh.com/blog/wp-content/uploads/2009/05/ozh-sampleoptions-pluginphp.txt
-// http://ottodestruct.com/blog/2009/wordpress-settings-api-tutorial/
     public function get_option_page()
     {
         global $select_options;
@@ -75,17 +73,35 @@ class Admin
 
         echo '<form method="post" action="options.php">';
         settings_fields( self::OPTION_GROUP );
-        do_settings_sections( self::OPTION_PAGE );
         submit_button();
-//         echo '  <input class="button button-primary" name="Submit" type="submit" value="' . __('Save Changes', 'odyssey') . '" />' . PHP_EOL;
+        $this->do_settings_sections( self::OPTION_PAGE );
         echo '</form>' . PHP_EOL;
 
-//         foreach($this->managers as $manager) {
-//             echo $manager->get_option();
-// break;
-//         }
     }
 
+    // basically, copy/paste of the original do_settings_sections, with additional shit to organise each section in floating div blocks
+    function do_settings_sections( $page ) {
+        global $wp_settings_sections, $wp_settings_fields;
+
+        if ( ! isset( $wp_settings_sections ) || !isset( $wp_settings_sections[$page] ) )
+            return;
+
+        foreach ( (array) $wp_settings_sections[$page] as $section ) {
+            echo '<div class=".wrap" style="float: left;">' . PHP_EOL;
+            if ( $section['title'] )
+                echo "<h3>{$section['title']}</h3>\n";
+
+            if ( $section['callback'] )
+                call_user_func( $section['callback'], $section );
+
+            if ( ! isset( $wp_settings_fields ) || !isset( $wp_settings_fields[$page] ) || !isset( $wp_settings_fields[$page][$section['id']] ) )
+                continue;
+            echo '<table class="form-table">';
+            do_settings_fields( $page, $section['id'] );
+            echo '</table>';
+            echo '</div>' . PHP_EOL;
+        }
+    }
 }
 
 ?>

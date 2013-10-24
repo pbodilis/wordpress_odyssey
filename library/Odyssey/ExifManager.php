@@ -20,8 +20,6 @@ class ExifManager
     const METADATA_NAME = '_wp_odyssey_metadata_exif';
 
     const OPTION_NAME = 'odyssey_option_exif';
-    const SUBMIT      = 'odyssey_submit_exif';
-    const RESET       = 'odyssey_reset_exif';
 
     static private $instance;
     static public function get_instance(array $params = array()) {

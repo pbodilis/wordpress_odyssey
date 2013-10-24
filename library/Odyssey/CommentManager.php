@@ -17,8 +17,7 @@ namespace Odyssey;
  */
 class CommentManager
 {
-    const OPTION_NAME = 'odyssey_options_comment';
-    const SUBMIT      = 'odyssey_submit_comment';
+    const OPTION_NAME = 'odyssey_option_comment';
 
     static private $instance;
     static public function get_instance(array $params = array()) {
@@ -30,11 +29,59 @@ class CommentManager
 
     public function __construct(array $params = array()) {
         Admin::get_instance()->register($this);
+        add_action('admin_init', array(&$this, 'admin_init'));
 
         add_action('comment_post', array(&$this, 'comment_post'), 20, 2);
         add_filter('comment_post_redirect', array(&$this, 'no_comment_redirection'));
     }
 
+
+    public function admin_init() {
+        register_setting(Admin::OPTION_GROUP, self::OPTION_NAME);
+        add_settings_section(
+            self::OPTION_NAME,                // section id
+            __('Comment Settings', 'odyssey'), // section title
+            array(&$this, 'section_text'),    // callback to the function displaying the output of the section
+            Admin::OPTION_PAGE           // menu page (slug of the theme setting page)
+        );
+        foreach($this->get_option() as $key => $value) {
+            add_settings_field(
+                $key,
+                self::option_id2label($key),
+                array(&$this, 'option_field'),
+                Admin::OPTION_PAGE,       // menu page (slug of the theme setting page)
+                self::OPTION_NAME,             // the option name it is recoreded into
+                array('label_for' => $key, 'value' => $value)
+            );
+        }
+    }
+    public function section_text() {
+        echo '<p>Comment settings</p>' . PHP_EOL;
+    }
+    public function get_option() {
+        $default = self::get_default_options();
+        $option = get_option(self::OPTION_NAME, self::get_default_options());
+        if (empty($option)) {
+            $option = array();
+        }
+        foreach($default as $key => $value) {
+            if (array_key_exists($key, $option) && $option[$key] === true) {
+                $default[$key] = true;
+            } else {
+                $default[$key] = false;
+            }
+        }
+
+        return array_merge($default, $option);
+    }
+
+    function option_field($args) {
+        echo '<input id="' . $args['label_for'] . '" ' .
+            'name="' . self::OPTION_NAME . '[' . $args['label_for'] . ']" ' .
+            'type="checkbox"' .
+            ($args['value'] ? 'checked="checked"' : '') .
+            ' />';
+    }
     static public function option_id2label($option_id) {
         $id2label = array(
             'comment_form_ajax_enabled' => __( 'Ajax comments: ', 'odyssey' ),
@@ -46,43 +93,6 @@ class CommentManager
         return array(
             'comment_form_ajax_enabled' => true,
         );
-    }
-
-    public function get_options() {
-        return get_option(self::OPTION_NAME, self::get_default_options());
-    }
-
-    public function get_option($s) {
-        $options = $this->get_options();
-        return $options[ $s ];
-    }
-
-    public function get_option_page() {
-        $options = $this->get_options();
-        if (isset($_POST[self::SUBMIT])) {
-            $doUpdate = false;
-            foreach ($options as $option => &$enabled) {
-                // it's enabled now (as it is part of the POST), but wasn't enabled before -> update
-                if (isset($_POST[ $option ] ) && ! $enabled) {
-                    $enabled = true;
-                    $doUpdate = true;
-                // it's unenabled now (as it is not part of the POST), but was enabled before -> update
-                } else if (!isset($_POST[ $option ] ) && $enabled) {
-                    $enabled = false;
-                    $doUpdate = true;
-                }
-            }
-            $doUpdate && update_option(self::OPTION_NAME, $options);
-        }
-
-        $data = array();
-        foreach ($options as $option => &$enabled) {
-            $data[] = array('id' => $option, 'enabled' => $enabled, 'option' => self::option_id2label($option));
-        }
-        return Renderer::get_instance()->render('admin_comments', array(
-            'options' => $data,
-            'submit'   => self::SUBMIT,
-        ));
     }
 
     public function comment_form($post_id = NULL) {

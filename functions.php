@@ -4,9 +4,9 @@
  *   This file is part of Odyssey Theme for WordPress.
  */
 
-// include mustache engine
-require dirname(__FILE__) . '/library/Mustache/Autoloader.php';
-Mustache_Autoloader::register();
+// // include mustache engine
+// require dirname(__FILE__) . '/library/Mustache/Autoloader.php';
+// Mustache_Autoloader::register();
 
 // include odysssey engine
 require dirname(__FILE__) . '/library/Odyssey/Autoloader.php';

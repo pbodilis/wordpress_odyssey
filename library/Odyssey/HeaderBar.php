@@ -17,15 +17,8 @@ namespace Odyssey;
  */
 class HeaderBar
 {
-//     const TEMPLATE_FILE = 'photoblog_header';
-
     const SYNDICATION_OPTION_NAME = 'odyssey_option_headerbar_syndication';
-//     const SYNDICATION_SUBMIT_NAME = 'odyssey_submit_headerbar_syndication';
-//     const SYNDICATION_RESET_NAME  = 'odyssey_reset_headerbar_syndication';
-
     const OTHER_LINKS_OPTION_NAME = 'odyssey_option_headerbar_other_links';
-//     const OTHER_LINKS_SUBMIT_NAME = 'odyssey_submit_headerbar_other_links';
-//     const OTHER_LINKS_RESET_NAME  = 'odyssey_reset_headerbar_other_links';
 
     static private $instance;
     static public function get_instance(array $params = array()) {
@@ -46,7 +39,7 @@ class HeaderBar
         register_setting(Admin::OPTION_GROUP, self::SYNDICATION_OPTION_NAME, array(&$this, 'sanitize_option_syndication'));
         add_settings_section(
             self::SYNDICATION_OPTION_NAME,                // section id
-            __('Exif Management', 'odyssey'), // section title
+            __('Syndication links management', 'odyssey'), // section title
             array(&$this, 'section_text_syndication'),    // callback to the function displaying the output of the section
             Admin::OPTION_PAGE           // menu page (slug of the theme setting page)
         );
@@ -123,7 +116,7 @@ class HeaderBar
         register_setting(Admin::OPTION_GROUP, self::OTHER_LINKS_OPTION_NAME);
         add_settings_section(
             self::OTHER_LINKS_OPTION_NAME,    // section id
-            __('Other links', 'odyssey'), // section title
+            __('Other links management', 'odyssey'), // section title
             array(&$this, 'section_text_other_links'),    // callback to the function displaying the output of the section
             Admin::OPTION_PAGE           // menu page (slug of the theme setting page)
         );
@@ -139,7 +132,7 @@ class HeaderBar
         }
     }
     public function section_text_other_links() {
-        echo '<p>Please select the other links to display</p>' . PHP_EOL;
+        echo '<p>Please select the other links to display in the header bar</p>' . PHP_EOL;
     }
     public function get_option_other_links() {
         $default = self::get_default_header_bar_other_links_option();
@@ -228,12 +221,6 @@ class HeaderBar
         }
         return $others;
     }
-//         $blog['others'] = $others;
-// // echo '<pre>' . PHP_EOL;
-// // var_dump($blog['others']);
-//         
-//         return Renderer::get_instance()->render(self::TEMPLATE_FILE, array_merge($blog, $post));
-//     }
 
     static function option_id2css_class($id) {
         $id2Class = array(
