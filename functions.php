@@ -4,11 +4,7 @@
  *   This file is part of Odyssey Theme for WordPress.
  */
 
-// // include mustache engine
-// require dirname(__FILE__) . '/library/Mustache/Autoloader.php';
-// Mustache_Autoloader::register();
-
-// include odysssey engine
+// include odysssey libs
 require dirname(__FILE__) . '/library/Odyssey/Autoloader.php';
 \Odyssey\Autoloader::register();
 
@@ -21,6 +17,7 @@ function the_core() {
     return $core;
 }
 the_core();
+
 
 // meh, no idea what do with that
 if (!isset($content_width)) {

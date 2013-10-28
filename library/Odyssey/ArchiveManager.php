@@ -159,39 +159,31 @@ class ArchiveManager
             echo '            <span class="menu_head">' . PHP_EOL;
             echo '                <h3>' . $archive_section['title'] . '</h3>' . PHP_EOL;
             echo '            </span>' . PHP_EOL;
-        $this->get_sub_archive_menu_rendering($archive_section['menu_entries']);
+            $this->get_sub_archive_menu_rendering($archive_section);
             echo '        </li>' . PHP_EOL;
         }
         echo '    </ul>' . PHP_EOL;
         echo '</div>' . PHP_EOL;
-
-
-        return Renderer::get_instance()->render(self::ARCHIVE_MENU_TEMPLATE_FILE, $archives_section);
     }
 
     function get_sub_archive_menu_rendering($top_menu_entry) {
-echo "<pre>".PHP_EOL;
-var_dump($top_menu_entry);
         echo '            <ul class="menu_content ' . $top_menu_entry['extended'] . '">' . PHP_EOL;
-//     {{#menu_entries}}
         foreach($top_menu_entry['menu_entries'] as $menu_entry) {
-                echo '    <li class="menu ' . $menu_entry['extended'] . '">' . PHP_EOL;
-                echo '        <span class="menu_head">' . PHP_EOL;
-        //             {{#menu_entries.0}}
-                if (!empty($menu_entry['menu_entries'])) {
-                    echo '            <span class="menu_extend"><span class="menu_extend_arrow"></span></span>' . PHP_EOL;
-                }
-        //             {{/menu_entries.0}}
+            echo '    <li class="menu ' . $menu_entry['extended'] . '">' . PHP_EOL;
+            echo '        <span class="menu_head">' . PHP_EOL;
+            if (!empty($menu_entry['menu_entries'])) {
+                echo '            <span class="menu_extend"><span class="menu_extend_arrow"></span></span>' . PHP_EOL;
+            }
 
-                if (array_key_exists('count', $menu_entry)) {
-                    echo '            <a href="{{link}}"> ' . $menu_entry['name'];
-                    echo ' <span class="post_count">' . $menu_entry['count'] . '</span></a>' . PHP_EOL;
-                } else {
-                    echo $archive_section['name'] . PHP_EOL;
-                }
-                echo '        </span>' . PHP_EOL;
-                $this->get_sub_archive_menu_rendering($menu_entry['menu_entries']);
-                echo '    </li>' . PHP_EOL;
+            if (array_key_exists('count', $menu_entry)) {
+                echo '            <a href="' . $menu_entry['link'] . '"> ' . $menu_entry['name'];
+                echo ' <span class="post_count">' . $menu_entry['count'] . '</span></a>' . PHP_EOL;
+            } else {
+                echo $archive_section['name'] . PHP_EOL;
+            }
+            echo '        </span>' . PHP_EOL;
+            $this->get_sub_archive_menu_rendering($menu_entry);
+            echo '    </li>' . PHP_EOL;
         }
         echo '</ul>' . PHP_EOL;
     }

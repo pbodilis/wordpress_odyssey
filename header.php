@@ -61,11 +61,13 @@ $others      = the_core()->get_other_links();
         </div>
         <?php } ?>
 
+        <?php if(is_home() || is_single()) { ?>
         <div class="menu but color">
             <a class="white"     href="#"></a>
             <a class="dark_grey" href="#"></a>
             <a class="black"     href="#"></a>
         </div>
+        <?php } ?>
 <!--        <nav class="menu but">
             <a class="prev <?php echo $blog->class; ?> {{^previous_url}}deactivated{{/previous_url}}" title="Previous"
                 {{#previous_url}}

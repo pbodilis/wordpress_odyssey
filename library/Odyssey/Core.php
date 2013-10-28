@@ -75,8 +75,10 @@ class Core {
     }
 
     function body_class($classes) {
-        // apend the current color chosen for the theme, to the $classes array
-        $classes[] = isset($_COOKIE['odyssey_theme_color']) ? $_COOKIE['odyssey_theme_color'] : 'white';
+        if(is_home() || is_single()) {
+            // apend the current color chosen for the theme, to the $classes array
+            $classes[] = isset($_COOKIE['odyssey_theme_color']) ? $_COOKIE['odyssey_theme_color'] : 'white';
+         }
         return $classes;
     }
 
