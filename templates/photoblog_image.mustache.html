@@ -1,5 +1,5 @@
 {{! This is for post with image as post format}}
-{{#image}}
+
 <div id="photo_wrapper" class="" style="height: {{frame.dEHeight}}px;">
     <figure id="photo_container" class="" style="width: {{frame.width}}px; height: {{frame.cheight}}px;">
         <img src="{{image.url}}" alt="{{title}}"/>
@@ -10,18 +10,8 @@
             {{/image.capture_date}}
         </figcaption>
     </figure>
-{{/image}}
-
-{{! This is for any post that's not an image }}
-{{^image}}
-    <section id="post_main" class="{{class}}">
-        <article>
-            <h2>{{title}}</h2>
-            {{{content}}}
-        </article>
-    </section>
-{{/image}}
-
 </div>
+
+
 
 

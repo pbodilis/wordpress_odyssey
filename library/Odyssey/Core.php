@@ -75,7 +75,7 @@ class Core {
     }
 
     function body_class($classes) {
-        if(is_home() || is_single()) {
+        if (is_home() || is_single()) {
             // apend the current color chosen for the theme, to the $classes array
             $classes[] = isset($_COOKIE['odyssey_theme_color']) ? $_COOKIE['odyssey_theme_color'] : 'white';
          }
@@ -200,7 +200,6 @@ class Core {
         $ret->comments_number = $this->comment_manager->get_post_comments_number($post->ID);
         $ret->comments        = $this->comment_manager->get_post_comments($post->ID);
         $ret->categories      = $this->get_post_categories($post->ID);
-//      $ret = array_merge($ret, $this->get_post_image($post->ID));
 
         if (function_exists('the_ratings')) {
             $ret->ratings = the_ratings('div', $post->ID, false);
@@ -230,27 +229,33 @@ class Core {
     public function get_post_image($post_id) {
         $ret = new \stdClass();
 
-        $args = array(
-            'numberposts'    => 1,
-            'order'          => 'ASC',
-            'post_mime_type' => 'image',
-            'post_parent'    => $post_id,
-            'post_status'    => null,
-            'post_type'      => 'attachment'
-        );
+        $image_id = get_post_thumbnail_id($post_id);
+        if ( empty ( $image_id ) ) {
+            $args = array(
+                'numberposts'    => 1,
+                'order'          => 'ASC',
+                'post_mime_type' => 'image',
+                'post_parent'    => $post_id,
+                'post_status'    => null,
+                'post_type'      => 'attachment'
+            );
 
-        $attachments = get_children( $args );
-        if ($attachments) {
-            $attachment = current($attachments);
-            $data = wp_get_attachment_image_src($attachment->ID, 'full');
-            $ret->url    = $data[0];
-            $ret->width  = $data[1];
-            $ret->height = $data[2];
-
-            $img_filename = get_attached_file($attachment->ID);
-            $ret->capture_date = $this->exif_manager->get_capture_date($attachment->ID, $img_filename);
-            $ret->exifs        = $this->exif_manager->get_image_exif($attachment->ID, $img_filename);
+            $attachments = get_children( $args );
+            if ($attachments) {
+                $attachment = current($attachments);
+            }
+            $image_id = $attachment->ID;
         }
+
+        $data = wp_get_attachment_image_src($image_id, 'full');
+        $ret->url    = $data[0];
+        $ret->width  = $data[1];
+        $ret->height = $data[2];
+
+        $img_filename = get_attached_file($image_id);
+        $ret->capture_date = $this->exif_manager->get_capture_date($image_id, $img_filename);
+        $ret->exifs        = $this->exif_manager->get_image_exif($image_id, $img_filename);
+//         $ret->exifs_rendered = $this->exif_manager->get_image_exif_rendered($image_id, $img_filename);
 
         return $ret;
     }

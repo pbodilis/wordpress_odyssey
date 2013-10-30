@@ -146,9 +146,8 @@ class ExifManager
         }
         $exifs = $this->read_exifs($post_id, $filename);
         $ret = array();
-
         foreach ($option as $name => $enabled) {
-            if ( ! $enabled || ! isset( $exifs[ $name ] ) || 'a' === $exifs[ $name ] ) {
+            if ( $enabled === false || ! isset( $exifs[ $name ] ) || 'a' === $exifs[ $name ] ) {
                 continue;
             }
 
@@ -168,6 +167,17 @@ class ExifManager
                 $ret[self::option_id2label($name)] = $value;
             }
         }
+        return $ret;
+    }
+    public function get_image_exif_rendered($post_id, $filename) {
+        $exifs = $this->get_image_exif($post_id, $filename);
+        $ret = '';
+        $ret .= '  <ul>' . PHP_EOL;
+        foreach ($exifs as $name => $value) {
+            $ret .= '    <li>' . $name . $value . '</li>' . PHP_EOL;
+        }
+        $ret .= '  </ul>' . PHP_EOL;
+
         return $ret;
     }
 
@@ -225,7 +235,7 @@ class ExifManager
             7 => __( 'Portrait mode',     'odyssey' ),
             8 => __( 'Landscape mode',    'odyssey' ),
         );
-        if ( ! isset($ep2str[ $ep ]) ) {
+        if ( ! array_key_exists( $ep, $ep2str ) ) {
             $ep = 0;
         }
         return $ep2str[ $ep ];

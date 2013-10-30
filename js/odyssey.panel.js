@@ -10,7 +10,8 @@ odyssey.panel = {
         jQuery(document).on('click', '#panel_handle', odyssey.panel.toggle);
     },
     render: function(e, post) {
-        jQuery('#content').replaceWith(ich.render_content(post));
+        html = ich.render_content(post);
+        jQuery('#content').replaceWith(html);
     },
     toggle: function(e) {
         jQuery('html, body').animate({

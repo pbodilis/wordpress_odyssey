@@ -57,10 +57,10 @@ odyssey.image = {
 
         var rendering = ich.render_image(post);
         // fadeout the image, and make the replacement appear in the callback
-        jQuery('#photo_wrapper').fadeOut(200, function() {
+        jQuery('#photo_container').fadeOut(200, function() {
             // insert image
             jQuery('#photo_wrapper').replaceWith(rendering);
-            jQuery('#photo_wrapper').fadeIn(400);
+            jQuery('#photo_container').fadeIn(400);
         });
     },
     resize: function(e) {
