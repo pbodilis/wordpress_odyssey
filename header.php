@@ -61,7 +61,7 @@ $others      = the_core()->get_other_links();
         </div>
         <?php } ?>
 
-        <?php if(is_home() || is_single()) { ?>
+        <?php if ( is_home() || is_single() ) { ?>
         <div class="menu but color">
             <a class="white"     href="#"></a>
             <a class="dark_grey" href="#"></a>

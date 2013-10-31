@@ -40,7 +40,6 @@ class Javascript
         add_action('wp_ajax_odyssey_get_json_post_comments',             array(&$this, 'get_json_post_comments'));
         add_action('wp_ajax_nopriv_odyssey_get_json_post_comments',      array(&$this, 'get_json_post_comments'));
 
-        add_action('wp_head',            array(&$this, 'enqueue_templates'), 0);
         add_action('wp_enqueue_scripts', array(&$this, 'enqueue_javascript'));
         add_action('wp_enqueue_scripts', array(&$this, 'enqueue_css'));
     }
@@ -53,8 +52,8 @@ class Javascript
     public function enqueue_javascript() {
        wp_enqueue_script('comment-reply'); // to have the comment form moveable
 
-        // template engine
-        wp_enqueue_script('ICanHaz',             get_template_directory_uri() . '/js/ICanHaz.js',             array('jquery'), false, true);
+//         // template engine
+//         wp_enqueue_script('ICanHaz',             get_template_directory_uri() . '/js/ICanHaz.js',             array('jquery'), false, true);
         // pub sub implementation
         wp_enqueue_script('pubsub',              get_template_directory_uri() . '/js/ba-tiny-pubsub.js',      array('jquery'));
 
@@ -104,19 +103,6 @@ class Javascript
         // Add Genericons font, used in the main stylesheet.
         wp_enqueue_style( 'genericons', get_template_directory_uri() . '/font/genericons.css', array(), '2.09' );
     }
-
-    public function enqueue_templates() {
-        $ret = '';
-        $tpl_dir = get_template_directory_uri() . '/templates/';
-        foreach($this->templates as $tpl_name => $tpl_file) {
-            echo '<script id="' . $tpl_name . '" type="text/html" >' . file_get_contents($tpl_dir . $tpl_file) . '</script>' . PHP_EOL;
-        }
-    }
-
-    public function add_template($template_name, $template_file) {
-        $this->templates[ $template_name ] = $template_file;
-    }
-
         
     /**
      * \returns a JSON array

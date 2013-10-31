@@ -47,10 +47,6 @@ class Core {
 
         $this->js_handle       = Javascript::get_instance();
 
-        // add the templates related to the image and the content
-        $this->js_handle->add_template('render_image',   'photoblog_image.mustache.html');
-        $this->js_handle->add_template('render_content', 'photoblog_content.mustache.html');
-
         // set default stuff on this theme installation
         add_action('after_switch_theme', array(&$this, 'install'));
         
@@ -264,10 +260,7 @@ class Core {
         $ret = array();
         $categories = get_the_category($post_id);
         foreach($categories as $category) {
-            $c = new \stdClass();
-            $c->url = get_category_link( $category->term_id );
-            $c->name = $category->cat_name;
-            $ret[] = $c;
+            $ret[$category->cat_name] = get_category_link( $category->term_id );
         }
         return $ret;
     }

@@ -10,8 +10,10 @@ $post = the_core()->get_post();
 ?>
 
 <nav class="main-nav">
-    <a class="previous" title="Previous" href="<?php echo $post->previous_url; ?>"></a>
-    <a class="next"     title="Next"     href="<?php echo $post->next_url;     ?>"></a>
+    <?php 
+    echo '<a class="previous" title="Previous" href="' . (isset($post->previous_url) ? $post->previous_url : '') . '"></a>' . PHP_EOL;
+    echo '<a class="next" title="next" href="' . (isset($post->next_url) ? $post->next_url : '') . '"></a>' . PHP_EOL;
+    ?>
 </nav>
 
 

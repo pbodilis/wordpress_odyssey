@@ -5,7 +5,6 @@ odyssey.is_post=function() {
 if (odyssey.is_post()) {
     // wait for the document to be ready
     jQuery(document).ready(function() {
-        ich.grabTemplates();
         odyssey.core.bootstrap(odyssey.posts);
     });
 } else {

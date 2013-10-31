@@ -55,11 +55,24 @@ odyssey.image = {
             post.frame = odyssey.image.get_post_main_position(post.image);
         }
 
-        var rendering = ich.render_image(post);
+        var html = '';
+        html += '<div id="photo_wrapper" class="" style="height: ' + post.frame.dEHeight + 'px;">';
+        html += '  <figure id="photo_container" class="" style="width: ' + post.frame.width + 'px; height: ' + post.frame.cheight + 'px;">';
+        html += '    <img src="' + post.image.url + '" alt="' + post.title + '"/>';
+        html += '    <figcaption id="photo_infos">';
+        html += '      <h2>' + post.title + '</h2>';
+        if (typeof post.image.capture_date !== 'undefined') {
+            html += '      <p>' + post.image.capture_date + '</p>';
+        }
+        html += '    </figcaption>';
+                
+        html += '  </figure>';
+        html += '</div>';
+        
         // fadeout the image, and make the replacement appear in the callback
         jQuery('#photo_container').fadeOut(200, function() {
             // insert image
-            jQuery('#photo_wrapper').replaceWith(rendering);
+            jQuery('#photo_wrapper').replaceWith(html);
             jQuery('#photo_container').fadeIn(400);
         });
     },

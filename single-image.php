@@ -2,8 +2,7 @@
 <div id="photo_wrapper" class="">
     <figure id="photo_container" class="">
 
-        <img src="<?php echo $post->image->url; ?>" alt="<?php echo $post->title; ?>"
-                style="width: <?php echo $post->frame->width; ?>px; height: <?php echo $post->frame->height; ?>px;" />
+        <img src="<?php echo $post->image->url; ?>" alt="<?php echo $post->title; ?>" />
 
         <figcaption id="photo_infos">
             <h2><?php echo $post->title; ?></h2>
@@ -23,9 +22,11 @@
         <article class="post_content"><?php echo $post->content; ?></article>
         <article class="post_categories">
             <ul>
-                <?php foreach ($post->categories as $cat) { ?>
-                <li><a href="<?php echo $cat->url; ?>">&#91;<?php echo $cat->name; ?>&#93;</a></li>
-                <?php } ?>
+                <?php
+                foreach ($post->categories as $cat_name => $cat_url) {
+                    echo '<li><a href="' . $cat_url . '">&#91;' . $cat_name . '&#93;</a></li>';
+                }
+                ?>
             </ul>
         </article>
         <article class="image_exifs">
