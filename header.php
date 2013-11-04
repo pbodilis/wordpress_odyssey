@@ -80,21 +80,6 @@ $others      = the_core()->get_other_links();
                 {{/next_url}}
                 ></a>
         </nav>-->
-        <div class="menu but tooltip">
-            <a href="#">
-                ?
-            </a>
-            <div class="help">
-                <ul>
-                    <li>Keyboard navigation:
-                        <ul>
-                            <li>press '&larr;' or '&rarr;' to jump to previous or next picture</li>
-                        </ul>
-                    </li>
-                    <li>Use the square buttons to change background color</li>
-                </ul>
-            </div>
-        </div>
         <div class="menu loading"></div>
     </header>
 

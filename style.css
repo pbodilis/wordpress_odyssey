@@ -278,35 +278,6 @@ body.white .pagenav>ul {
     height: auto;
 }
 
-#headerbar .menu.but.tooltip a {
-    text-align: center;
-    line-height: 20px;
-    cursor: help;
-    position: relative;
-}
-#headerbar .menu.but.tooltip .help {
-    display: none;
-    width: 400px;
-    text-align: left;
-    color: rgb(255,255,255);
-    background-color: rgb(68,68,68);
-    border: 1px solid rgb(34,34,34);
-    position: absolute;
-    top: 35px;
-    margin-left: -300px;
-
-    opacity: 0.5;
-    filter: alpha(opacity=50);
-}
-
-#headerbar .menu.but.tooltip:hover .help {
-    display: block;
-}
-#headerbar .help ul li {
-    padding-left: 15px;
-    display: list-item;
-}
-
 #headerbar .menu.loading {
     margin: 7px;
     display: none;
@@ -326,7 +297,6 @@ nav.main-nav a {
     color: rgb(200,200,200);
     opacity: 0.5;
     filter: alpha(opacity=50);
-    
 
 /*     background-color: #F0F0F0; */
 /*     border: 1px solid #CCCCCC; */
