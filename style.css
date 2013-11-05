@@ -145,9 +145,8 @@ body.white #headerbar a:hover, body.white #headerbar p:hover {
     background-color: rgb(68,68,68);
 }
 #headerbar .menu.but.color a {
-    width: 14px;
-    height: 14px;
-    border: 3px solid rgb(68,68,68);
+    width: 20px;
+    height: 20px;
 }
 #headerbar .menu.but.color .white {
     background: rgb(255,255,255);
@@ -394,6 +393,7 @@ body.black #photo_wrapper {
     min-width: 800px;
 }
 
+
 #content, #comments {
     width: 800px;
     margin: 0 auto;
@@ -418,6 +418,12 @@ body.black #photo_wrapper {
     height: 30px;
     line-height: 30px;
 /*     padding: 5px 0; */
+}
+
+#content_title:before, #content_title:after {
+    font: 20px Genericons;
+    text-align: center;
+    content: '\f431';
 }
 #content_title:hover {
     color: rgb(255,255,255);
@@ -653,6 +659,7 @@ body.black #photo_wrapper {
     margin-bottom: 15px;
 }
 
+.comment-form .logged-in-as,
 .comment-form .comment-form-author,
 .comment-form .comment-form-email,
 .comment-form .comment-form-url,

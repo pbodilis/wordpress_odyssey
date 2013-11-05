@@ -1,5 +1,5 @@
 
-<div id="photo_wrapper" class="">
+<div id="photo_wrapper" class="<?php echo $post->class; ?>">
     <figure id="photo_container" class="">
 
         <img src="<?php echo $post->image->url; ?>" alt="<?php echo $post->title; ?>" />
@@ -16,8 +16,11 @@
 </div>
 
 
-<div id="wrapper" class="">
+<div id="wrapper" class="<?php echo $post->class; ?>">
     <h2 id="content_title">Info, rate &amp; Comments</h2>
+    <nav>
+        <a class="navdown"></a>
+    </nav>
     <section id="content" class="<?php echo $post->class; ?>">
         <article class="post_content"><?php echo $post->content; ?></article>
         <article class="post_categories">
