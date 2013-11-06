@@ -318,7 +318,7 @@ class Core {
             'parent'       => -1,
             'post_type'    => 'page',
             'post_status'  => 'publish',
-            'title_li'     => '<p id="page_list_title">' . __('Pages') . '</p>',
+            'title_li'     => NULL, //'<p id="page_list_title">' . __('Pages') . '</p>',
             'echo'         => 0,
         );
         return wp_list_pages( $args );
