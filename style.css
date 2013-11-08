@@ -332,6 +332,7 @@ body.black #photo_wrapper {
 }
 #photo_container img {
     width: 100%;
+    background-color: rgb(34,34,34);
     border: 5px rgb(34,34,34) solid;
     margin-left: -5px;
 }
@@ -433,6 +434,32 @@ body.black #photo_wrapper {
     font-size: 14px;
 }
 
+.post_content .column .col1 {
+    float: left;
+    width: 50%;
+}
+.post_content .column .col1 {
+    float: rightt;
+    width: 50%;
+}
+
+/* contact form */
+.wpcf7 {
+    background-color: #161616;
+    padding: 30px 50px;
+    display: block;
+    margin: 0 auto;
+    max-width: 800px;
+    width: 100%;
+}
+
+.wpcf7 input, .wpcf7 textarea {
+    background-color: #3A3A3A;
+    border: 1px solid #222222;
+    color: #C9C9C9;
+    font-size: 11px;
+    margin-left: -1px;
+}
 .genericon:before,
 .menu-toggle:after,
 .featured-post:before,
@@ -631,13 +658,8 @@ body.black #photo_wrapper {
 /* Comment form */
 .comment-respond {
     background-color: rgb(22,22,22);
-/*     background-color: rgb(16,16,16); */
     padding: 30px 50px;
 }
-
-/*.comment .comment-respond {
-    padding: 20px;
-}*/
 
 .comment-form .comment-notes {
     margin-bottom: 15px;
@@ -651,30 +673,10 @@ body.black #photo_wrapper {
     margin-bottom: 8px;
 }
 
-/*.comment-form [for="author"],
-.comment-form [for="email"],
-.comment-form [for="url"],
-.comment-form [for="comment"] {
-    float: left;
-    padding: 5px 0;
-    width: 120px;
-}*/
-
 .comment-form .required {
     color: #ed331c;
 }
 
-/*.comment-form input[type="text"],
-.comment-form input[type="email"],
-.comment-form input[type="url"] {
-    max-width: 270px;
-    width: 60%;
-}
-
-.comment-form textarea {
-    width: 100%;
-}
-*/
 .form-allowed-tags,
 .form-allowed-tags code {
     color: #686758;
