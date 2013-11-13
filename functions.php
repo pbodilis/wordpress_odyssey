@@ -24,10 +24,6 @@ if (!isset($content_width)) {
     $content_width = 900;
 }
 
-// Switches default core markup for search form, comment form, and comments
-// to output valid HTML5.
-add_theme_support( 'html5', array( 'search-form', 'comment-form', 'comment-list' ) );
-
 
 remove_filter('check_comment_flood', 'check_comment_flood_db');
 

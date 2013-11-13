@@ -77,19 +77,21 @@ odyssey.image = {
         });
     },
     resize: function(e) {
-        frame = odyssey.image.get_post_main_position(odyssey.image.image);
+        if (odyssey.image.image) {
+            frame = odyssey.image.get_post_main_position(odyssey.image.image);
 
-        jQuery('#photo_container').css({
-            'width':  frame.width,
-            'height': frame.cheight
-        });
-//         jQuery('#photo_container img').css({
-//             'width':  frame.width,
-//             'height': frame.height
-//         });
-        jQuery('#photo_wrapper').css({
-            'height': frame.dEHeight,
-        });
+            jQuery('#photo_container').css({
+                'width':  frame.width,
+                'height': frame.cheight
+            });
+    //         jQuery('#photo_container img').css({
+    //             'width':  frame.width,
+    //             'height': frame.height
+    //         });
+            jQuery('#photo_wrapper').css({
+                'height': frame.dEHeight,
+            });
+        }
     },
 }
 

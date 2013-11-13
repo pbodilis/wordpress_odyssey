@@ -48,17 +48,20 @@ class Core {
         $this->js_handle       = Javascript::get_instance();
 
         // set default stuff on this theme installation
-        add_action('after_switch_theme', array(&$this, 'install'));
+        add_action( 'after_switch_theme', array( &$this, 'install' ) );
         
         // add couple of filters on body_class, and content
-        add_filter('body_class',  array(&$this, 'body_class'));
+        add_filter( 'body_class',  array( &$this, 'body_class' ) );
 //         add_filter('the_content', array(&$this, 'filter_content'));
 
         // the list of format support by the theme
-        add_theme_support('post-formats', array('image', 'video'));
-        add_theme_support('post-thumbnails');
+        add_theme_support( 'post-formats', array( 'image', 'video' ) );
+        add_theme_support( 'post-thumbnails' );
+        // Switches default core markup for search form, comment form, and comments
+        // to output valid HTML5.
+        add_theme_support( 'html5', array( 'search-form', 'comment-form', 'comment-list' ) );
 
-        add_action('init', array(&$this, 'rmheadlink'));
+        add_action( 'init', array( &$this, 'rmheadlink' ) );
     }
 
     public function rmheadlink() {
@@ -191,6 +194,8 @@ class Core {
         $ret->format  = get_post_format($post->ID);
         if ($ret->format == 'image') {
             $ret->image = $this->get_post_image($post->ID);
+        } else if ($ret->format == 'video') {
+            $ret->video = $this->get_post_video($after_more[0]);
         }
 
         $ret->comments_number = $this->comment_manager->get_post_comments_number($post->ID);
@@ -255,6 +260,17 @@ class Core {
 
         return $ret;
     }
+
+    /**
+     * @return the first attached image of a post as the main post image
+     */
+    public function get_post_video($url) {
+        $ret = new \stdClass();
+        $ret->url = $url;
+        return $ret;
+        
+    }
+
 
     public function get_post_categories($post_id) {
         $ret = array();
