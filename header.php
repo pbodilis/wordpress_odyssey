@@ -18,7 +18,6 @@ $others      = the_core()->get_other_links();
     <meta name="generator" content="WordPress <?php echo $blog->version; ?>" /> <!-- leave this for stats -->
     <meta name="title" content="<?php echo $blog->title; ?>" />
 
-    <link rel="stylesheet" href="<?php echo $blog->stylesheet_url; ?>" type="text/css" media="screen" />
     <link rel="alternate" type="application/rss+xml" title="<?php echo $blog->name; ?> RSS Feed" href="<?php echo $blog->rss2_url; ?>" />
     <link rel="alternate" type="application/rss+xml" title="<?php echo $blog->name; ?> Comments RSS Feed" href="<?php echo $blog->comments_rss2_url; ?>" />
     <link rel="alternate" type="application/atom+xml" title="<?php echo $blog->name; ?> Atom Feed" href="<?php echo $blog->atom_url; ?>" />
@@ -27,6 +26,7 @@ $others      = the_core()->get_other_links();
 
     <!-- theme js -->
     <?php wp_head(); ?>
+    <link rel="stylesheet" href="<?php echo $blog->stylesheet_url; ?>" type="text/css" media="screen" />
 </head>
 <body <?php body_class();?> >
 
@@ -68,18 +68,6 @@ $others      = the_core()->get_other_links();
             <a class="black"     href="#"></a>
         </div>
         <?php } ?>
-<!--        <nav class="menu but">
-            <a class="prev <?php echo $blog->class; ?> {{^previous_url}}deactivated{{/previous_url}}" title="Previous"
-                {{#previous_url}}
-                    href="{{previous_url}}"
-                {{/previous_url}}
-                ></a>
-            <a class="next {{^next_url}}deactivated{{/next_url}}" title="Next"
-                {{#next_url}}
-                    href="{{next_url}}"
-                {{/next_url}}
-                ></a>
-        </nav>-->
         <div class="menu loading"></div>
     </header>
 

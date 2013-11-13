@@ -444,13 +444,12 @@ body.black #photo_wrapper {
 }
 
 /* contact form */
-.wpcf7 {
+div.wpcf7 {
     background-color: #161616;
     padding: 30px 50px;
     display: block;
     margin: 0 auto;
     max-width: 800px;
-    width: 100%;
 }
 
 .wpcf7 input, .wpcf7 textarea {
@@ -460,6 +459,10 @@ body.black #photo_wrapper {
     font-size: 11px;
     margin-left: -1px;
 }
+.wpcf7 textarea {
+    width: 100%;
+}
+
 .genericon:before,
 .menu-toggle:after,
 .featured-post:before,
