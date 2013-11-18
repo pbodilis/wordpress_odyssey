@@ -110,7 +110,7 @@ odyssey.image = {
     resize: function(e) {
         if (odyssey.image.post) {
             if (odyssey.image.post.image) {
-                frame = odyssey.image.get_image_position(odyssey.image.image);
+                frame = odyssey.image.get_image_position(odyssey.image.post.image);
             } else if (odyssey.image.post.video) {
                 var iframe = jQuery(odyssey.image.post.video.html);
                 var image = {
