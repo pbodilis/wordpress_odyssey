@@ -1,7 +1,7 @@
 
 <div id="photo_wrapper" class="<?php echo $post->class; ?>">
     <figure id="photo_container" class="">
-        <?php echo wp_oembed_get($post->video->url); ?>
+        <?php echo $post->video->html; ?>
 
 <!--        <figcaption id="photo_infos">
             <h2><?php echo $post->title; ?></h2>

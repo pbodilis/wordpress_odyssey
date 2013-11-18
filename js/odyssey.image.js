@@ -1,5 +1,5 @@
 odyssey.image = {
-    image: null,
+    post: null,
     timeout: null,
 
     init: function() {
@@ -11,16 +11,14 @@ odyssey.image = {
     },
     bootstrap: function(e, post) {
         jQuery('#photo_container').hide();
-        if (post.image) {
-            odyssey.image.image = post.image;
-            odyssey.image.resize();
-        }
+        odyssey.image.post = post;
+        odyssey.image.resize();
         jQuery('#photo_container').fadeIn(400);
     },
-    get_post_main_position: function(image) {
+    get_image_position: function(image) {
         var dE = document.documentElement;
         var header_height = jQuery('header.headerbar').height();
-        var fig_caption_height = 42; // guess on the photo info height
+        var fig_caption_height = 42; // guess the photo info height
         var border_width = 5; // check in css file #photo_container for consistency
         var resized_width, resized_height;
 
@@ -50,19 +48,26 @@ odyssey.image = {
         odyssey.image.timeout = setTimeout(odyssey.image.do_render, 1, post)
     },
     do_render: function(post) {
+        odyssey.image.post = post;
         if (post.image) {
-            odyssey.image.image = post.image;
-            post.frame = odyssey.image.get_post_main_position(post.image);
+            odyssey.image.do_render_image();
+        } else if (post.video) {
+            odyssey.image.do_render_video();
+        } else {
+            return;
         }
+    },
+    do_render_image: function(post) {
+        var frame = odyssey.image.get_image_position(odyssey.image.post.image);
 
         var html = '';
-        html += '<div id="photo_wrapper" class="" style="height: ' + post.frame.dEHeight + 'px;">';
-        html += '  <figure id="photo_container" class="" style="width: ' + post.frame.width + 'px; height: ' + post.frame.cheight + 'px;">';
-        html += '    <img src="' + post.image.url + '" alt="' + post.title + '"/>';
+        html += '<div id="photo_wrapper" class="" style="height: ' + frame.dEHeight + 'px;">';
+        html += '  <figure id="photo_container" class="" style="width: ' + frame.width + 'px; height: ' + frame.cheight + 'px;">';
+        html += '    <img src="' + odyssey.image.post.image.url + '" alt="' + odyssey.image.post.title + '"/>';
         html += '    <figcaption id="photo_infos">';
-        html += '      <h2>' + post.title + '</h2>';
-        if (typeof post.image.capture_date !== 'undefined') {
-            html += '      <p>' + post.image.capture_date + '</p>';
+        html += '      <h2>' + odyssey.image.post.title + '</h2>';
+        if (typeof odyssey.image.post.image.capture_date !== 'undefined') {
+            html += '      <p>' + odyssey.image.post.image.capture_date + '</p>';
         }
         html += '    </figcaption>';
                 
@@ -76,18 +81,49 @@ odyssey.image = {
             jQuery('#photo_container').fadeIn(400);
         });
     },
+    do_render_video: function(post) {
+        var iframe = jQuery(odyssey.image.post.video.html);
+        var image = {
+            width: iframe.width(),
+            height: iframe.height(),
+        };
+        var frame = odyssey.image.get_image_position(image);
+
+        var html = '';
+        html += '<div id="photo_wrapper" class="" style="height: ' + frame.dEHeight + 'px;">';
+        html += '  <figure id="photo_container" class="" style="width: ' + frame.width + 'px; height: ' + frame.cheight + 'px;">';
+        html += odyssey.image.post.video.html;
+        html += '    <figcaption id="photo_infos">';
+        html += '      <h2>' + odyssey.image.post.title + '</h2>';
+        html += '    </figcaption>';
+
+        html += '  </figure>';
+        html += '</div>';
+
+        // fadeout the image, and make the replacement appear in the callback
+        jQuery('#photo_container').fadeOut(200, function() {
+            // insert image
+            jQuery('#photo_wrapper').replaceWith(html);
+            jQuery('#photo_container').fadeIn(400);
+        });
+    },
     resize: function(e) {
-        if (odyssey.image.image) {
-            frame = odyssey.image.get_post_main_position(odyssey.image.image);
+        if (odyssey.image.post) {
+            if (odyssey.image.post.image) {
+                frame = odyssey.image.get_image_position(odyssey.image.image);
+            } else if (odyssey.image.post.video) {
+                var iframe = jQuery(odyssey.image.post.video.html);
+                var image = {
+                    width: iframe.width(),
+                    height: iframe.height(),
+                };
+                frame = odyssey.image.get_image_position(image);
+            }
 
             jQuery('#photo_container').css({
                 'width':  frame.width,
                 'height': frame.cheight
             });
-    //         jQuery('#photo_container img').css({
-    //             'width':  frame.width,
-    //             'height': frame.height
-    //         });
             jQuery('#photo_wrapper').css({
                 'height': frame.dEHeight,
             });

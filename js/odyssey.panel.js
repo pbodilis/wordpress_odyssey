@@ -30,7 +30,7 @@ odyssey.panel = {
             html += '</article>';
         }
 
-        if (Object.keys(post.image.exifs).length > 0) {
+        if (post.image && Object.keys(post.image.exifs).length > 0) {
             html += '<article class="image_exifs">';
             html += '<ul>';
             jQuery.each(post.image.exifs, function(exif_name, exif_value) {

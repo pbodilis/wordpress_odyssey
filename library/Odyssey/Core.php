@@ -265,8 +265,20 @@ class Core {
      * @return the first attached image of a post as the main post image
      */
     public function get_post_video($url) {
+        global $content_width;
         $ret = new \stdClass();
         $ret->url = $url;
+        $ret->width = $content_width;
+
+        $geometry = array();
+        if (isset($ret->width)) {
+            $geometry['width'] = $ret->width;
+        }
+        if (isset($ret->height)) {
+            $geometry['height'] = $ret->height;
+        }
+
+        $ret->html = wp_oembed_get($url, $geometry);
         return $ret;
         
     }
