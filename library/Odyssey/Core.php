@@ -256,7 +256,6 @@ class Core {
         $img_filename = get_attached_file($image_id);
         $ret->capture_date = $this->exif_manager->get_capture_date($image_id, $img_filename);
         $ret->exifs        = $this->exif_manager->get_image_exif($image_id, $img_filename);
-//         $ret->exifs_rendered = $this->exif_manager->get_image_exif_rendered($image_id, $img_filename);
 
         return $ret;
     }

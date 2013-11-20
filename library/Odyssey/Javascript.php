@@ -115,7 +115,7 @@ class Javascript
 
         // find something better than direct access to $_GET/$_POST
         $ret = array(
-            'posts'                    => Core::get_instance()->get_post_and_adjacents($_GET['id'], $_GET['adjacent']),
+            'posts'                    => Core::get_instance()->get_post_and_adjacents($_GET['id'], 'none'),
             self::POST_NONCE_EMBEDNAME => wp_create_nonce(self::POST_NONCE),
         );
         echo json_encode($ret);

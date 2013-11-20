@@ -4,6 +4,9 @@
  *   This file is part of Odyssey Theme for WordPress.
  */
 
+require dirname(__FILE__) . '/oembend_featured_image.php';
+
+
 // include odysssey libs
 require dirname(__FILE__) . '/library/Odyssey/Autoloader.php';
 \Odyssey\Autoloader::register();
