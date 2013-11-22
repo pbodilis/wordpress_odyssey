@@ -80,7 +80,7 @@ odyssey.image = {
         jQuery('#photo_wrapper').replaceWith(html);
         jQuery('#photo_wrapper img').hide();
         jQuery('#photo_wrapper img').load(function() {
-            jQuery(this).fadeIn(400);
+            jQuery(this).fadeIn(200);
         });
     },
     do_render_video: function(post) {
@@ -108,7 +108,7 @@ odyssey.image = {
         jQuery('#photo_wrapper').replaceWith(html);
         jQuery('#photo_wrapper iframe').hide();
         jQuery('#photo_wrapper iframe').load(function() {
-            jQuery(this).fadeIn(400);
+            jQuery(this).fadeIn(200);
         });
     },
     resize: function(e) {

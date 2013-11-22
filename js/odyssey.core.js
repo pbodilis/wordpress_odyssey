@@ -29,7 +29,7 @@ odyssey.core = {
             if (odyssey.core.posts[id] === 'pending') return;
             odyssey.core.posts.current_ID = id; // just set the current cursor to the given id
             odyssey.core.publish_update(); // notify all views the current post needs to be displayed
-            
+
             // cache the adjacent of this post if we don't have it already
             var current = odyssey.core.get_current_post();
             if (current.previous_ID && typeof odyssey.core.posts[current.previous_ID] == 'undefined') {
