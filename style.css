@@ -329,7 +329,12 @@ body.black #photo_wrapper {
     position: absolute;
     margin: auto;
     top: 0; left: 0; bottom: 0; right: 0;
+    background:url(images/odyssey_loading.gif) 0 0 no-repeat;
+    background-position:center center;
 }
+/*#photo_container div {
+    position: relative;
+}*/
 #photo_container img {
     width: 100%;
     background-color: rgb(34,34,34);
@@ -340,9 +345,13 @@ body.black #photo_wrapper {
     content: '\2022';
 }
 #photo_infos {
+    position: absolute;
+    bottom: 0;
+    right: 0;
     text-align: right;
     color: rgb(161,161,161);
-    height: 42px; /* hardcoded to help position calculation */
+    overflow: auto;
+/*     height: 42px; /* hardcoded to help position calculation */ */
 }
 #photo_infos p {
     font-size: 13px;

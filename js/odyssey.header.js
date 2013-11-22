@@ -9,11 +9,7 @@ odyssey.header = {
             odyssey.cookie.create('odyssey_theme_color', this.className, 30);
             e.preventDefault();
         });
-        jQuery.subscribe('post.loading', odyssey.header.loading);
         jQuery.subscribe('post.loaded',  odyssey.header.loaded);
-    },
-    loading: function() {
-        jQuery('header .menu.loading').show();
     },
     loaded: function() {
         jQuery('header .menu.loading').hide();

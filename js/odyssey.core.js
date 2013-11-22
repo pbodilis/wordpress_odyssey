@@ -59,13 +59,13 @@ odyssey.core = {
         jQuery.ajax({
             url:      odyssey.ajaxurl,
             dataType: 'json',
-            data:     ajaxArgs,
-            beforeSend: function() {
-                jQuery.publish('post.loading');
-            },
-            complete: function() {
-                jQuery.publish('post.loaded');
-            }
+            data:     ajaxArgs/*,*/
+//             beforeSend: function() {
+//                 jQuery.publish('post.loading');
+//             },
+//             complete: function() {
+//                 jQuery.publish('post.loaded');
+//             }
         }).done(function(r) {
             if (!r) return;
             odyssey.post_nonce = r.post_nonce;

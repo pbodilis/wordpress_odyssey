@@ -70,15 +70,17 @@ odyssey.image = {
             html += '      <p>' + odyssey.image.post.image.capture_date + '</p>';
         }
         html += '    </figcaption>';
-                
+
         html += '  </figure>';
         html += '</div>';
-        
+
         // fadeout the image, and make the replacement appear in the callback
-        jQuery('#photo_container').fadeOut(200, function() {
-            // insert image
-            jQuery('#photo_wrapper').replaceWith(html);
-            jQuery('#photo_container').fadeIn(400);
+        jQuery('#photo_container img').fadeOut(200);
+        // insert image
+        jQuery('#photo_wrapper').replaceWith(html);
+        jQuery('#photo_wrapper img').hide();
+        jQuery('#photo_wrapper img').load(function() {
+            jQuery(this).fadeIn(400);
         });
     },
     do_render_video: function(post) {
@@ -101,10 +103,12 @@ odyssey.image = {
         html += '</div>';
 
         // fadeout the image, and make the replacement appear in the callback
-        jQuery('#photo_container').fadeOut(200, function() {
-            // insert image
-            jQuery('#photo_wrapper').replaceWith(html);
-            jQuery('#photo_container').fadeIn(400);
+        jQuery('#photo_container').fadeOut(200);
+        // insert image
+        jQuery('#photo_wrapper').replaceWith(html);
+        jQuery('#photo_wrapper iframe').hide();
+        jQuery('#photo_wrapper iframe').load(function() {
+            jQuery(this).fadeIn(400);
         });
     },
     resize: function(e) {
