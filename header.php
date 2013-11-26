@@ -26,7 +26,8 @@ $others      = the_core()->get_other_links();
 
     <!-- theme js -->
     <?php wp_head(); ?>
-    <link rel="stylesheet" href="<?php echo $blog->stylesheet_url; ?>" type="text/css" media="screen" />
+    <link rel="stylesheet" href="<?php echo $blog->stylesheet_url; ?>" type="text/css" media="screen and (min-width: 800px)" />
+    <link rel="stylesheet" href="<?php echo ''; ?>" type="text/css" media="screen and (maw-width: 800px)" />
 </head>
 <body <?php body_class();?> >
 

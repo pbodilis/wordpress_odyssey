@@ -17,6 +17,7 @@ odyssey.image = {
     },
     get_image_position: function(image) {
         var dE = document.documentElement;
+
         var header_height = jQuery('header.headerbar').height();
         var fig_caption_height = 42; // guess the photo info height
         var border_width = 5; // check in css file #photo_container for consistency
@@ -35,9 +36,9 @@ odyssey.image = {
             resized_width  = resized_height * image.width / image.height;
         }
         return {
-            width:  Math.round(resized_width),
-            height: Math.round(resized_height),
-            cheight: Math.round(resized_height) + border_width * 2 + fig_caption_height,
+            width:    Math.round(resized_width),
+            height:   Math.round(resized_height),
+            cheight:  Math.round(resized_height) + border_width * 2 + fig_caption_height,
             dEHeight: dE.clientHeight - header_height * 2
         };
     },
