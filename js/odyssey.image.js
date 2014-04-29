@@ -62,8 +62,8 @@ odyssey.image = {
         var frame = odyssey.image.get_image_position(odyssey.image.post.image);
 
         var html = '';
-        html += '<div id="photo_wrapper" class="" style="height: ' + frame.dEHeight + 'px;">';
-        html += '  <figure id="photo_container" class="" style="width: ' + frame.width + 'px; height: ' + frame.cheight + 'px;">';
+        html += '<div id="photo_wrapper" class="' + odyssey.image.post.class + '" style="height: ' + frame.dEHeight + 'px;">';
+        html += '  <figure id="photo_container" class="' + odyssey.image.post.class + '" style="width: ' + frame.width + 'px; height: ' + frame.cheight + 'px;">';
         html += '    <img src="' + odyssey.image.post.image.url + '" alt="' + odyssey.image.post.title + '"/>';
         html += '    <figcaption id="photo_infos">';
         html += '      <h2>' + odyssey.image.post.title + '</h2>';
@@ -93,8 +93,8 @@ odyssey.image = {
         var frame = odyssey.image.get_image_position(image);
 
         var html = '';
-        html += '<div id="photo_wrapper" class="" style="height: ' + frame.dEHeight + 'px;">';
-        html += '  <figure id="photo_container" class="" style="width: ' + frame.width + 'px; height: ' + frame.cheight + 'px;">';
+        html += '<div id="photo_wrapper" class="' + odyssey.image.post.class + '" style="height: ' + frame.dEHeight + 'px;">';
+        html += '  <figure id="photo_container" class="' + odyssey.image.post.class + '" style="width: ' + frame.width + 'px; height: ' + frame.cheight + 'px;">';
         html += odyssey.image.post.video.html;
         html += '    <figcaption id="photo_infos">';
         html += '      <h2>' + odyssey.image.post.title + '</h2>';

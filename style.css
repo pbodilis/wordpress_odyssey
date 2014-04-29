@@ -324,6 +324,12 @@ body.dark_grey #photo_wrapper {
 body.black #photo_wrapper {
     background-color: rgb(0,0,0);
 }
+#page.format-standard #photo_wrapper {
+    display: none;
+}
+#page.format-image #photo_wrapper,#page.format-image #photo_wrapper {
+    display: block;
+}
 #photo_container {
     vertical-align: middle;
     position: absolute;

@@ -45,6 +45,13 @@ odyssey.panel = {
         }
         html += '</section>';
         jQuery('#content').replaceWith(html);
+        jQuery('#page').attr('class', post.class);
+        jQuery('#wrapper').attr('class', post.class);
+        if (post.format === false) {
+            jQuery('#content_title').html(post.title);
+        } else {
+            jQuery('#content_title').html('Info, rate &amp; Comments');
+        }
     },
 }
 
