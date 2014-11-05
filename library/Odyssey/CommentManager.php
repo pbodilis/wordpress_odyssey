@@ -134,18 +134,14 @@ class CommentManager
             'orderby' => 'comment_date',
             'order'   => 'ASC',
         );
-    
-        ob_start();
-        wp_list_comments( array(
+
+        $comments = wp_list_comments( array(
             'style'       => 'ol',
             'short_ping'  => true,
             'avatar_size' => 74,
+            'echo'        => false
         ), get_comments( $args ));
 
-
-        $comments = ob_get_contents();
-        ob_end_clean();
-        
         return $comments;
     }
 
