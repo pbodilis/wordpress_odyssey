@@ -1,7 +1,12 @@
+jQuery(window).bind("load", function() {
+
+if (typeof odyssey === 'undefined') {
+    odyssey = {};
+}
+
 odyssey.is_post=function() {
     return (typeof odyssey.posts != 'undefined');
 };
-
 
 odyssey.archive = {
     init: function() {
@@ -25,8 +30,6 @@ odyssey.archive = {
         });
     }
 }
-
-odyssey.archive.init();
 
 odyssey.comments = {
     status: {},
@@ -111,8 +114,6 @@ odyssey.comments = {
         jQuery('h3.comments-title').html(comments_count + ' Comment' + ((comments_count != 1) ? 's' : ''));
     },
 }
-
-odyssey.comments.init();
 
 // cookies! yummy
 odyssey.cookie = {
@@ -264,7 +265,6 @@ odyssey.core = {
     }
 };
 
-odyssey.core.init();
 odyssey.header = {
     init: function() {
         jQuery(document).on('click', '.color a', function(e) {
@@ -283,7 +283,6 @@ odyssey.header = {
     },
 };
 
-odyssey.header.init();
 odyssey.history = {
     postID: null,
     
@@ -308,17 +307,143 @@ odyssey.history = {
     }
 };
 
-odyssey.history.init();
+odyssey.keyboard = {
+    init: function() {
+        var txtFocus = false;
+        jQuery('input, textarea').focus(function() {
+            txtFocus = true;
+        });
+        jQuery('input, textarea').blur(function() {
+            txtFocus = false;
+        });
+        jQuery(document).on('keydown', function(e) {
+            if (!txtFocus) { // if typing text, do not trigger events !
+                switch(e.which) {
+                    case 32:
+                        jQuery.publish('panel.toggle');
+                        e.preventDefault();
+                        return false;
+                    case 37:
+                        if (!odyssey.is_post()) {return;}
+
+                        jQuery.publish('core.previous');
+                        e.preventDefault();
+                        return false;
+                    case 39:
+                        if (!odyssey.is_post()) {return;}
+
+                        jQuery.publish('core.next');
+                        e.preventDefault();
+                        return false;
+                }
+            }
+        });
+    }
+};
+
+odyssey.navigation = {
+    init: function() {
+        if (odyssey.is_post()) {
+            jQuery.subscribe('post.update', odyssey.navigation.update_links);
+
+            jQuery(document).on('click', 'nav .previous', function(e) {
+                jQuery.publish('core.previous');
+                e.preventDefault();
+                return false;
+            });
+            jQuery(document).on('click', 'nav .next', function(e) {
+                jQuery.publish('core.next');
+                e.preventDefault();
+                return false;
+            });
+            jQuery(document).on('click', '#random', function(e) {
+                jQuery.publish('core.random');
+                e.preventDefault();
+                return false;
+            });
+        }
+    },
+    update_links: function(e, post) {
+        var prev = jQuery('nav a.previous');
+        var next = jQuery('nav a.next');
+        if (typeof post.previous_url != 'undefined') {
+            prev.attr('href', post.previous_url);
+        } else {
+            prev.attr('href', '');
+        }
+        if (typeof post.next_url != 'undefined') {
+            next.attr('href', post.next_url);
+        } else {
+            next.attr('href', '');
+        }
+    }
+};
+
+odyssey.panel = {
+    init: function() {
+        jQuery(document).on('click', '#content_title', odyssey.panel.toggle);
+
+        // update the panel on post update
+        jQuery.subscribe('post.update', odyssey.panel.render);
+
+        // click on the panel handle, or a "panel.toggle" event toggles the panel
+        jQuery.subscribe('panel.toggle', odyssey.panel.toggle);
+        jQuery(document).on('click', '#panel_handle', odyssey.panel.toggle);
+    },
+    toggle: function(e) {
+        jQuery('html, body').animate({
+            scrollTop:jQuery('#content_title').offset().top
+        }, 'slow', 'swing');
+    },
+
+    render: function(e, post) {
+        html = '';
+        html += '<section id="content" class="' + post.class + '">';
+        html += '<article class="post_content">' + post.content + '</article>';
+
+        if (Object.keys(post.categories).length > 0) {
+            html += '<article class="post_categories">';
+            html += '<ul>';
+            jQuery.each(post.categories, function(cat_name, cat_url) {
+                html += '<li><a href="' + cat_url + '">&#91;' + cat_name + '&#93;</a></li>';
+            });
+            html += '</ul>';
+            html += '</article>';
+        }
+
+        if (post.image && Object.keys(post.image.exifs).length > 0) {
+            html += '<article class="image_exifs">';
+            html += '<ul>';
+            jQuery.each(post.image.exifs, function(exif_name, exif_value) {
+                html += '<li>' + exif_name + exif_value + '</li>';
+            });
+            html += '</ul>';
+            html += '</article>';
+        }
+
+        if (typeof post.ratings !== 'undefined') {
+            html += '<article class="post_rating">' + post.ratings + '</article>';
+        }
+        html += '</section>';
+        jQuery('#content').replaceWith(html);
+        jQuery('#page').attr('class', post.class);
+        jQuery('#wrapper').attr('class', post.class);
+        if (post.format === false) {
+            jQuery('#content_title').html(post.title);
+        } else {
+            jQuery('#content_title').html('Info, rate &amp; Comments');
+        }
+    },
+}
+
 odyssey.image = {
     post: null,
     timeout: null,
 
     init: function() {
-        if (odyssey.is_post()) {
-            jQuery.subscribe('post.update', odyssey.image.render);
-            jQuery.subscribe('bootstrap', odyssey.image.bootstrap);
-            jQuery(window).resize(odyssey.image.resize);
-        }
+        jQuery.subscribe('post.update', odyssey.image.render);
+        jQuery.subscribe('bootstrap', odyssey.image.bootstrap);
+        jQuery(window).resize(odyssey.image.resize);
     },
     bootstrap: function(e, post) {
         jQuery('#photo_container').hide();
@@ -447,138 +572,16 @@ odyssey.image = {
     },
 }
 
-odyssey.image.init();odyssey.keyboard = {
-    init: function() {
-        var txtFocus = false;
-        jQuery('input, textarea').focus(function() {
-            txtFocus = true;
-        });
-        jQuery('input, textarea').blur(function() {
-            txtFocus = false;
-        });
-        jQuery(document).on('keydown', function(e) {
-            if (!txtFocus) { // if typing text, do not trigger events !
-                switch(e.which) {
-                    case 32:
-                        jQuery.publish('panel.toggle');
-                        e.preventDefault();
-                        return false;
-                    case 37:
-                        if (!odyssey.is_post()) {return;}
-
-                        jQuery.publish('core.previous');
-                        e.preventDefault();
-                        return false;
-                    case 39:
-                        if (!odyssey.is_post()) {return;}
-
-                        jQuery.publish('core.next');
-                        e.preventDefault();
-                        return false;
-                }
-            }
-        });
-    }
-};
-
+odyssey.archive.init();
+odyssey.comments.init();
+odyssey.core.init();
+odyssey.header.init();
+odyssey.history.init();
 odyssey.keyboard.init();
-odyssey.navigation = {
-    init: function() {
-        if (odyssey.is_post()) {
-            jQuery.subscribe('post.update', odyssey.navigation.update_links);
-
-            jQuery(document).on('click', 'nav .previous', function(e) {
-                jQuery.publish('core.previous');
-                e.preventDefault();
-                return false;
-            });
-            jQuery(document).on('click', 'nav .next', function(e) {
-                jQuery.publish('core.next');
-                e.preventDefault();
-                return false;
-            });
-            jQuery(document).on('click', '#random', function(e) {
-                jQuery.publish('core.random');
-                e.preventDefault();
-                return false;
-            });
-        }
-    },
-    update_links: function(e, post) {
-        var prev = jQuery('nav a.previous');
-        var next = jQuery('nav a.next');
-        if (typeof post.previous_url != 'undefined') {
-            prev.attr('href', post.previous_url);
-        } else {
-            prev.attr('href', '');
-        }
-        if (typeof post.next_url != 'undefined') {
-            next.attr('href', post.next_url);
-        } else {
-            next.attr('href', '');
-        }
-    }
-};
-
 odyssey.navigation.init();
-odyssey.panel = {
-    init: function() {
-        jQuery(document).on('click', '#content_title', odyssey.panel.toggle);
-
-        // update the panel on post update
-        jQuery.subscribe('post.update', odyssey.panel.render);
-
-        // click on the panel handle, or a "panel.toggle" event toggles the panel
-        jQuery.subscribe('panel.toggle', odyssey.panel.toggle);
-        jQuery(document).on('click', '#panel_handle', odyssey.panel.toggle);
-    },
-    toggle: function(e) {
-        jQuery('html, body').animate({
-            scrollTop:jQuery('#content_title').offset().top
-        }, 'slow', 'swing');
-    },
-
-    render: function(e, post) {
-        html = '';
-        html += '<section id="content" class="' + post.class + '">';
-        html += '<article class="post_content">' + post.content + '</article>';
-
-        if (Object.keys(post.categories).length > 0) {
-            html += '<article class="post_categories">';
-            html += '<ul>';
-            jQuery.each(post.categories, function(cat_name, cat_url) {
-                html += '<li><a href="' + cat_url + '">&#91;' + cat_name + '&#93;</a></li>';
-            });
-            html += '</ul>';
-            html += '</article>';
-        }
-
-        if (post.image && Object.keys(post.image.exifs).length > 0) {
-            html += '<article class="image_exifs">';
-            html += '<ul>';
-            jQuery.each(post.image.exifs, function(exif_name, exif_value) {
-                html += '<li>' + exif_name + exif_value + '</li>';
-            });
-            html += '</ul>';
-            html += '</article>';
-        }
-
-        if (typeof post.ratings !== 'undefined') {
-            html += '<article class="post_rating">' + post.ratings + '</article>';
-        }
-        html += '</section>';
-        jQuery('#content').replaceWith(html);
-        jQuery('#page').attr('class', post.class);
-        jQuery('#wrapper').attr('class', post.class);
-        if (post.format === false) {
-            jQuery('#content_title').html(post.title);
-        } else {
-            jQuery('#content_title').html('Info, rate &amp; Comments');
-        }
-    },
-}
-
 odyssey.panel.init();
+odyssey.image.init();
+
 if (odyssey.is_post()) {
     // wait for the document to be ready
     jQuery(document).ready(function() {
@@ -588,5 +591,4 @@ if (odyssey.is_post()) {
 }
 
 
-
-// odyssey.init();
+});
